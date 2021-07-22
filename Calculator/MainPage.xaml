@@ -1,0 +1,139 @@
+﻿<Page
+    x:Class="Calculator.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Calculator"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    x:Name="root"
+    KeyDown="root_KeyDown">
+    
+
+    <Grid Background="#FFF5EBDA">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer Grid.ColumnSpan="4" Grid.Row="0" HorizontalScrollBarVisibility="Auto">
+            <TextBlock Text="{Binding ElementName=root, Path=YNumber,Mode=OneWay}" FontSize="20" TextAlignment="End" />
+        </ScrollViewer>
+        <ScrollViewer Grid.ColumnSpan="4" Grid.Row="1" HorizontalScrollBarVisibility="Auto">
+            <TextBlock Text="{Binding ElementName=root, Path=XNumber, Mode=OneWay}" FontSize="50" TextAlignment="End" />
+        </ScrollViewer>
+
+        <Button x:Name="Percent" Style="{StaticResource InputButton}" Content="%" 
+                Click="Percent_Click" Grid.Row="2" 
+                Grid.Column="0" Background="#FFDEA357"  />
+        <Button x:Name="OneDiv" Style="{StaticResource InputButton}" Content="1/x" 
+                Click="OneDiv_Click"  
+                Grid.Row="3" Grid.Column="0" Background="#FFDEA357" >
+            <Button.Foreground>
+                <SolidColorBrush Color="#FF646352" Opacity="1"/>
+            </Button.Foreground>
+        </Button>
+        <Button x:Name="Seven" Style="{StaticResource InputButton}" Content="7"  
+                Click="Seven_Click" Grid.Row="4" 
+                Grid.Column="0" Background="BurlyWood"/>
+        <Button x:Name="Four" Style="{StaticResource InputButton}" Content="4" 
+                Click="Four_Click" Grid.Row="5" 
+                Grid.Column="0" Background="BurlyWood" />
+        <Button x:Name="One" Style="{StaticResource InputButton}" Content="1" 
+                Click="One_Click" Grid.Row="6" 
+                Grid.Column="0" Background="BurlyWood" />
+        <Button x:Name="Sign" Style="{StaticResource InputButton}" Content="+/-"  
+                Click="Sign_Click" Grid.Row="7" 
+                Grid.Column="0" Background="BurlyWood" />
+
+        <Button x:Name="Remove" Style="{StaticResource InputButton}" 
+                Foreground="#FFEA3F0B"
+                Content="CE"  
+                Click="Remove_Click" Grid.Row="2" 
+                Grid.Column="1"  Background="#FFDEA357" />
+        <Button x:Name="Pow2" Style="{StaticResource InputButton}"  
+                Click="Pow2_Click" Grid.Row="3" 
+                Grid.Column="1" Background="#FFDEA357" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="x" FontSize="40" />
+                <TextBlock Text="2" FontSize="20" />
+            </StackPanel>
+        </Button>
+        <Button x:Name="Eight" Style="{StaticResource InputButton}" Content="8" 
+                Click="Eight_Click" Grid.Row="4" 
+                Grid.Column="1" Background="BurlyWood" />
+        <Button x:Name="Five" Style="{StaticResource InputButton}" Content="5"  
+                Click="Five_Click" Grid.Row="5" 
+                Grid.Column="1" Background="BurlyWood" />
+        <Button x:Name="Two" Style="{StaticResource InputButton}" Content="2"  
+                Click="Two_Click" Grid.Row="6" 
+                Grid.Column="1" Background="BurlyWood" />
+        <Button x:Name="Zero" Style="{StaticResource InputButton}" Content="0"  
+                Click="Zero_Click" Grid.Row="7" 
+                Grid.Column="1" Background="BurlyWood"/>
+        <Button x:Name="RemoveAll" Style="{StaticResource InputButton}" Content="C"  
+                Click="RemoveAll_Click" Grid.Row="2" 
+                Grid.Column="2" Background="#FFDEA357" Foreground="#FFEA3F0B"/>
+        <Button x:Name="Sqrt" Style="{StaticResource InputButton}"  
+                Click="Sqrt_Click" Grid.Row="3" 
+                Grid.Column="2" Background="#FFDEA357">
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <TextBlock Text="2" FontSize="15" />
+                <TextBlock Text="√" Margin="0,10,0,0" FontFamily="Gabriola" />
+                <TextBlock Text="X" FontSize="30" Margin="0,5,0,0" />
+            </StackPanel>
+        </Button>
+        <Button x:Name="Nine" Style="{StaticResource InputButton}" Content="9"  
+                Click="Nine_Click" Grid.Row="4" 
+                Grid.Column="2" Background="BurlyWood"/>
+        <Button x:Name="Six" Style="{StaticResource InputButton}" Content="6"  
+                Click="Six_Click" Grid.Row="5" 
+                Grid.Column="2" Background="BurlyWood"/>
+        <Button x:Name="Three" Style="{StaticResource InputButton}" Content="3"  
+                Click="Three_Click" Grid.Row="6" 
+                Grid.Column="2" Background="BurlyWood"/>
+        <Button x:Name="Point" Style="{StaticResource InputButton}" Content="."  
+                        Click="Point_Click" Grid.Row="7" 
+                        Grid.Column="2" Background="BurlyWood"/>
+        <Button x:Name="Back" Style="{StaticResource InputButton}" 
+                Click="Back_Click" Grid.Row="2" 
+                Grid.Column="3" Background="#FFDEA357" RenderTransformOrigin="0.46,0.528">
+            <TextBlock  Foreground="#FFEA3F0B"
+                  Text="&#xE72B;" FontFamily="HoloLens MDL2 Assets" FontSize="25"  VerticalAlignment="Top" />
+        </Button>
+        <Button x:Name="Division" Style="{StaticResource InputButton}" 
+                Click="Division_Click" Grid.Row="3" 
+                Grid.Column="3" Background="#FFDEA357" RenderTransformOrigin="0.46,0.528">
+            <TextBlock Text="&#x00F7;" FontFamily="Georgia" FontSize="50"/>
+        </Button>
+        <Button x:Name="Multiply" Style="{StaticResource InputButton}"  Content="x"
+                Click="Multiply_Click" Grid.Row="4" 
+                Grid.Column="3" Background="#FFDEA357" RenderTransformOrigin="0.46,0.528"/>
+
+        <Button x:Name="Subtraction" Style="{StaticResource InputButton}" 
+                Click="Subtraction_Click" Grid.Row="5" 
+                Grid.Column="3" Background="#FFDEA357" RenderTransformOrigin="0.46,0.528">
+            <TextBlock Text="&#x002D;" FontFamily="Georgia" FontSize="70"/>
+        </Button>
+        <Button x:Name="Add" Style="{StaticResource InputButton}"  Content="+"
+                Click="Add_Click" Grid.Row="6" 
+                Grid.Column="3" Background="#FFDEA357" RenderTransformOrigin="0.46,0.528"/>
+        <Button x:Name="Equal" 
+                Style="{StaticResource InputButton}"  Content="="
+                Click="Equal_Click" Grid.Row="7" 
+                Grid.Column="3" Background="#FFEA821B" RenderTransformOrigin="0.46,0.528"/>
+        
+    </Grid>
+</Page>
