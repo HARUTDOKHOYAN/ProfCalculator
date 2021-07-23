@@ -19,11 +19,15 @@
         <DataTemplate x:Key="ProgrammerTemplate">
             <templates:Programmer />
         </DataTemplate>
+        <DataTemplate x:Key="DateCalculationTemplate">
+            <templates:DateCalculation />
+        </DataTemplate>
 
         <templates:CalculatorTemplateSelector x:Key="CalculatorTemplateSelector"
         Standard="{StaticResource StandardTemplate}"
         Scientific="{StaticResource ScientificTemplate}"
-        Programmer="{StaticResource ProgrammerTemplate}"/>
+        Programmer="{StaticResource ProgrammerTemplate}"
+        DateCalculation="{StaticResource DateCalculationTemplate}"/>
     </Page.Resources>
 
     <Grid>
@@ -69,6 +73,7 @@
                     <TextBlock Text="Standard" />
                     <TextBlock Text="Scientific" />
                     <TextBlock Text="Programmer" />
+                    <TextBlock Text="Date Calculation" />
                 </ListView>
             </Grid>
 

@@ -125,6 +125,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SidebarViewModel.cs" />
     <Compile Include="Templates\CalculatorTemplateSelector.cs" />
+    <Compile Include="Templates\DateCalculation.xaml.cs">
+      <DependentUpon>DateCalculation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Programmer.xaml.cs">
       <DependentUpon>Programmer.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Templates\DateCalculation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Templates\Programmer.xaml">
       <SubType>Designer</SubType>
