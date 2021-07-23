@@ -1,0 +1,81 @@
+﻿<Page
+    x:Class="ProfCalculator.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:templates="using:ProfCalculator.Templates"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    d:DesignWidth="500"
+    d:DesignHeight="800">
+    <Page.Resources>
+        <DataTemplate x:Key="StandardTemplate">
+            <templates:Standard  />
+        </DataTemplate>
+        <DataTemplate x:Key="ScientificTemplate">
+            <templates:Scientific />
+        </DataTemplate>
+        <DataTemplate x:Key="ProgrammerTemplate">
+            <templates:Programmer />
+        </DataTemplate>
+
+        <templates:CalculatorTemplateSelector x:Key="CalculatorTemplateSelector"
+        Standard="{StaticResource StandardTemplate}"
+        Scientific="{StaticResource ScientificTemplate}"
+        Programmer="{StaticResource ProgrammerTemplate}"/>
+    </Page.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="60" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--Menu-->
+        <Button Click="Menu_Click" Grid.Row="0" Grid.Column="0" Width="60" Height="60" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+            <Viewbox MaxHeight="30" MaxWidth="30">
+                <SymbolIcon Symbol="GlobalNavigationButton" />
+            </Viewbox>
+        </Button>
+        <TextBlock VerticalAlignment="Center" FontSize="30" Margin="10 0 0 0" Grid.Row="0" Grid.Column="1" Text="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" />
+        <Grid Canvas.ZIndex="2" Grid.RowSpan="2" Grid.ColumnSpan="2">
+            <Grid x:Name="Sidebar" Background="LightGray" Width="400" HorizontalAlignment="Left">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.RenderTransform>
+                    <CompositeTransform x:Name="SidebarTransform" TranslateX="-400"/>
+                </Grid.RenderTransform>
+                <Button Grid.Row="0" Grid.Column="0" Width="60" Height="60" Click="Menu_Click">
+                    <Viewbox MaxHeight="30" MaxWidth="30">
+                        <SymbolIcon Symbol="GlobalNavigationButton" />
+                    </Viewbox>
+                </Button>
+                <ListView x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1">
+
+                    <ListView.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="FontSize" Value="20"/>
+                        </Style>
+                    </ListView.Resources>
+
+                    <TextBlock Text="Standard" />
+                    <TextBlock Text="Scientific" />
+                    <TextBlock Text="Programmer" />
+                </ListView>
+            </Grid>
+
+        </Grid>
+
+        <!--Calculator buttons-->
+        <ContentControl Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" Canvas.ZIndex="1" Grid.Row="1" Grid.ColumnSpan="2"
+                        ContentTemplateSelector="{StaticResource CalculatorTemplateSelector}" />
+    </Grid>
+</Page>
