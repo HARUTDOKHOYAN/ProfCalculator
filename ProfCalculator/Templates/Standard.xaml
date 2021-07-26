@@ -6,28 +6,46 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    x:Name="Root"
+    x:Name="Root" 
     SizeChanged="Root_SizeChanged">
-    
 
-    <Grid>
+
+    <Grid SizeChanged="Root_SizeChanged" >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="oPERATOR" FontSize="20" Grid.Row="0" />
-        <TextBlock Text="oPERATOR" FontSize="40" Grid.Row="1" />
-        <ListView  Grid.Row="2"  ScrollViewer.VerticalScrollBarVisibility="Disabled" ItemsSource="{Binding ElementName=Root , Path=uiViewModel.buttoncontents,Mode=OneWay}" >
+        <TextBlock Text="Operator" 
+                   TextAlignment="End" 
+                   FontSize="20" 
+                   Grid.Row="0"  />
+        <TextBlock Text="Number" 
+                   TextAlignment="End" 
+                   FontSize="40" 
+                   Grid.Row="1" 
+                   RenderTransformOrigin="0.5,0.5" >
+
+        </TextBlock>
+        <ListView  x:Name="ListviewRoot"  
+                  Grid.Row="2"  
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  ItemsSource="{Binding ElementName=Root , 
+                                        Path=uiViewModel.buttoncontents,
+                                        Mode=OneWay}" >
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <ItemsWrapGrid MaximumRowsOrColumns="4" Orientation="Horizontal"/>
+                    <ItemsWrapGrid MaximumRowsOrColumns="4" 
+                                   Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
-                <DataTemplate>
-                    <ListView ItemContainerStyle="{StaticResource ListViewItemContainerStyle}" Height="80" Width="80" >
-                        <TextBlock  Text="{Binding Content ,Mode=OneWay}" FontSize="30" Margin="40,30,0,0"/>
+                <DataTemplate >
+                    <ListView  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                              Height="{Binding Height , Mode=OneWay}"
+                              Width="{Binding Width , Mode=OneWay}">
+                        <TextBlock Text="{Binding Content ,Mode=OneWay}" FontSize="10"/>
                     </ListView>
                 </DataTemplate>
             </ListView.ItemTemplate>

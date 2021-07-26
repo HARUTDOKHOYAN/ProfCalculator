@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -23,6 +24,7 @@ namespace ProfCalculator.Templates
         {
             this.InitializeComponent();
             uiViewModel = new UiViewModel();
+           
         }
 
 
@@ -32,12 +34,15 @@ namespace ProfCalculator.Templates
             set { SetValue(uiViewModelProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for uiViewModel.  This enables animation, styling, binding, etc...
+    
         public static readonly DependencyProperty uiViewModelProperty =
             DependencyProperty.Register("uiViewModel", typeof(UiViewModel), typeof(Standard), new PropertyMetadata(null));
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            
+            uiViewModel.HeightCheing( e.NewSize.Height);
+            uiViewModel.WidthCheing(e.NewSize.Width);
 
         }
     }
