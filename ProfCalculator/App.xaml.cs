@@ -42,7 +42,7 @@ namespace ProfCalculator
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(350, 500));
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(320, 500));
             ApplicationView.PreferredLaunchViewSize = new Size(500, 500);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             if (rootFrame == null)
