@@ -15,22 +15,33 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ProfCalculator.Models;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace ProfCalculator
 {
-    /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
-    /// </summary>
     public sealed partial class MainPage : Page
     {
-        private SidebarViewModel sidebarViewModel;
         public MainPage()
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
+            _uiViewModel = new UiViewModel();
         }
 
+
+
+        private SidebarViewModel sidebarViewModel;
+        public UiViewModel _uiViewModel
+        {
+            get { return (UiViewModel)GetValue(_uiViewModelProperty); }
+            set { SetValue(_uiViewModelProperty, value); }
+        }
+
+        
+        public static readonly DependencyProperty _uiViewModelProperty =
+            DependencyProperty.Register("_uiViewModel", typeof(UiViewModel), typeof(MainPage), new PropertyMetadata(0));
+
+
+
+        
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
             ToggleSidebar();
@@ -47,6 +58,12 @@ namespace ProfCalculator
             sidebarViewModel.ActiveMode = item.Text;
 
             ToggleSidebar();
+        }
+
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _uiViewModel.HeightCheing(e.NewSize.Height);
+            _uiViewModel.WidthCheing(e.NewSize.Width);
         }
     }
 }
