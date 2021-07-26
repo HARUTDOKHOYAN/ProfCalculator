@@ -15,24 +15,20 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using ProfCalculator.Models;
 
-
 namespace ProfCalculator
 {
-
     public sealed partial class MainPage : Page
     {
-        private SidebarViewModel sidebarViewModel;
         public MainPage()
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
             _uiViewModel = new UiViewModel();
-
         }
 
 
 
-
+        private SidebarViewModel sidebarViewModel;
         public UiViewModel _uiViewModel
         {
             get { return (UiViewModel)GetValue(_uiViewModelProperty); }
@@ -45,6 +41,7 @@ namespace ProfCalculator
 
 
 
+        
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
             ToggleSidebar();
