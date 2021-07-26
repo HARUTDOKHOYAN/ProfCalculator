@@ -23,7 +23,7 @@
         Programmer="{StaticResource ProgrammerTemplate}"/>
     </Page.Resources>
 
-    <Grid Background="#9fbccc">
+    <Grid Background="#d5e7f7">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="*" />

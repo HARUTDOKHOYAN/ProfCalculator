@@ -27,7 +27,7 @@
 
         </TextBlock>
         <ListView  x:Name="ListviewRoot"  
-                  Grid.Row="2" HorizontalAlignment="Right"
+                  Grid.Row="2" HorizontalAlignment="Center"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
                                         Path=uiViewModel.buttoncontents,
