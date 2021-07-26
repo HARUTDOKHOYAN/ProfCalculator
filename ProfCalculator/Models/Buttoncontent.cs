@@ -44,6 +44,19 @@ namespace ProfCalculator.Models
                 OnPropertyChanged("Width");
             }
                 }
+        public string _color;
+        public string Color
+        {
+            get
+            {
+                return _color;
+            }
+            set
+            {
+                _color = value;
+                OnPropertyChanged("Color");
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
