@@ -38,7 +38,7 @@ namespace ProfCalculator
                 new Buttoncontent { Content = "+",  Width = 100 ,Height = 30},
                 new Buttoncontent { Content = "+/-", Width = 100 ,Height = 30},
                 new Buttoncontent { Content = "0",  Width = 100 ,Height = 30},
-                new Buttoncontent { Content = ",",  Width = 100 ,Height = 30},
+                new Buttoncontent { Content = ".",  Width = 100 ,Height = 30},
                 new Buttoncontent { Content = "=",  Width = 100 ,Height = 30},
         };
 
@@ -50,7 +50,7 @@ namespace ProfCalculator
             foreach (var item in buttoncontents)
             {
 
-                item.Width = width;
+                item.Width = 50;
 
 
             }
@@ -61,7 +61,7 @@ namespace ProfCalculator
             foreach (var item in buttoncontents)
             {
 
-                item.Height = height;
+                item.Height = 50;
             }
         }                   
 

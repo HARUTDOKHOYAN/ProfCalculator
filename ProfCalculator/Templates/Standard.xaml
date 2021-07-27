@@ -10,18 +10,18 @@
     SizeChanged="Root_SizeChanged">
 
 
-    <Grid SizeChanged="Root_SizeChanged" >
+    <Grid SizeChanged="Root_SizeChanged">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Operator" 
+        <TextBlock Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
-        <TextBlock Text="Number" 
+        <TextBlock Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" 
@@ -30,6 +30,8 @@
         </TextBlock>
         <ListView  x:Name="ListviewRoot"  
                   Grid.Row="2"  
+                   ItemClick="ListviewRoot_ItemClick"
+                   IsItemClickEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
                                         Path=uiViewModel.buttoncontents,
@@ -42,11 +44,11 @@
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
                 <DataTemplate >
-                    <ListView  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                    <ListViewItem ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                               Height="{Binding Height , Mode=OneWay}"
                               Width="{Binding Width , Mode=OneWay}">
                         <TextBlock Text="{Binding Content ,Mode=OneWay}" FontSize="10"/>
-                    </ListView>
+                    </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
