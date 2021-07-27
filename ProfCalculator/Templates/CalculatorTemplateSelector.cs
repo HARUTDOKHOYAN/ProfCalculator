@@ -14,6 +14,7 @@ namespace ProfCalculator.Templates
         public DataTemplate Standard { get; set; }
         public DataTemplate Scientific { get; set; }
         public DataTemplate Programmer { get; set; }
+        public DataTemplate DateCalculation { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
@@ -23,6 +24,8 @@ namespace ProfCalculator.Templates
                     return Scientific;
                 case "Programmer":
                     return Programmer;
+                case "Date Calculation":
+                    return DateCalculation;
                 default:
                     return Standard;
             }

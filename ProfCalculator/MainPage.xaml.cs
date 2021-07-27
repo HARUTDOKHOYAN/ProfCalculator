@@ -2,25 +2,22 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-
 namespace ProfCalculator
 {
-
     public sealed partial class MainPage : Page
     {
-        private SidebarViewModel sidebarViewModel;
         public MainPage()
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
             _uiViewModel = new StandardViewModel();
-
         }
 
 
 
 
-        public StandardViewModel _uiViewModel
+        private SidebarViewModel sidebarViewModel;
+        public UiViewModel _uiViewModel
         {
             get { return (StandardViewModel)GetValue(_uiViewModelProperty); }
             set { SetValue(_uiViewModelProperty, value); }
@@ -32,6 +29,7 @@ namespace ProfCalculator
 
 
 
+        
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
             ToggleSidebar();
