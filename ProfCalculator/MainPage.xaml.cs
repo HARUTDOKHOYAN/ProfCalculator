@@ -1,19 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.ViewManagement;
+﻿using ProfCalculator.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using ProfCalculator.Models;
 
 namespace ProfCalculator
 {
@@ -23,21 +10,22 @@ namespace ProfCalculator
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
-            _uiViewModel = new UiViewModel();
+            _uiViewModel = new StandardViewModel();
         }
+
 
 
 
         private SidebarViewModel sidebarViewModel;
         public UiViewModel _uiViewModel
         {
-            get { return (UiViewModel)GetValue(_uiViewModelProperty); }
+            get { return (StandardViewModel)GetValue(_uiViewModelProperty); }
             set { SetValue(_uiViewModelProperty, value); }
         }
 
         
         public static readonly DependencyProperty _uiViewModelProperty =
-            DependencyProperty.Register("_uiViewModel", typeof(UiViewModel), typeof(MainPage), new PropertyMetadata(0));
+            DependencyProperty.Register("_uiViewModel", typeof(StandardViewModel), typeof(MainPage), new PropertyMetadata(0));
 
 
 
@@ -58,12 +46,6 @@ namespace ProfCalculator
             sidebarViewModel.ActiveMode = item.Text;
 
             ToggleSidebar();
-        }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            _uiViewModel.HeightCheing(e.NewSize.Height);
-            _uiViewModel.WidthCheing(e.NewSize.Width);
         }
     }
 }
