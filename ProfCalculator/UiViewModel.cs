@@ -16,12 +16,12 @@ namespace ProfCalculator
         {
             buttoncontents = new ObservableCollection<Buttoncontent>()
             {
-                new Buttoncontent { Content = "%", Width = 100 ,Height = 30 , Color = "#b4d8fa"},
+                new Buttoncontent { Content = "%", Width = 100 ,Height = 30 , Color = "#b4d8fa",},
                 new Buttoncontent { Content = "CE",Width = 100 ,Height = 30 , Color = "#b4d8fa"},
                 new Buttoncontent { Content = "C"  ,Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
-                new Buttoncontent { Content = "<--" ,Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "<" ,Width = 100 ,Height = 30 ,Color = "#b4d8fa" },
                 new Buttoncontent { Content = "1/x" ,Width = 100,Height = 30 ,Color = "#b4d8fa"},
-                new Buttoncontent { Content = "x^(1/2)",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "√",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
                 new Buttoncontent { Content = "x^2",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
                 new Buttoncontent { Content = "/",  Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
                 new Buttoncontent { Content = "7",  Width = 100 ,Height = 30 ,Color = "#d5e7f7"},
@@ -38,7 +38,7 @@ namespace ProfCalculator
                 new Buttoncontent { Content = "+",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
                 new Buttoncontent { Content = "+/-", Width = 100 ,Height = 30,Color = "#d5e7f7"},
                 new Buttoncontent { Content = "0",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new Buttoncontent { Content = ",",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = ".",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
                 new Buttoncontent { Content = "=",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
         };
 

@@ -23,6 +23,22 @@ namespace ProfCalculator.Models
                 OnPropertyChanged("Content");
             }
         }
+
+        private string _fontFamily;
+
+        public string FontFamily
+        {
+            get 
+            {
+                return _fontFamily; 
+            }
+            set 
+            { 
+                _fontFamily = value;
+                OnPropertyChanged("FontFamily");
+            }
+        }
+
         private double _height;
         public double Height { get 
             {
@@ -44,7 +60,7 @@ namespace ProfCalculator.Models
                 OnPropertyChanged("Width");
             }
                 }
-        public string _color;
+        private string _color;
         public string Color
         {
             get
