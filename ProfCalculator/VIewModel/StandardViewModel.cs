@@ -10,9 +10,9 @@ using Windows.UI.ViewManagement;
 
 namespace ProfCalculator
 {
-    public class UiViewModel
+    public class StandardViewModel
     {
-        public UiViewModel()
+        public StandardViewModel()
         {
             buttoncontents = new ObservableCollection<Buttoncontent>()
             {

@@ -15,7 +15,7 @@ namespace ProfCalculator.Templates
         public Standard()
         {
             this.InitializeComponent();
-            uiViewModel = new UiViewModel();
+            uiViewModel = new StandardViewModel();
            
         }
 
@@ -83,15 +83,15 @@ namespace ProfCalculator.Templates
             
         }
 
-        public UiViewModel uiViewModel
+        public StandardViewModel uiViewModel
         {
-            get { return (UiViewModel)GetValue(uiViewModelProperty); }
+            get { return (StandardViewModel)GetValue(uiViewModelProperty); }
             set { SetValue(uiViewModelProperty, value); }
         }
 
 
         public static readonly DependencyProperty uiViewModelProperty =
-            DependencyProperty.Register("uiViewModel", typeof(UiViewModel), typeof(Standard), new PropertyMetadata(null));
+            DependencyProperty.Register("uiViewModel", typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
@@ -271,5 +271,7 @@ namespace ProfCalculator.Templates
                 XNumber = "";
             XNumber += number;
         }
+
+
     }
 }

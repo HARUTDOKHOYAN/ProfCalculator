@@ -13,22 +13,22 @@ namespace ProfCalculator
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
-            _uiViewModel = new UiViewModel();
+            _uiViewModel = new StandardViewModel();
 
         }
 
 
 
 
-        public UiViewModel _uiViewModel
+        public StandardViewModel _uiViewModel
         {
-            get { return (UiViewModel)GetValue(_uiViewModelProperty); }
+            get { return (StandardViewModel)GetValue(_uiViewModelProperty); }
             set { SetValue(_uiViewModelProperty, value); }
         }
 
         
         public static readonly DependencyProperty _uiViewModelProperty =
-            DependencyProperty.Register("_uiViewModel", typeof(UiViewModel), typeof(MainPage), new PropertyMetadata(0));
+            DependencyProperty.Register("_uiViewModel", typeof(StandardViewModel), typeof(MainPage), new PropertyMetadata(0));
 
 
 

@@ -136,7 +136,7 @@
     <Compile Include="Templates\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UiViewModel.cs" />
+    <Compile Include="VIewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
