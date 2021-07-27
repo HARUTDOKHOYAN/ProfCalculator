@@ -103,6 +103,7 @@ namespace ProfCalculator.Templates
         {
             var h = e.NewSize.Height - op.Height - nu.Height;
             uiViewModel.WidthCheing(e.NewSize.Width);
+            uiViewModel.HeightCheing(h);
 
         }
 
@@ -160,7 +161,7 @@ namespace ProfCalculator.Templates
                     XNumber = "0";
                     YNumber = "";
                     break;
-                case "x^(1/2)":
+                case "√":
                     x = double.Parse(XNumber);
                     y = Math.Sqrt(x);
                     XNumber = y.ToString();
@@ -172,7 +173,7 @@ namespace ProfCalculator.Templates
                     if (XNumber.Contains(".") == false && XNumber != "")
                         XNumber += ".";
                     break;
-                case "<--":
+                case "<":
                     if (_end)
                         YNumber = "";
                     else if (XNumber != "" && XNumber != "0")

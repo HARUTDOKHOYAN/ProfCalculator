@@ -49,11 +49,5 @@ namespace ProfCalculator
 
             ToggleSidebar();
         }
-
-        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            _uiViewModel.HeightCheing(e.NewSize.Height);
-            _uiViewModel.WidthCheing(e.NewSize.Width);
-        }
     }
 }
