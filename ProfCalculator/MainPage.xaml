@@ -59,7 +59,7 @@
                         <SymbolIcon Symbol="GlobalNavigationButton" />
                     </Viewbox>
                 </Button>
-                <ListView x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1">
+                <ListView Background="Gray" x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1">
 
                     <ListView.Resources>
                         <Style TargetType="TextBlock">

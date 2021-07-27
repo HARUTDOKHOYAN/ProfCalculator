@@ -5,7 +5,7 @@
     xmlns:local="using:ProfCalculator.Templates"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" SizeChanged="ListviewRoot_SizeChanged" 
+    mc:Ignorable="d" SizeChanged="Root_SizeChanged" 
     x:Name="Root" >
 
 
@@ -16,18 +16,20 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock Text="Operator" x:Name="op"
-                   TextAlignment="End" Height="27"
+        <TextBlock x:Name="op" Height="27" Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
+                   TextAlignment="End" 
                    FontSize="20" 
-                   Grid.Row="0" />
-        <TextBlock Text="Number" x:Name="nu"
-                   TextAlignment="End" Height="52"
+                   Grid.Row="0"  />
+        <TextBlock x:Name="nu" Height="52" Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
+                   TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" >
 
         </TextBlock>
         <ListView  x:Name="ListviewRoot"  
-                  Grid.Row="2" HorizontalAlignment="Center"
+                  Grid.Row="2"  HorizontalAlignment="Center"
+                   ItemClick="ListviewRoot_ItemClick"
+                   IsItemClickEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
                                         Path=uiViewModel.buttoncontents,
@@ -45,8 +47,9 @@
                                   Width="{Binding Width , Mode=OneWay}"  
                                   Height="{Binding Height , Mode=OneWay}"
                                   Background="{Binding Color ,Mode=OneWay}">
-                        <TextBlock Text="{Binding Content ,Mode=OneWay}" Margin="0" 
-                                   FontSize="20"/>
+                        <TextBlock Text="{Binding Content ,Mode=OneWay}" 
+                                   FontFamily="{Binding FontFamily,Mode=OneWay}"
+                                   FontSize="25"/>
                     </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
