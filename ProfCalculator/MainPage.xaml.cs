@@ -17,7 +17,7 @@ namespace ProfCalculator
 
 
         private SidebarViewModel sidebarViewModel;
-        public UiViewModel _uiViewModel
+        public StandardViewModel _uiViewModel
         {
             get { return (StandardViewModel)GetValue(_uiViewModelProperty); }
             set { SetValue(_uiViewModelProperty, value); }
