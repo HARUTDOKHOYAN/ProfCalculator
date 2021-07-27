@@ -5,49 +5,51 @@
     xmlns:local="using:ProfCalculator.Templates"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
-    x:Name="Root" 
-    SizeChanged="Root_SizeChanged">
+    mc:Ignorable="d" SizeChanged="ListviewRoot_SizeChanged" 
+    x:Name="Root" >
 
 
-    <Grid SizeChanged="Root_SizeChanged">
+
+    <Grid Background="Transparent">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition/>
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
+        <TextBlock x:Name="op" Height="27" Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
-        <TextBlock Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
+        <TextBlock x:Name="nu" Height="52" Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
-                   Grid.Row="1" 
-                   RenderTransformOrigin="0.5,0.5" >
+                   Grid.Row="1" >
 
         </TextBlock>
         <ListView  x:Name="ListviewRoot"  
-                  Grid.Row="2"  
+                  Grid.Row="2"  HorizontalAlignment="Center"
                    ItemClick="ListviewRoot_ItemClick"
                    IsItemClickEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
                                         Path=uiViewModel.buttoncontents,
-                                        Mode=OneWay}" >
+                                        Mode=OneWay}">
             <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid MaximumRowsOrColumns="4" 
+                <ItemsPanelTemplate >
+                    <ItemsWrapGrid  MaximumRowsOrColumns="4"
+                                   
                                    Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListView.ItemsPanel>
             <ListView.ItemTemplate>
-                <DataTemplate >
-                    <ListViewItem ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                              Height="{Binding Height , Mode=OneWay}"
-                              Width="{Binding Width , Mode=OneWay}">
-                        <TextBlock Text="{Binding Content ,Mode=OneWay}" FontSize="10"/>
+                <DataTemplate>
+                    <ListViewItem Style="{StaticResource ListViewItemStyle}" 
+                                  Width="{Binding Width , Mode=OneWay}"  
+                                  Height="{Binding Height , Mode=OneWay}"
+                                  Background="{Binding Color ,Mode=OneWay}">
+                        <TextBlock Text="{Binding Content ,Mode=OneWay}" 
+                                   FontFamily="{Binding FontFamily,Mode=OneWay}"
+                                   FontSize="25"/>
                     </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>

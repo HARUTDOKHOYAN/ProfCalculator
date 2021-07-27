@@ -89,7 +89,7 @@ namespace ProfCalculator.Templates
             set { SetValue(uiViewModelProperty, value); }
         }
 
-    
+
         public static readonly DependencyProperty uiViewModelProperty =
             DependencyProperty.Register("uiViewModel", typeof(UiViewModel), typeof(Standard), new PropertyMetadata(null));
 
@@ -101,8 +101,7 @@ namespace ProfCalculator.Templates
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            
-            uiViewModel.HeightCheing( e.NewSize.Height);
+            var h = e.NewSize.Height - op.Height - nu.Height;
             uiViewModel.WidthCheing(e.NewSize.Width);
 
         }
