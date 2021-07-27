@@ -7,6 +7,7 @@ using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -41,8 +42,9 @@ namespace ProfCalculator
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
-            // Do not repeat app initialization when the Window already has content,
-            // just ensure that the window is active
+            ApplicationView.GetForCurrentView().SetPreferredMinSize(new Size(320, 500));
+            ApplicationView.PreferredLaunchViewSize = new Size(500, 500);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             if (rootFrame == null)
             {
                 // Create a Frame to act as the navigation context and navigate to the first page

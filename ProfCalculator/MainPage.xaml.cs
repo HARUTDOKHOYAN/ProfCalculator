@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.UI.ViewManagement;
+﻿using ProfCalculator.Models;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -29,8 +22,26 @@ namespace ProfCalculator
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
+            _uiViewModel = new StandardViewModel();
         }
 
+
+
+
+        private SidebarViewModel sidebarViewModel;
+        public StandardViewModel _uiViewModel
+        {
+            get { return (StandardViewModel)GetValue(_uiViewModelProperty); }
+            set { SetValue(_uiViewModelProperty, value); }
+        }
+
+        
+        public static readonly DependencyProperty _uiViewModelProperty =
+            DependencyProperty.Register("_uiViewModel", typeof(StandardViewModel), typeof(MainPage), new PropertyMetadata(0));
+
+
+
+        
         private void Menu_Click(object sender, RoutedEventArgs e)
         {
             ToggleSidebar();

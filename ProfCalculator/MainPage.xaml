@@ -5,13 +5,10 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:templates="using:ProfCalculator.Templates"
-    mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
-    d:DesignWidth="500"
-    d:DesignHeight="800">
+    mc:Ignorable="d">
     <Page.Resources>
         <DataTemplate x:Key="StandardTemplate">
-            <templates:Standard  />
+            <templates:Standard/>
         </DataTemplate>
         <DataTemplate x:Key="ScientificTemplate">
             <templates:Scientific />
@@ -19,14 +16,18 @@
         <DataTemplate x:Key="ProgrammerTemplate">
             <templates:Programmer />
         </DataTemplate>
+        <DataTemplate x:Key="DateCalculationTemplate">
+            <templates:DateCalculation />
+        </DataTemplate>
 
         <templates:CalculatorTemplateSelector x:Key="CalculatorTemplateSelector"
         Standard="{StaticResource StandardTemplate}"
         Scientific="{StaticResource ScientificTemplate}"
-        Programmer="{StaticResource ProgrammerTemplate}"/>
+        Programmer="{StaticResource ProgrammerTemplate}"
+        DateCalculation="{StaticResource DateCalculationTemplate}"/>
     </Page.Resources>
 
-    <Grid>
+    <Grid Background="#d5e7f7">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="60" />
             <ColumnDefinition Width="*" />
@@ -44,7 +45,7 @@
         </Button>
         <TextBlock VerticalAlignment="Center" FontSize="30" Margin="10 0 0 0" Grid.Row="0" Grid.Column="1" Text="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" />
         <Grid Canvas.ZIndex="2" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <Grid x:Name="Sidebar" Background="LightGray" Width="400" HorizontalAlignment="Left">
+            <Grid x:Name="Sidebar"  Width="400" HorizontalAlignment="Left">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60" />
                     <RowDefinition Height="*" />
@@ -58,7 +59,7 @@
                         <SymbolIcon Symbol="GlobalNavigationButton" />
                     </Viewbox>
                 </Button>
-                <ListView x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1">
+                <ListView Background="Gray" x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1">
 
                     <ListView.Resources>
                         <Style TargetType="TextBlock">
@@ -69,13 +70,16 @@
                     <TextBlock Text="Standard" />
                     <TextBlock Text="Scientific" />
                     <TextBlock Text="Programmer" />
+                    <TextBlock Text="Date Calculation" />
                 </ListView>
             </Grid>
 
         </Grid>
 
         <!--Calculator buttons-->
-        <ContentControl Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" Canvas.ZIndex="1" Grid.Row="1" Grid.ColumnSpan="2"
+        <ContentControl Background="#b4cad6" Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" 
+                        HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Canvas.ZIndex="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
                         ContentTemplateSelector="{StaticResource CalculatorTemplateSelector}" />
     </Grid>
 </Page>

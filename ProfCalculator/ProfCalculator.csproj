@@ -122,6 +122,8 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Buttoncontent.cs" />
+    <Compile Include="Models\StandardCheckButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SidebarViewModel.cs" />
     <Compile Include="System\DateCalc.cs" />
@@ -130,6 +132,9 @@
     <Compile Include="System\ScinteficCalc.cs" />
     <Compile Include="System\StandardCalc.cs" />
     <Compile Include="Templates\CalculatorTemplateSelector.cs" />
+    <Compile Include="Templates\DateCalculation.xaml.cs">
+      <DependentUpon>DateCalculation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Templates\Programmer.xaml.cs">
       <DependentUpon>Programmer.xaml</DependentUpon>
     </Compile>
@@ -139,6 +144,7 @@
     <Compile Include="Templates\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VIewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -160,9 +166,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Style\ListViewStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Templates\DateCalculation.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Templates\Programmer.xaml">
       <SubType>Designer</SubType>
