@@ -15,8 +15,8 @@ namespace ProfCalculator.Services
 
     public class StandardCalc : INotifyPropertyChanged
     {
-        private Dictionary<string, Func<decimal>> Operators = new Dictionary<string, Func<decimal>>();
-        private Dictionary<string, Func<string>> ReactOperators = new Dictionary<string, Func<string>>();
+        protected Dictionary<string, Func<string>> Operators = new Dictionary<string, Func<string>>();
+        protected Dictionary<string, Func<string>> ReactOperators = new Dictionary<string, Func<string>>();
 
         public StandardCalc()
         {
@@ -25,7 +25,6 @@ namespace ProfCalculator.Services
             Operators.Add("X", Multiply);
             Operators.Add("/", Divide);
 
-            ReactOperators.Add(",", Comma);
             ReactOperators.Add("+/-", Negate);
             ReactOperators.Add("x^2", Square);
             ReactOperators.Add("√", Root);
@@ -33,6 +32,9 @@ namespace ProfCalculator.Services
             ReactOperators.Add("%", Precent);
         }
 
+        private readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
+
+        private string temp;
         private string _y;
         private string _x = "0";
         private string _info;
@@ -79,8 +81,9 @@ namespace ProfCalculator.Services
             //OPERATOR
             if (Operators.Keys.Contains(input))
             {
-                if (prev == "number" & activeOp != "")
-                    Y = Operators[activeOp].Invoke().ToString();
+                if (prev == "number")
+                    if(activeOp != "")
+                        Y = X = Operators[activeOp].Invoke();
                 else
                     Y = X;
 
@@ -92,7 +95,7 @@ namespace ProfCalculator.Services
             else if (ReactOperators.Keys.Contains(input))
             {
                 X = ReactOperators[input].Invoke();
-                prev = "number";
+                prev = "operator";
             }
             //NUMBER
             else if (decimal.TryParse(input, out decimal number))
@@ -100,23 +103,37 @@ namespace ProfCalculator.Services
                 if (prev == "operator")
                     X = input;
                 else if (prev == "number")
-                    X += input;
+                    if (X == "0")
+                        X = input;
+                    else
+                        X += input;
 
                 prev = "number";
+            }
+            //DOT
+            else if (input == ".")
+            {
+                if (!X.Contains("."))
+                    X += ".";
             }
             //EQUALS
             else if (input == "=" & activeOp != "")
             {
-                Info += " " + X + "=";
-                X = Operators[activeOp].Invoke().ToString();
-                Y = X;
-                prev = "number";
+                if(prev == "number")
+                    temp = X;
+                Info = $"{Y} {activeOp} {temp} =";
+                X = temp;
+                Y = Operators[activeOp].Invoke();
+                X = Y;
+                
+                prev = "operator";
             }
             else
             {
                 switch (input)
                 {
                     case "C":
+                        temp = "";
                         Y = "";
                         X = "0";
                         Info = "";
@@ -128,8 +145,11 @@ namespace ProfCalculator.Services
                         prev = "operator";
                         break;
                     case "<":
-
-                        X = X.Length <= 1 ? "0" : X.Remove(X.Length - 1, 1);
+                        if(X.Length <= 1)
+                            X = "0";
+                        else
+                            X = X.Remove(X.Length - 1, 1);
+                        prev = "number";
                         break;
                     default:
                         break;
@@ -139,36 +159,29 @@ namespace ProfCalculator.Services
 
         //ReactOperators
 
-        private string Comma()
-        {
-            if (!X.Contains(","))
-                return X + ",";
-            return X;
-        }
-
-        private string Negate()
+        public virtual string Negate()
         {
             Info = $"negate({X})";
             return X[0] == '-' ? X.Remove(0, 1) : "-" + X;
         }
 
-        private string Square()
+        public virtual string Square()
         {
             Info = $"sqr({X})";
             return (Xnum * Xnum).ToString();
         }
 
-        private string Root()
+        public virtual string Root()
         {
             Info = $"√({X})";
             return Math.Sqrt(Convert.ToDouble(Xnum)).ToString();
         }
 
-        private string BelowOne()
+        public virtual string BelowOne()
         {
             if(Xnum == 0)
             {
-                Info = $"Cannot divide by zero";
+                Info = DIVIDE_BY_ZERO_MESSAGE;
                 return X;
             } else
             {
@@ -177,35 +190,35 @@ namespace ProfCalculator.Services
             }
         }
 
-        private string Precent()
+        public virtual string Precent()
         {
             return (Ynum / 100 * Xnum).ToString();
         }
 
         //Operators
-
-        private decimal Add()
+        
+        public virtual string Add()
         {
-            return Ynum + Xnum;
+            return (Ynum + Xnum).ToString();
         }
 
-        private decimal Subtract()
+        public virtual string Subtract()
         {
-            return Ynum - Xnum;
+            return (Ynum - Xnum).ToString();
         }
 
-        private decimal Multiply()
+        public virtual string Multiply()
         {
-            return Ynum * Xnum;
+            return (Ynum * Xnum).ToString();
         }
 
-        private decimal Divide()
+        public virtual string Divide()
         {
             if(Xnum == 0)
             {
-                return Ynum;
+                return DIVIDE_BY_ZERO_MESSAGE;
             }
-            return Ynum / Xnum;
+            return (Ynum / Xnum).ToString();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
