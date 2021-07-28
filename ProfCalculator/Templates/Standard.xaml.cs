@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
+﻿using ProfCalculator.Models;
+using ProfCalculator.VIewModel;
+using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Controls;
-using ProfCalculator.Models;
-using System;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -16,7 +16,9 @@ namespace ProfCalculator.Templates
         {
             this.InitializeComponent();
             uiViewModel = new StandardViewModel();
-           
+            _historyCalculatorVM = new HistoryCalculatorVM();
+
+
         }
 
         private string _xnumber = "0";
@@ -83,13 +85,23 @@ namespace ProfCalculator.Templates
             
         }
 
+
+
+        public HistoryCalculatorVM _historyCalculatorVM
+        {
+            get { return (HistoryCalculatorVM)GetValue(_historyCalculatorVMProperty); }
+            set { SetValue(_historyCalculatorVMProperty, value); }
+        }
+        public static readonly DependencyProperty _historyCalculatorVMProperty =
+            DependencyProperty.Register("_historyCalculatorVM", typeof(HistoryCalculatorVM), typeof(Standard), new PropertyMetadata(null));
+
+
+
         public StandardViewModel uiViewModel
         {
             get { return (StandardViewModel)GetValue(uiViewModelProperty); }
             set { SetValue(uiViewModelProperty, value); }
         }
-
-
         public static readonly DependencyProperty uiViewModelProperty =
             DependencyProperty.Register("uiViewModel", typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
 
@@ -101,9 +113,19 @@ namespace ProfCalculator.Templates
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var h = e.NewSize.Height - op.Height - nu.Height;
+            var h = e.NewSize.Height - op.Height - nu.Height - HistoryCalc.Height ;
+            var w = e.NewSize.Width - ListHistory.Width;
             uiViewModel.WidthCheing(e.NewSize.Width);
             uiViewModel.HeightCheing(h);
+            if (e.NewSize.Width >= 600)
+            {
+               uiViewModel.WidthCheing(w);
+                uiViewModel.VISIBLITY = true;
+            }
+            else
+            {
+                uiViewModel.VISIBLITY = false;
+            }
 
         }
 
@@ -272,6 +294,21 @@ namespace ProfCalculator.Templates
             XNumber += number;
         }
 
+        private void HistoryCalc_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var buttonName = e.ClickedItem as Buttoncontent;
+            if (buttonName == null) return;
+            
+        }
 
+        private void History_Click(object sender, RoutedEventArgs e)
+        {
+            ListHistory.ItemsSource = _historyCalculatorVM.HistoryList;
+        }
+
+        private void Memery_Click(object sender, RoutedEventArgs e)
+        {
+            ListHistory.ItemsSource = _historyCalculatorVM.MemeryList;
+        }
     }
 }

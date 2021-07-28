@@ -123,6 +123,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Buttoncontent.cs" />
+    <Compile Include="Models\HistoryCalculator.cs" />
     <Compile Include="Models\StandardCheckButton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SidebarViewModel.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Templates\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VIewModel\HistoryCalculatorVM.cs" />
     <Compile Include="VIewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

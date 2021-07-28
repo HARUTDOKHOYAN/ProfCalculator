@@ -10,27 +10,90 @@
 
 
 
-    <Grid Background="Transparent">
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition  Height="auto" 
+                            MaxHeight="32"/>
+            <RowDefinition   Height="auto" 
+                             MaxHeight="52"/>
+            <RowDefinition Height="auto" 
+                             MaxHeight="50"/>
+            <RowDefinition/>
+
         </Grid.RowDefinitions>
-        <TextBlock x:Name="op" Height="27" Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition  Width="auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="op" 
+                   Grid.Column="0"
+                   Height="30" 
+                
+                   Text="{Binding ElementName=Root, 
+                                  Path=YNumber, 
+                                  Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
-        <TextBlock x:Name="nu" Height="52" Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
+        <TextBlock x:Name="nu" 
+                   Grid.Column="0"
+                   Height="52" 
+                   Text="{Binding ElementName=Root, 
+                                  Path=XNumber, 
+                                  Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" >
 
         </TextBlock>
-        <ListView  x:Name="ListviewRoot"              
-                  Grid.Row="2"  HorizontalAlignment="Center"
+        <!--ListChengButtens-->
+        <StackPanel Orientation="Horizontal" 
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Height="40">
+            <Button Visibility="{Binding ElementName=Root,
+                                            Path=uiViewModel.VISIBLITY}" 
+                    Height="40"
+                    FontSize="15"
+                    Click="History_Click" 
+                    Margin="10" 
+                    Background="Transparent"
+                    Content="History"></Button>
+            <Button Visibility="{Binding ElementName=Root,
+                                            Path=uiViewModel.VISIBLITY}" 
+                    Background="Transparent"
+                    Height="40"
+                    FontSize="15"
+                    Click="Memery_Click" 
+                    Margin="10" 
+                    Content="Memery"></Button>
+        </StackPanel>
+        <!--ListHistoryAndMemory-->
+        <ListView  x:Name="ListHistory"
+                       Width="300"
+                       VerticalAlignment="Top"
+                       Visibility="{Binding ElementName=Root,
+                                            Path=uiViewModel.VISIBLITY}"
+                      Grid.Column="1"
+                      Grid.Row="1"
+                      Grid.RowSpan="3"
+                      >
+
+            <ListView.ItemTemplate  >
+                <DataTemplate>
+                    <TextBlock   Text="{Binding}" FontSize="10"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--Calculator-->
+        <ListView  x:Name="ListviewRoot"      
+                   
+                   Grid.Column="0"        
+                  Grid.Row="3"  HorizontalAlignment="Center"
                    ItemClick="ListviewRoot_ItemClick"
                    IsItemClickEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
                                         Path=uiViewModel.buttoncontents,
                                         Mode=OneWay}">
@@ -50,6 +113,36 @@
                         <TextBlock Text="{Binding Content ,Mode=OneWay}" 
                                    FontFamily="{Binding FontFamily,Mode=OneWay}"
                                    FontSize="25"/>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--HistoryCalculator-->
+        <ListView  x:Name="HistoryCalc"      
+                   Height="30"
+                   Grid.Column="0"  
+                   HorizontalAlignment="Center"
+                   Grid.Row="2"  
+                   ItemClick="HistoryCalc_ItemClick"
+                   ItemsSource="{Binding ElementName=Root , 
+                                        Path=_historyCalculatorVM.HistoryCalculator,
+                                        Mode=OneWay}">
+            
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <ItemsWrapGrid  MaximumRowsOrColumns="5"
+                                    Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ListViewItem Style="{StaticResource ListViewItemStyle}" 
+                                  Background="#aed3f2"
+                                 >
+                        <TextBlock Text="{Binding Content ,
+                                                  Mode=OneWay}"  
+                                   Margin="20,0,0,00" 
+                                   FontSize="20"/>
                     </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
