@@ -82,6 +82,12 @@ namespace ProfCalculator.Templates.DateTemplates
 
                 DateTime date1 = new DateTime(y1, m1, d1);
                 DateTime date2 = new DateTime(y2, m2, d2);
+                if (date1 > date2)
+                {
+                    var date = date1;
+                    date1 = date2;
+                    date2 = date;
+                }
                 double days = (date1 - date2).TotalDays;
                 days = Math.Abs(days);
                 DaysDiff = days.ToString() + " days";
@@ -106,7 +112,7 @@ namespace ProfCalculator.Templates.DateTemplates
                     DatesDiff += $" {month} months";
 
                 month = Math.Abs(month);
-                var date3 = date1.AddMonths(month + 12*year);
+                var date3 = date1.AddMonths(month + 12 * year);
                 double days1 = (date2 - date3).TotalDays;
                 days1 = Math.Abs(days1);
                 int week = (int)days1 / 7;
