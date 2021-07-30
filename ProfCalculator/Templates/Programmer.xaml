@@ -9,5 +9,15 @@
 
     <Grid>
         <TextBlock Text="PROGRAMMER"></TextBlock>
+        <Pivot>
+            <PivotItem Header="Blue">
+                <Grid Background="Blue"/>
+            </PivotItem>
+            <PivotItem Header="Yellow">
+                <Grid Background="Yellow"/>
+            </PivotItem>
+            
+
+        </Pivot>
     </Grid>
 </UserControl>

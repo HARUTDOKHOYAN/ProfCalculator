@@ -5,8 +5,8 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using ProfCalculator.Services;
 
-// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ProfCalculator.Templates
 {
@@ -17,75 +17,10 @@ namespace ProfCalculator.Templates
             this.InitializeComponent();
             uiViewModel = new StandardViewModel();
             _historyCalculatorVM = new HistoryCalculatorVM();
-
+            _standardCalc = new StandardCalc();
 
         }
-
-        private string _xnumber = "0";
-        private string _ynumber;
-        private string _znumber;
-        private bool _end = false;
-        private bool _isOper = false;
-        private string _temp;
-        private string temp
-        {
-            get
-            {
-                return _temp;
-            }
-            set
-            {
-                _temp = value;
-            }
-        }
-        private string _Op;
-        public string Op
-        {
-            get { return _Op; }
-            set { _Op = value; }
-        }
-
-        public string XNumber
-        {
-            get
-            {
-                return _xnumber;
-            }
-            set
-            {
-                _xnumber = value;
-                OnPropertyChanged("XNumber");
-            }
-            
-        }
-        public string YNumber
-        {
-            get
-            {
-                return _ynumber;
-            }
-            set
-            {
-                _ynumber = value;
-                OnPropertyChanged("YNumber");
-            }
-            
-        }
-        public string ZNumber
-        {
-            get
-            {
-                return _znumber;
-            }
-            set
-            {
-                _znumber = value;
-                OnPropertyChanged("ZNumber");
-            }
-            
-        }
-
-
+        private StandardCalc _standardCalc;
 
         public HistoryCalculatorVM _historyCalculatorVM
         {
@@ -94,8 +29,6 @@ namespace ProfCalculator.Templates
         }
         public static readonly DependencyProperty _historyCalculatorVMProperty =
             DependencyProperty.Register("_historyCalculatorVM", typeof(HistoryCalculatorVM), typeof(Standard), new PropertyMetadata(null));
-
-
 
         public StandardViewModel uiViewModel
         {
@@ -106,6 +39,7 @@ namespace ProfCalculator.Templates
             DependencyProperty.Register("uiViewModel", typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
@@ -113,17 +47,21 @@ namespace ProfCalculator.Templates
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            var v = (ListHistoryAndMemory.SelectedItem as PivotItem).Name;
             var h = e.NewSize.Height - op.Height - nu.Height - HistoryCalc.Height ;
-            var w = e.NewSize.Width - ListHistory.Width;
+            var w = e.NewSize.Width - ListHistoryAndMemory.Width;
             uiViewModel.WidthCheing(e.NewSize.Width);
             uiViewModel.HeightCheing(h);
             if (e.NewSize.Width >= 600)
             {
                uiViewModel.WidthCheing(w);
                 uiViewModel.VISIBLITY = true;
+                if (v == "History")
+                    HisteryClean.Visibility = Visibility.Visible;
             }
             else
             {
+                HisteryClean.Visibility = Visibility.Collapsed;
                 uiViewModel.VISIBLITY = false;
             }
 
@@ -132,183 +70,60 @@ namespace ProfCalculator.Templates
         private void ListviewRoot_ItemClick(object sender, ItemClickEventArgs e)
         {
             var buttonName = e.ClickedItem as Buttoncontent;
-            if (buttonName == null) return;
-            if(int.TryParse(buttonName.Content, out int num))
-            {
-                ReadNumber(buttonName.Content);
-            }
-            switch (buttonName.Content)
-            {
-                case "%":
-                    Op = "%";
-                    ZNumber = XNumber;
-                    YNumber = XNumber + " % ";
-                    _isOper = true;
-                    break;
-                case "1/x":
-                    double x = double.Parse(XNumber);
-                    double y = 1 / x;
-                    XNumber = y.ToString();
-                    YNumber = string.IsNullOrEmpty(YNumber) ? $"1/({x})" : $"1/({YNumber})";
-                    Op = string.Empty;
-                    _end = true;
-                    break;
-                case "+/-":
-                    if (XNumber != "0")
-                    {
-                        if (XNumber[0] != '-')
-                        {
-                            YNumber = $"negate({XNumber})";
-                            XNumber = XNumber.Insert(0, "-");
-                        }
-                        else
-                        {
-                            YNumber = $"negate({XNumber})";
-                            XNumber = XNumber.Remove(0, 1);
-                        }
-                    }
-                    break;
-                case "CE":
-                    XNumber = "0";
-                    break;
-                case "x^2":
-                    x = double.Parse(XNumber);
-                    y = x * x;
-                    XNumber = y.ToString();
-                    YNumber = string.IsNullOrEmpty(YNumber) ? $"sqr({x})" : $"sqr({YNumber})";
-                    Op = string.Empty;
-                    _end = true;
-                    break;
-                case "C":
-                    XNumber = "0";
-                    YNumber = "";
-                    break;
-                case "√":
-                    x = double.Parse(XNumber);
-                    y = Math.Sqrt(x);
-                    XNumber = y.ToString();
-                    YNumber = string.IsNullOrEmpty(YNumber) ? $"sqrt({x})" : $"sqrt({YNumber})";
-                    Op = string.Empty;
-                    _end = true;
-                    break;
-                case ".":
-                    if (XNumber.Contains(".") == false && XNumber != "")
-                        XNumber += ".";
-                    break;
-                case "<":
-                    if (_end)
-                        YNumber = "";
-                    else if (XNumber != "" && XNumber != "0")
-                    {
-                        if ((XNumber.Length == 2 && XNumber[0] == '-') || XNumber.Length == 1)
-                            XNumber = "0";
-                        else
-                            XNumber = XNumber.Remove(XNumber.Length - 1);
-                    }
-                    break;
-                case "/":
-                    Op = "/";
-                    ZNumber = XNumber;
-                    YNumber = XNumber + " / ";
-                    _isOper = true;
-                    break;
-                case "X":
-                    Op = "*";
-                    ZNumber = XNumber;
-                    YNumber = XNumber + " * ";
-                    _isOper = true;
-                    break;
-                case "-":
-                    Op = "-";
-                    ZNumber = XNumber;
-                    YNumber = XNumber + " - ";
-                    _isOper = true;
-                    break;
-                case "+":
-                    Op = "+";
-                    ZNumber = XNumber;
-                    YNumber = XNumber + " + ";
-                    _isOper = true;
-                    break;
-                case "=":
-                    double.TryParse(XNumber, out var res);
-                    switch (Op)
-                    {
-                        case "%":
-                            if (!_end)
-                                temp = XNumber;
-                            res = (double.Parse(ZNumber) * double.Parse(temp)) / 100;
-                            YNumber = ZNumber + " % " + temp;
-
-                            break;
-                        case "+":
-                            if (!_end)
-                                temp = XNumber;
-                            res = double.Parse(ZNumber) + double.Parse(temp);
-                            YNumber = ZNumber + " + " + temp;
-                            break;
-                        case "-":
-                            if (!_end)
-                                temp = XNumber;
-                            res = double.Parse(ZNumber) - double.Parse(temp);
-                            YNumber = ZNumber + " - " + temp;
-                            break;
-                        case "*":
-                            if (!_end)
-                                temp = XNumber;
-                            res = double.Parse(ZNumber) * double.Parse(temp);
-                            YNumber = ZNumber + " * " + temp;
-                            break;
-                        case "/":
-                            if (!_end)
-                                temp = XNumber;
-                            res = double.Parse(ZNumber) / double.Parse(temp);
-                            YNumber = ZNumber + " / " + temp;
-                            break;
-                        default:
-                            break;
-                    }
-                    XNumber = res.ToString();
-                    ZNumber = XNumber;
-                    _end = true;
-                    break;
-
-            }
-        }
-
-        private void ReadNumber(string number)
-        {
-            if (_isOper)
-            {
-                XNumber = "";
-                _isOper = false;
-            }
-            if (_end)
-            {
-                XNumber = "";
-                YNumber = "";
-                _end = false;
-            }
-            if (XNumber == "0")
-                XNumber = "";
-            XNumber += number;
+            _standardCalc.Input(buttonName.Content);
+            _historyCalculatorVM.Histerycheng(buttonName.Content, _standardCalc);
         }
 
         private void HistoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var buttonName = e.ClickedItem as Buttoncontent;
-            if (buttonName == null) return;
-            
+            var buttonName = e.ClickedItem as HistoryCalculator;
+            _historyCalculatorVM.InputMemory(buttonName.Content, _standardCalc);
         }
 
-        private void History_Click(object sender, RoutedEventArgs e)
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ListHistory.ItemsSource = _historyCalculatorVM.HistoryList;
+            var bat = sender as Button;
+            var data = bat.DataContext as HistoryCalculator;
+            _historyCalculatorVM.DeletList(data);
         }
 
-        private void Memery_Click(object sender, RoutedEventArgs e)
+        private void ListHistory_ItemClick(object sender, ItemClickEventArgs e)
         {
-            ListHistory.ItemsSource = _historyCalculatorVM.MemeryList;
+            var list = e.ClickedItem as HistoryCalculator;
+            if(_historyCalculatorVM.HistoryList[0].X != "HistoryList empty")
+            {
+            _standardCalc.X = list.X;
+            _standardCalc.Info = list.Info;
+            }
         }
-    }
-}
+
+        private void ListHistoryAndMemory_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var h = (ListHistoryAndMemory.SelectedItem as PivotItem).Name;
+            if (h == "Memory")
+                HisteryClean.Visibility = Visibility.Collapsed;
+            if (h == "History")
+                HisteryClean.Visibility = Visibility.Visible;
+        }
+
+        private void ListMemory_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var stec = sender as StackPanel;
+            if (_historyCalculatorVM.MemoryList[0].MemoryList != "MemoryList empty")
+                stec.Children[1].Visibility = Visibility.Visible;
+        }
+
+        private void HisteryClean_Click(object sender, RoutedEventArgs e)
+        {
+            _historyCalculatorVM.HistoryList.Clear();
+            _historyCalculatorVM.HistoryList.Add(new HistoryCalculator { X = "HistoryList empty", Info = "" });
+        }
+
+        private void ListMemory_PointerCanceled(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
+        {
+            var stec = sender as StackPanel;
+            if(_historyCalculatorVM.HistoryList[0].MemoryList != "MemoryList empty")
+                stec.Children[1].Visibility = Visibility.Collapsed;
+        }
+    }                                                                 
+}                                                                     
