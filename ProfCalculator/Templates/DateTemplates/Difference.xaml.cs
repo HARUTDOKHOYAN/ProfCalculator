@@ -87,7 +87,7 @@ namespace ProfCalculator.Templates.DateTemplates
                 DaysDiff = days.ToString() + " days";
                 int month = ((date1.Year - date2.Year) * 12) + date1.Month - date2.Month;
                 month = Math.Abs(month);
-                if (date1.Day > date2.Day )
+                if (date1.Day > date2.Day && date1.Month < date2.Month)
                     --month;
                 int year = 0;
                 if (month > 12)
@@ -95,28 +95,29 @@ namespace ProfCalculator.Templates.DateTemplates
                     year = month / 12;
                     month -= 12 * year;
                     if (year == 1)
-                        DatesDiff = $"{year} year,";
+                        DatesDiff = $"{year} year";
                     else if(year > 1)
-                        DatesDiff = $"{year} years,";
+                        DatesDiff = $"{year} years";
                 }
 
                 if (month == 1)
-                    DatesDiff += $" {month} month,";
+                    DatesDiff += $" {month} month";
                 else if (month > 1)
-                    DatesDiff += $" {month} months,";
-                
+                    DatesDiff += $" {month} months";
 
+                month = Math.Abs(month);
                 var date3 = date1.AddMonths(month + 12*year);
                 double days1 = (date2 - date3).TotalDays;
+                days1 = Math.Abs(days1);
                 int week = (int)days1 / 7;
                 int day = (int)days1 - week * 7;
                 if (week == 1)
-                    DatesDiff += $" {week} week,";
+                    DatesDiff += $" {week} week";
                 else if (week > 1)
-                    DatesDiff += $" {week} weeks,";
-                if (day ==1)
+                    DatesDiff += $" {week} weeks";
+                if (day == 1)
                     DatesDiff += $" {day} day";
-                else if (days > 1)
+                else if (day > 1)
                     DatesDiff += $" {day} days";
             }
         }
