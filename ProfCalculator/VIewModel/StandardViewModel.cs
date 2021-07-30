@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -10,7 +12,7 @@ using Windows.UI.ViewManagement;
 
 namespace ProfCalculator
 {
-    public class StandardViewModel
+    public class StandardViewModel : INotifyPropertyChanged
     {
         public StandardViewModel()
         {
@@ -38,11 +40,34 @@ namespace ProfCalculator
                 new Buttoncontent { Content = "+",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
                 new Buttoncontent { Content = "+/-", Width = 100 ,Height = 30,Color = "#d5e7f7"},
                 new Buttoncontent { Content = "0",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new Buttoncontent { Content = ".",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = ",",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
                 new Buttoncontent { Content = "=",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
         };
 
+            VISIBLITY = false;
     }
+        private bool visiblity;
+        public bool VISIBLITY 
+        { 
+            get 
+            { 
+                return visiblity; 
+            } 
+            set 
+            {
+                visiblity = value;
+                OnPropertyChanged("VISIBLITY");
+            } 
+        }
+        public ObservableCollection<Buttoncontent> buttoncontents { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
 
         internal void WidthCheing(double width)
         {
@@ -65,8 +90,6 @@ namespace ProfCalculator
             }
         }                   
 
-        public double Higet { get; set; }
-
-        public ObservableCollection<Buttoncontent> buttoncontents { get; set; }
+        
     }
 }

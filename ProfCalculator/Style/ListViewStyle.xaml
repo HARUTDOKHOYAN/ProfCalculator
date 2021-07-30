@@ -62,4 +62,8 @@
             </Setter.Value>
         </Setter>
     </Style>
+    <Style x:Key="ListMemoryStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    </Style>
 </ResourceDictionary>
