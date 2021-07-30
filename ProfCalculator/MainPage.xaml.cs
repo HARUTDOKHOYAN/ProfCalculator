@@ -17,7 +17,6 @@ namespace ProfCalculator
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private SidebarViewModel sidebarViewModel;
         public MainPage()
         {
             this.InitializeComponent();
