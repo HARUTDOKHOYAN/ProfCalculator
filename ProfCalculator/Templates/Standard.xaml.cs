@@ -40,14 +40,13 @@ namespace ProfCalculator.Templates
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var v = (ListHistoryAndMemory.SelectedItem as PivotItem).Name;
             var h = e.NewSize.Height - op.Height - nu.Height - HistoryCalc.Height ;
             var w = e.NewSize.Width - ListHistoryAndMemory.Width;
             uiViewModel.WidthCheing(e.NewSize.Width);
@@ -55,13 +54,10 @@ namespace ProfCalculator.Templates
             if (e.NewSize.Width >= 600)
             {
                uiViewModel.WidthCheing(w);
-                uiViewModel.VISIBLITY = true;
-                if (v == "History")
-                    HisteryClean.Visibility = Visibility.Visible;
+               uiViewModel.VISIBLITY = true;
             }
             else
             {
-                HisteryClean.Visibility = Visibility.Collapsed;
                 uiViewModel.VISIBLITY = false;
             }
 
@@ -70,40 +66,34 @@ namespace ProfCalculator.Templates
         private void ListviewRoot_ItemClick(object sender, ItemClickEventArgs e)
         {
             var buttonName = e.ClickedItem as Buttoncontent;
-            _standardCalc.Input(buttonName.Content);
-            _historyCalculatorVM.Histerycheng(buttonName.Content, _standardCalc);
+            _standardCalc.Input(buttonName.Content); 
+            if(buttonName.Content == "=")
+            {
+                _historyCalculatorVM.HistoryChange(_standardCalc);
+                historyIsEmpty.Visibility = Visibility.Collapsed;
+                HistoryClean.Visibility = Visibility.Visible;
+            }
         }
 
         private void HistoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
             var buttonName = e.ClickedItem as HistoryCalculator;
             _historyCalculatorVM.InputMemory(buttonName.Content, _standardCalc);
+            memoryIsEmpty.Visibility = _historyCalculatorVM.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             var bat = sender as Button;
             var data = bat.DataContext as HistoryCalculator;
-            _historyCalculatorVM.DeletList(data);
+            _historyCalculatorVM.DeleteList(data);
         }
 
         private void ListHistory_ItemClick(object sender, ItemClickEventArgs e)
         {
             var list = e.ClickedItem as HistoryCalculator;
-            if(_historyCalculatorVM.HistoryList[0].X != "HistoryList empty")
-            {
-            _standardCalc.X = list.X;
-            _standardCalc.Info = list.Info;
-            }
-        }
-
-        private void ListHistoryAndMemory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var h = (ListHistoryAndMemory.SelectedItem as PivotItem).Name;
-            if (h == "Memory")
-                HisteryClean.Visibility = Visibility.Collapsed;
-            if (h == "History")
-                HisteryClean.Visibility = Visibility.Visible;
+            _standardCalc.SetData(list.CalcData);
         }
 
         private void ListMemory_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -113,16 +103,17 @@ namespace ProfCalculator.Templates
                 stec.Children[1].Visibility = Visibility.Visible;
         }
 
-        private void HisteryClean_Click(object sender, RoutedEventArgs e)
+        private void HistoryClean_Click(object sender, RoutedEventArgs e)
         {
-            _historyCalculatorVM.HistoryList.Clear();
-            _historyCalculatorVM.HistoryList.Add(new HistoryCalculator { X = "HistoryList empty", Info = "" });
+            _historyCalculatorVM.HistoryClear();
+
+            historyIsEmpty.Visibility = Visibility.Visible;
+            HistoryClean.Visibility = Visibility.Collapsed;
         }
 
         private void ListMemory_PointerCanceled(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
             var stec = sender as StackPanel;
-            if(_historyCalculatorVM.HistoryList[0].MemoryList != "MemoryList empty")
                 stec.Children[1].Visibility = Visibility.Collapsed;
         }
     }                                                                 

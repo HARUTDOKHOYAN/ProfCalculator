@@ -23,99 +23,69 @@ namespace ProfCalculator.VIewModel
                 new HistoryCalculator{Content="M-"},
                 new HistoryCalculator{Content="MS"},
             };
-            MemoryList = new ObservableCollection<HistoryCalculator>
-            {
-                new HistoryCalculator{MemoryList = "MemoryList empty" }
-            };
-            HistoryList = new ObservableCollection<HistoryCalculator>
-            {
-                new HistoryCalculator{X ="HistoryList empty",Info=""}
-            };
-            SelectedItems = MemoryList[0];
+            MemoryList = new ObservableCollection<HistoryCalculator>();
+            HistoryList = new ObservableCollection<HistoryCalculator>();
         }
         public ObservableCollection<HistoryCalculator> HistoryCalculator { get; set; }
         public ObservableCollection<HistoryCalculator> HistoryList { get; set; }
         public ObservableCollection<HistoryCalculator> MemoryList { get; set; }
 
         private HistoryCalculator _selectedItem;
-        public HistoryCalculator SelectedItems
+        public HistoryCalculator SelectedItem
         {
-            get
-            {
-                return _selectedItem;
-            }
+            get => _selectedItem;
             set
             {
                 _selectedItem = value;
-                OnPropertyChanged("SelectedItems");
+                OnPropertyChanged();
             }
         }
 
         internal void InputMemory(string content, StandardCalc calc)
         {
-            int i;
-            if (MemoryList[0].MemoryList == "MemoryList empty")
+            if(SelectedItem == null & content != "MS")
             {
-                MemoryList[0].MemoryList = "0";
+                if (MemoryList.Count == 0)
+                    MemoryList.Add(new HistoryCalculator { MemoryList = "0" });
+
+                SelectedItem = MemoryList[0];
             }
-            if (SelectedItems == null)
-                SelectedItems = MemoryList[0];
-            i = MemoryList.IndexOf(SelectedItems);
 
 
             switch (content)
             {
                 case "M+":
-                    SelectedItems.MemoryList = (double.Parse(SelectedItems.MemoryList) + double.Parse(calc.X)).ToString();
-                    MemoryList[i].MemoryList = SelectedItems.MemoryList;
+                    SelectedItem.MemoryList = (double.Parse(SelectedItem.MemoryList) + double.Parse(calc.X)).ToString();
                     break;
                 case "M-":
-
-                    SelectedItems.MemoryList = (double.Parse(SelectedItems.MemoryList) - double.Parse(calc.X)).ToString();
+                    SelectedItem.MemoryList = (double.Parse(SelectedItem.MemoryList) - double.Parse(calc.X)).ToString();
                     break;
                 case "MS":
-                    if (MemoryList.Count == 1 && MemoryList[0].MemoryList == "0")
-                    {
-                        MemoryList[0].MemoryList = calc.X;
-                    }
-                    else
-                    {
-                        MemoryList.Insert(0, new HistoryCalculator { MemoryList = calc.X });
-                    }
+                    MemoryList.Add(new HistoryCalculator { MemoryList = "0" });
                     break;
                 case "MC":
                     MemoryList.Clear();
-                    MemoryList.Add(new HistoryCalculator { MemoryList = "MemoryList empty" });
                     break;
                 case "MR":
-                    calc.X = SelectedItems.MemoryList;
+                    calc.X = SelectedItem.MemoryList;
                     break;
             }
         }
 
-        internal void Histerycheng(string buttonName, StandardCalc calc)
+        internal void HistoryChange(StandardCalc calc)
         {
-            List<string> arr = new List<string> { "%", "1/x", "√", "=", "x^2", };
-
-            if (arr.Exists(x => x == buttonName) && HistoryList[0].X != "HistoryList empty")
-            {
-                HistoryList.Add(new HistoryCalculator { Info = calc.Info, X = calc.X });
-            }
-            else if (arr.Exists(x => x == buttonName))
-            {
-                HistoryList[0].X = calc.X;
-                HistoryList[0].Info = calc.Info;
-            }
+            HistoryList.Add(new HistoryCalculator { CalcData = calc.GetData() });
         }
 
-        internal void DeletList(HistoryCalculator data)
+        internal void HistoryClear()
         {
-            if (MemoryList.Count > 1)
+            HistoryList.Clear();
+        }
+
+        internal void DeleteList(HistoryCalculator data)
+        {
+            if (MemoryList.Count > 0)
                 MemoryList.Remove(data);
-            else
-            {
-                MemoryList[0].MemoryList = "MemoryList empty";
-            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -149,7 +149,6 @@
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
     <Compile Include="VIewModel\HistoryCalculatorVM.cs" />
-    <None Include="TEMPORARYStandard.xaml.temp" />
     <Compile Include="VIewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

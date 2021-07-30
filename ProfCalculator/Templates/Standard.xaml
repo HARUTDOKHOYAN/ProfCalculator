@@ -10,7 +10,7 @@
 
 
 
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition  Height="auto" 
                             MaxHeight="32"/>
@@ -25,19 +25,6 @@
             <ColumnDefinition/>
             <ColumnDefinition  Width="auto" />
         </Grid.ColumnDefinitions>
-        <Button Grid.Row="0" 
-                x:Name="HisteryClean"
-                Grid.Column="1" 
-                HorizontalAlignment="Right"
-                Visibility="Visible"
-                Padding="0"
-                Height="30"
-                Width="30"
-                Click="HisteryClean_Click"
-               >
-            
-            <SymbolIcon  Symbol="Delete"/>
-        </Button>
         <TextBlock x:Name="op" 
                    Grid.Column="0"
                    Height="30" 
@@ -54,11 +41,12 @@
                    FontSize="40" 
                    Grid.Row="1" >
         </TextBlock>
+        
         <!--ListHistoryAndMemory-->
-            <Pivot Width="300" 
+            <Pivot Width="300"
                    Grid.Column="1"
                    Grid.Row="1"
-                   Grid.RowSpan="3" SelectionChanged="ListHistoryAndMemory_SelectionChanged"
+                   Grid.RowSpan="3"
                    x:Name="ListHistoryAndMemory"
                    Visibility="{Binding ElementName=Root,
                                         Path=uiViewModel.VISIBLITY}"
@@ -66,55 +54,78 @@
                   
                    VerticalAlignment="Top">
             <PivotItem x:Name="History" Header="History">
-                <ListView  x:Name="ListHistory"
-                                   Grid.Row="0"
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="History is empty" Visibility="Visible" x:Name="historyIsEmpty" />
+                    <ListView Grid.Row="1" x:Name="ListHistory"
                                    Width="300"
-                                   ItemsSource="{Binding ElementName=Root , 
+                                   ItemsSource="{Binding ElementName=Root,
                                                          Path=_historyCalculatorVM.HistoryList}"
                                ItemClick="ListHistory_ItemClick"
                                IsItemClickEnabled="True"
                           >
-                    <ListView.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel HorizontalAlignment="Right">
-                                <TextBlock Text="{Binding Info , 
-                                                              Mode=TwoWay}" 
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel HorizontalAlignment="Right">
+                                    <TextBlock Text="{Binding CalcData.Info,
+                                                              Mode=OneWay}" 
                                                FontSize="10"/>
-                                <TextBlock Text="{Binding  X,
-                                                               Mode=TwoWay}"
+                                    <TextBlock Text="{Binding  CalcData.X,
+                                                               Mode=OneWay}"
                                                FontSize="25"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    
+                    <Button Grid.Row="2"
+                    x:Name="HistoryClean"
+                    Grid.Column="1" 
+                    HorizontalAlignment="Right"
+                    Visibility="Collapsed"
+                    Padding="0"
+                    Height="30"
+                    Width="30"
+                    Click="HistoryClean_Click">
+                        <SymbolIcon  Symbol="Delete"/>
+                    </Button>
+                </Grid>
             </PivotItem>
             <PivotItem Header="Memory" x:Name="Memory">
-                    <ListView  x:Name="ListMemory"
-                          Width="300"
-                          SelectedItem="{Binding ElementName=Root, 
-                                                 Path=_historyCalculatorVM.SelectedItems,
-                                                 Mode=TwoWay
-                                       }"     
-                          ItemsSource="{Binding ElementName=Root , 
-                                                Path=_historyCalculatorVM.MemoryList
-                                       }"
-                          ItemContainerStyle="{StaticResource ListMemoryStyle}"
-                              >
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Memory is empty" Visibility="Visible" x:Name="memoryIsEmpty" />
+                    <ListView Grid.Row="1" x:Name="ListMemory"
+                            Width="300"
+                            SelectedItem="{Binding ElementName=Root, 
+                                                    Path=_historyCalculatorVM.SelectedItem,
+                                                    Mode=TwoWay}"
+                            ItemsSource="{Binding ElementName=Root , 
+                                                Path=_historyCalculatorVM.MemoryList}"
+                            ItemContainerStyle="{StaticResource ListMemoryStyle}"
+                                >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                             <StackPanel PointerEntered="ListMemory_PointerEntered"
                                         PointerExited="ListMemory_PointerCanceled"
                                             Background="Transparent"
-                                              Orientation="Horizontal">
+                                                Orientation="Horizontal">
                                     <TextBlock  Text="{Binding MemoryList,
-                                                               Mode=OneWay}" 
+                                                                Mode=OneWay}" 
                                                 FontSize="25"/>
                                     <Button Width="30"
                                             Height="30" 
                                             Margin="20,5,5,5"
                                             Padding="0"
                                             Visibility="{Binding Visibility,
-                                                                 Mode=OneWay}"
+                                                                    Mode=OneWay}"
                                             Click="Button_Click">
                                         <SymbolIcon  Symbol="Delete"/>
                                             </Button>
@@ -122,7 +133,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                </PivotItem>
+                </Grid>
+            </PivotItem>
             </Pivot>
         
         
@@ -171,7 +183,7 @@
                                         Mode=OneWay}">
             
             <ListView.ItemsPanel>
-                <ItemsPanelTemplate >
+                <ItemsPanelTemplate>
                     <ItemsWrapGrid  MaximumRowsOrColumns="5"
                                     Orientation="Horizontal"/>
                 </ItemsPanelTemplate>

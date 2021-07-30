@@ -3,20 +3,70 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProfCalculator.Services
 {
 
-    //in scientific:
-    //create Numbers Dictionary for Pi and others
-    //if input is not an operator or number - check in Numbers Dictionary
+    public class CalcData : INotifyPropertyChanged
+    {
+        private string _x;
+        public string X
+        {
+            get { return _x; }
+            set { _x = value; OnPropertyChanged(); }
+        }
+        private string _y;
+        public string Y
+        {
+            get { return _y; }
+            set { _y = value; OnPropertyChanged(); }
+        }
+        private string _info;
+        public string Info
+        {
+            get { return _info; }
+            set { _info = value; OnPropertyChanged(); }
+        }
+        private string _prev;
+        public string prev
+        {
+            get { return _prev; }
+            set { _prev = value; OnPropertyChanged(); }
+        }
+
+        private string _activeOp;
+        public string activeOp
+        {
+            get { return _activeOp; }
+            set { _activeOp = value; OnPropertyChanged(); }
+        }
+
+        private bool _isEnd;
+        public bool isEnd
+        {
+            get { return _isEnd; }
+            set { _isEnd = value; OnPropertyChanged(); }
+        }
+
+        private string _temp;
+        public string temp
+        {
+            get { return _temp; }
+            set { _temp = value; OnPropertyChanged(); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
 
     public class StandardCalc : INotifyPropertyChanged
     {
-        protected Dictionary<string, Func<string>> Operators = new Dictionary<string, Func<string>>();
-        protected Dictionary<string, Func<string>> ReactOperators = new Dictionary<string, Func<string>>();
+        protected Dictionary<string, Func<double, double, string>> Operators = new Dictionary<string, Func<double, double, string>>();
+        protected Dictionary<string, Func<double, double, string>> ReactOperators = new Dictionary<string, Func<double, double, string>>();
+        protected Dictionary<string, string> Numbers = new Dictionary<string, string>();
 
         public StandardCalc()
         {
@@ -33,14 +83,24 @@ namespace ProfCalculator.Services
         }
 
         private readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
+        private readonly string INVALID_INPUT_MESSAGE = "Invalid input";
 
-        private bool isEnd = false;
-        private string temp = "";
+        //private string _z;
         private string _y;
         private string _x = "0";
         private string _info;
+        private string prev = "number";
+        private string activeOp = "";
+        private bool isEnd = false;
+        private string temp = "";
 
-        public string Y {
+        //public string Z
+        //{
+        //    get { return _z; }
+        //    set { _z = value; OnPropertyChanged(); }
+        //}
+        public string Y
+        {
             get { return _y; }
             set { _y = value; OnPropertyChanged(); }
         }
@@ -49,20 +109,20 @@ namespace ProfCalculator.Services
             get { return _x; }
             set { _x = value; OnPropertyChanged(); }
         }
-        public decimal Ynum
+        public double Ynum
         {
             get
             {
-                if(decimal.TryParse(_y, out decimal res))
+                if (double.TryParse(_y, out double res))
                     return res;
                 return 0;
             }
         }
-        public decimal Xnum
+        public double Xnum
         {
             get
             {
-                if (decimal.TryParse(_x, out decimal res))
+                if (double.TryParse(_x, out double res))
                     return res;
                 return 0;
             }
@@ -73,9 +133,29 @@ namespace ProfCalculator.Services
             set { _info = value; OnPropertyChanged(); }
         }
 
-
-        private string prev = "number";
-        private string activeOp = "";
+        public CalcData GetData()
+        {
+            return new CalcData()
+            {
+                X = X,
+                Y = Y,
+                Info = Info,
+                prev = prev,
+                activeOp = activeOp,
+                isEnd = isEnd,
+                temp = temp
+            };
+        }
+        public void SetData(CalcData data)
+        {
+            X = data.X;
+            Y = data.Y;
+            Info = data.Info;
+            prev = data.prev;
+            activeOp = data.activeOp;
+            isEnd = data.isEnd;
+            temp = data.temp;
+        }
 
         public void Input(string input)
         {
@@ -83,10 +163,10 @@ namespace ProfCalculator.Services
             if (Operators.Keys.Contains(input))
             {
                 if (!isEnd)
-                    if(activeOp != "")
-                        Y = X = Operators[activeOp].Invoke();
-                else
-                    Y = X;
+                    if (activeOp != "")
+                        Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
+                    else
+                        Y = X;
 
                 activeOp = input;
                 Info = Y + " " + activeOp;
@@ -96,11 +176,16 @@ namespace ProfCalculator.Services
             //REACT OPERATOR
             else if (ReactOperators.Keys.Contains(input))
             {
-                X = ReactOperators[input].Invoke();
+                X = ReactOperators[input].Invoke(Ynum, Xnum);
                 prev = "operator";
             }
+            else if (Numbers.Keys.Contains(input))
+            {
+                X = Numbers[input];
+                prev = "number";
+            }
             //NUMBER
-            else if (decimal.TryParse(input, out decimal number))
+            else if (double.TryParse(input, out double number))
             {
                 if (prev == "operator")
                     X = input;
@@ -122,18 +207,20 @@ namespace ProfCalculator.Services
             //EQUALS
             else if (input == "=")
             {
-                if(activeOp == "")
+                if (activeOp == "")
                 {
                     Y = X;
                     Info = $"{Y} =";
                     return;
                 }
-                if(!isEnd)
+
+                if (!isEnd)
                     temp = X;
+
                 Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
                 X = temp;
-                X = Y = Operators[activeOp].Invoke();
-                
+                X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
+
                 prev = "operator";
                 isEnd = true;
             }
@@ -155,7 +242,7 @@ namespace ProfCalculator.Services
                         prev = "number";
                         break;
                     case "<":
-                        if(X.Length <= 1)
+                        if (X.Length <= 1)
                             X = "0";
                         else
                             X = X.Remove(X.Length - 1, 1);
@@ -169,66 +256,59 @@ namespace ProfCalculator.Services
 
         //ReactOperators
 
-        public virtual string Negate()
+        public virtual string Negate(double x, double y)
         {
-            Info = $"negate({X})";
-            return X[0] == '-' ? X.Remove(0, 1) : "-" + X;
+            var str = y.ToString();
+            Info = $"negate({str})";
+            return str[0] == '-' ? str.Remove(0, 1) : "-" + str;
         }
 
-        public virtual string Square()
+        public virtual string Square(double x, double y)
         {
-            Info = $"sqr({X})";
-            return (Xnum * Xnum).ToString();
+            Info = $"sqr({y})";
+            return (y * y).ToString();
         }
 
-        public virtual string Root()
+        public virtual string Root(double x, double y)
         {
-            Info = $"√({X})";
-            return Math.Sqrt(Convert.ToDouble(Xnum)).ToString();
+            Info = $"√({y})";
+            var result = Math.Sqrt(Convert.ToDouble(y));
+            return double.IsNaN(result) ? INVALID_INPUT_MESSAGE : result.ToString();
         }
 
-        public virtual string BelowOne()
+        public virtual string BelowOne(double x, double y)
         {
-            if(Xnum == 0)
-            {
-                Info = DIVIDE_BY_ZERO_MESSAGE;
-                return X;
-            } else
-            {
-                Info = $"1/({X})";
-                return (1 / Xnum).ToString();
-            }
+            Info = $"1/({y})";
+            return Divide(1, y);
         }
 
-        public virtual string Precent()
+        public virtual string Precent(double x, double y)
         {
-            return (Ynum / 100 * Xnum).ToString();
+            return (x / 100 * y).ToString();
         }
 
         //Operators
-        
-        public virtual string Add()
+
+        public virtual string Add(double x, double y)
         {
-            return (Ynum + Xnum).ToString();
+            return (x + y).ToString();
         }
 
-        public virtual string Subtract()
+        public virtual string Subtract(double x, double y)
         {
-            return (Ynum - Xnum).ToString();
+            return (x - y).ToString();
         }
 
-        public virtual string Multiply()
+        public virtual string Multiply(double x, double y)
         {
-            return (Ynum * Xnum).ToString();
+            return (x * y).ToString();
         }
 
-        public virtual string Divide()
+        public virtual string Divide(double x, double y)
         {
-            if(Xnum == 0)
-            {
+            if (y == 0)
                 return DIVIDE_BY_ZERO_MESSAGE;
-            }
-            return (Ynum / Xnum).ToString();
+            return (x / y).ToString();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
