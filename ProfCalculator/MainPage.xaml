@@ -77,9 +77,10 @@
         </Grid>
 
         <!--Calculator buttons-->
-        <ContentControl Background="#b4cad6" Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" 
+        <ContentControl   Background="#b4cad6" Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" 
                         HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Canvas.ZIndex="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
                         ContentTemplateSelector="{StaticResource CalculatorTemplateSelector}" />
     </Grid>
 </Page>
+    
