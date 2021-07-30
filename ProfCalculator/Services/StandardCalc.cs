@@ -34,7 +34,8 @@ namespace ProfCalculator.Services
 
         private readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
 
-        private string temp;
+        private bool isEnd = false;
+        private string temp = "";
         private string _y;
         private string _x = "0";
         private string _info;
@@ -73,7 +74,7 @@ namespace ProfCalculator.Services
         }
 
 
-        private string prev = "operator";
+        private string prev = "number";
         private string activeOp = "";
 
         public void Input(string input)
@@ -81,7 +82,7 @@ namespace ProfCalculator.Services
             //OPERATOR
             if (Operators.Keys.Contains(input))
             {
-                if (prev == "number")
+                if (!isEnd)
                     if(activeOp != "")
                         Y = X = Operators[activeOp].Invoke();
                 else
@@ -90,6 +91,7 @@ namespace ProfCalculator.Services
                 activeOp = input;
                 Info = Y + " " + activeOp;
                 prev = "operator";
+                isEnd = false;
             }
             //REACT OPERATOR
             else if (ReactOperators.Keys.Contains(input))
@@ -109,6 +111,7 @@ namespace ProfCalculator.Services
                         X += input;
 
                 prev = "number";
+                isEnd = false;
             }
             //DOT
             else if (input == ".")
@@ -117,16 +120,22 @@ namespace ProfCalculator.Services
                     X += ".";
             }
             //EQUALS
-            else if (input == "=" & activeOp != "")
+            else if (input == "=")
             {
-                if(prev == "number")
+                if(activeOp == "")
+                {
+                    Y = X;
+                    Info = $"{Y} =";
+                    return;
+                }
+                if(!isEnd)
                     temp = X;
-                Info = $"{Y} {activeOp} {temp} =";
+                Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
                 X = temp;
-                Y = Operators[activeOp].Invoke();
-                X = Y;
+                X = Y = Operators[activeOp].Invoke();
                 
                 prev = "operator";
+                isEnd = true;
             }
             else
             {
@@ -138,11 +147,12 @@ namespace ProfCalculator.Services
                         X = "0";
                         Info = "";
                         activeOp = "";
-                        prev = "operator";
+                        prev = "number";
+                        isEnd = false;
                         break;
                     case "CE":
                         X = "0";
-                        prev = "operator";
+                        prev = "number";
                         break;
                     case "<":
                         if(X.Length <= 1)
