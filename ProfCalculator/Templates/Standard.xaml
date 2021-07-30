@@ -16,17 +16,18 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <TextBlock x:Name="op" Height="27" Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
+        <TextBlock x:Name="op" Height="27" Text="{x:Bind calc.Info, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
-        <TextBlock x:Name="nu" Height="52" Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
+        <TextBlock x:Name="nu" Height="52" Text="{x:Bind calc.X, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" >
 
         </TextBlock>
-        <ListView  x:Name="ListviewRoot"              
+        <ListView  x:Name="ListviewRoot"    
+                   SizeChanged="ListviewRoot_SizeChanged"
                   Grid.Row="2"  HorizontalAlignment="Center"
                    ItemClick="ListviewRoot_ItemClick"
                    IsItemClickEnabled="True"
