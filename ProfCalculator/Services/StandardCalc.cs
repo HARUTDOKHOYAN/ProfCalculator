@@ -3,33 +3,76 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProfCalculator.Services
 {
 
-    public class CalcData
+    public class CalcData : INotifyPropertyChanged
     {
-        public string X;
-        public string Y;
-        public string Info;
-        public string prev;
-        public string activeOp;
-        public bool isEnd;
-        public string temp;
+        private string _x;
+        public string X
+        {
+            get { return _x; }
+            set { _x = value; OnPropertyChanged(); }
+        }
+        private string _y;
+        public string Y
+        {
+            get { return _y; }
+            set { _y = value; OnPropertyChanged(); }
+        }
+        private string _info;
+        public string Info
+        {
+            get { return _info; }
+            set { _info = value; OnPropertyChanged(); }
+        }
+        private string _prev;
+        public string prev
+        {
+            get { return _prev; }
+            set { _prev = value; OnPropertyChanged(); }
+        }
+
+        private string _activeOp;
+        public string activeOp
+        {
+            get { return _activeOp; }
+            set { _activeOp = value; OnPropertyChanged(); }
+        }
+
+        private bool _isEnd;
+        public bool isEnd
+        {
+            get { return _isEnd; }
+            set { _isEnd = value; OnPropertyChanged(); }
+        }
+
+        private string _temp;
+        public string temp
+        {
+            get { return _temp; }
+            set { _temp = value; OnPropertyChanged(); }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
-    //make all double
+
     public class StandardCalc : INotifyPropertyChanged
     {
+        protected List<string> Numbers;
+        protected Dictionary<string, string> Constants = new Dictionary<string, string>();
         protected Dictionary<string, Func<double, double, string>> Operators = new Dictionary<string, Func<double, double, string>>();
         protected Dictionary<string, Func<double, double, string>> ReactOperators = new Dictionary<string, Func<double, double, string>>();
-        protected Dictionary<string, string> Numbers = new Dictionary<string, string>();
-
-        CalcData dat;
 
         public StandardCalc()
         {
+            Numbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
             Operators.Add("+", Add);
             Operators.Add("-", Subtract);
             Operators.Add("X", Multiply);
@@ -45,7 +88,6 @@ namespace ProfCalculator.Services
         private readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
         private readonly string INVALID_INPUT_MESSAGE = "Invalid input";
 
-        private string _z;
         private string _y;
         private string _x = "0";
         private string _info;
@@ -54,12 +96,8 @@ namespace ProfCalculator.Services
         private bool isEnd = false;
         private string temp = "";
 
-        public string Z
+        public string Y
         {
-            get { return _z; }
-            set { _z = value; OnPropertyChanged(); }
-        }
-        public string Y {
             get { return _y; }
             set { _y = value; OnPropertyChanged(); }
         }
@@ -72,7 +110,7 @@ namespace ProfCalculator.Services
         {
             get
             {
-                if(double.TryParse(_y, out double res))
+                if (double.TryParse(_y, out double res))
                     return res;
                 return 0;
             }
@@ -94,7 +132,8 @@ namespace ProfCalculator.Services
 
         public CalcData GetData()
         {
-            return new CalcData() {
+            return new CalcData()
+            {
                 X = X,
                 Y = Y,
                 Info = Info,
@@ -121,10 +160,10 @@ namespace ProfCalculator.Services
             if (Operators.Keys.Contains(input))
             {
                 if (!isEnd)
-                    if(activeOp != "")
+                    if (activeOp != "")
                         Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
-                else
-                    Y = X;
+                    else
+                        Y = X;
 
                 activeOp = input;
                 Info = Y + " " + activeOp;
@@ -136,16 +175,9 @@ namespace ProfCalculator.Services
             {
                 X = ReactOperators[input].Invoke(Ynum, Xnum);
                 prev = "operator";
-
-                SetData(dat);
-            }
-            else if (Numbers.Keys.Contains(input))
-            {
-                X = Numbers[input];
-                prev = "number";
             }
             //NUMBER
-            else if (double.TryParse(input, out double number))
+            else if (Numbers.Contains(input))
             {
                 if (prev == "operator")
                     X = input;
@@ -158,34 +190,41 @@ namespace ProfCalculator.Services
                 prev = "number";
                 isEnd = false;
             }
-            //DOT`
+            //CONSTANT
+            else if (Constants.Keys.Contains(input))
+            {
+                X = Constants[input];
+                prev = "number";
+                isEnd = false;
+            }
+            //DOT
             else if (input == ".")
             {
                 if (!X.Contains("."))
+                {
                     X += ".";
+                    isEnd = false;
+                }
             }
             //EQUALS
             else if (input == "=")
             {
-                if(activeOp == "")
+                if (activeOp == "")
                 {
                     Y = X;
                     Info = $"{Y} =";
                     return;
                 }
 
-                Z = Y;
-
-
-                if(!isEnd)
+                if (!isEnd)
                     temp = X;
+
                 Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
                 X = temp;
                 X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
-                
+
                 prev = "operator";
                 isEnd = true;
-                dat = GetData();
             }
             else
             {
@@ -205,7 +244,7 @@ namespace ProfCalculator.Services
                         prev = "number";
                         break;
                     case "<":
-                        if(X.Length <= 1)
+                        if (X.Length <= 1)
                             X = "0";
                         else
                             X = X.Remove(X.Length - 1, 1);
@@ -251,7 +290,7 @@ namespace ProfCalculator.Services
         }
 
         //Operators
-        
+
         public virtual string Add(double x, double y)
         {
             return (x + y).ToString();
@@ -259,17 +298,17 @@ namespace ProfCalculator.Services
 
         public virtual string Subtract(double x, double y)
         {
-            return (y - x).ToString();
+            return (x - y).ToString();
         }
 
         public virtual string Multiply(double x, double y)
         {
-            return (y * x).ToString();
+            return (x * y).ToString();
         }
 
         public virtual string Divide(double x, double y)
         {
-            if(y == 0)
+            if (y == 0)
                 return DIVIDE_BY_ZERO_MESSAGE;
             return (x / y).ToString();
         }
