@@ -64,12 +64,15 @@ namespace ProfCalculator.Services
 
     public class StandardCalc : INotifyPropertyChanged
     {
+        protected List<string> Numbers;
+        protected Dictionary<string, string> Constants = new Dictionary<string, string>();
         protected Dictionary<string, Func<double, double, string>> Operators = new Dictionary<string, Func<double, double, string>>();
         protected Dictionary<string, Func<double, double, string>> ReactOperators = new Dictionary<string, Func<double, double, string>>();
-        protected Dictionary<string, string> Numbers = new Dictionary<string, string>();
 
         public StandardCalc()
         {
+            Numbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+
             Operators.Add("+", Add);
             Operators.Add("-", Subtract);
             Operators.Add("X", Multiply);
@@ -85,7 +88,6 @@ namespace ProfCalculator.Services
         private readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
         private readonly string INVALID_INPUT_MESSAGE = "Invalid input";
 
-        //private string _z;
         private string _y;
         private string _x = "0";
         private string _info;
@@ -94,11 +96,6 @@ namespace ProfCalculator.Services
         private bool isEnd = false;
         private string temp = "";
 
-        //public string Z
-        //{
-        //    get { return _z; }
-        //    set { _z = value; OnPropertyChanged(); }
-        //}
         public string Y
         {
             get { return _y; }
@@ -161,92 +158,34 @@ namespace ProfCalculator.Services
         {
             //OPERATOR
             if (Operators.Keys.Contains(input))
-            {
-                if (!isEnd)
-                    if (activeOp != "")
-                        Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
-                    else
-                        Y = X;
-
-                activeOp = input;
-                Info = Y + " " + activeOp;
-                prev = "operator";
-                isEnd = false;
-            }
+                OnOperator(input);
             //REACT OPERATOR
             else if (ReactOperators.Keys.Contains(input))
-            {
-                X = ReactOperators[input].Invoke(Ynum, Xnum);
-                prev = "operator";
-            }
-            else if (Numbers.Keys.Contains(input))
-            {
-                X = Numbers[input];
-                prev = "number";
-            }
+                OnReactOperator(input);
             //NUMBER
-            else if (double.TryParse(input, out double number))
-            {
-                if (prev == "operator")
-                    X = input;
-                else if (prev == "number")
-                    if (X == "0")
-                        X = input;
-                    else
-                        X += input;
-
-                prev = "number";
-                isEnd = false;
-            }
+            else if (Numbers.Contains(input))
+                OnNumber(input);
+            //CONSTANT
+            else if (Constants.Keys.Contains(input))
+                OnConstant(input);
             //DOT
             else if (input == ".")
-            {
-                if (!X.Contains("."))
-                    X += ".";
-            }
+                OnDot(input);
             //EQUALS
             else if (input == "=")
-            {
-                if (activeOp == "")
-                {
-                    Y = X;
-                    Info = $"{Y} =";
-                    return;
-                }
-
-                if (!isEnd)
-                    temp = X;
-
-                Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
-                X = temp;
-                X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
-
-                prev = "operator";
-                isEnd = true;
-            }
+                OnEquals(input);
             else
             {
                 switch (input)
                 {
                     case "C":
-                        temp = "";
-                        Y = "";
-                        X = "0";
-                        Info = "";
-                        activeOp = "";
-                        prev = "number";
-                        isEnd = false;
+                        OnC();
                         break;
                     case "CE":
-                        X = "0";
-                        prev = "number";
+                        OnCE();
                         break;
                     case "<":
-                        if (X.Length <= 1)
-                            X = "0";
-                        else
-                            X = X.Remove(X.Length - 1, 1);
-                        prev = "number";
+                        OnRemove();
                         break;
                     default:
                         break;
@@ -254,8 +193,106 @@ namespace ProfCalculator.Services
             }
         }
 
-        //ReactOperators
+        //Methods On Input
+        public virtual void OnOperator(string input)
+        {
+            if (!isEnd)
+            {
+                if (activeOp != "" & prev == "number")
+                    Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
+                else
+                    Y = X;
+            }
 
+            activeOp = input;
+            Info = Y + " " + activeOp;
+            prev = "operator";
+            isEnd = false;
+        }
+
+        public virtual void OnReactOperator(string input)
+        {
+            X = ReactOperators[input].Invoke(Ynum, Xnum);
+            prev = "operator";
+        }
+
+        public virtual void OnNumber(string input)
+        {
+            if (prev == "operator")
+                X = input;
+            else if (prev == "number")
+                if (X == "0")
+                    X = input;
+                else
+                    X += input;
+
+            prev = "number";
+            isEnd = false;
+        }
+
+        public virtual void OnConstant(string input)
+        {
+            X = Constants[input];
+            prev = "number";
+            isEnd = false;
+        }
+
+        public virtual void OnDot(string input)
+        {
+            if (!X.Contains(input))
+            {
+                X += input;
+                isEnd = false;
+            }
+        }
+
+        public virtual void OnEquals(string input)
+        {
+            if (activeOp == "")
+            {
+                Y = X;
+                Info = $"{Y} =";
+                return;
+            }
+
+            if (!isEnd)
+                temp = X;
+
+            Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
+            X = temp;
+            X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
+
+            prev = "operator";
+            isEnd = true;
+        }
+
+        public virtual void OnC()
+        {
+            temp = "";
+            Y = "";
+            X = "0";
+            Info = "";
+            activeOp = "";
+            prev = "number";
+            isEnd = false;
+        }
+
+        public virtual void OnCE()
+        {
+            X = "0";
+            prev = "number";
+        }
+
+        public virtual void OnRemove()
+        {
+            if (X.Length <= 1)
+                X = "0";
+            else
+                X = X.Remove(X.Length - 1, 1);
+            prev = "number";
+        }
+
+        //ReactOperators
         public virtual string Negate(double x, double y)
         {
             var str = y.ToString();
@@ -288,7 +325,6 @@ namespace ProfCalculator.Services
         }
 
         //Operators
-
         public virtual string Add(double x, double y)
         {
             return (x + y).ToString();
