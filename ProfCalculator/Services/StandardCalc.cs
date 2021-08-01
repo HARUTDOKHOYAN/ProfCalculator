@@ -158,97 +158,34 @@ namespace ProfCalculator.Services
         {
             //OPERATOR
             if (Operators.Keys.Contains(input))
-            {
-                if (!isEnd)
-                    if (activeOp != "")
-                        Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
-                    else
-                        Y = X;
-
-                activeOp = input;
-                Info = Y + " " + activeOp;
-                prev = "operator";
-                isEnd = false;
-            }
+                OnOperator(input);
             //REACT OPERATOR
             else if (ReactOperators.Keys.Contains(input))
-            {
-                X = ReactOperators[input].Invoke(Ynum, Xnum);
-                prev = "operator";
-            }
+                OnReactOperator(input);
             //NUMBER
             else if (Numbers.Contains(input))
-            {
-                if (prev == "operator")
-                    X = input;
-                else if (prev == "number")
-                    if (X == "0")
-                        X = input;
-                    else
-                        X += input;
-
-                prev = "number";
-                isEnd = false;
-            }
+                OnNumber(input);
             //CONSTANT
             else if (Constants.Keys.Contains(input))
-            {
-                X = Constants[input];
-                prev = "number";
-                isEnd = false;
-            }
+                OnConstant(input);
             //DOT
             else if (input == ".")
-            {
-                if (!X.Contains("."))
-                {
-                    X += ".";
-                    isEnd = false;
-                }
-            }
+                OnDot(input);
             //EQUALS
             else if (input == "=")
-            {
-                if (activeOp == "")
-                {
-                    Y = X;
-                    Info = $"{Y} =";
-                    return;
-                }
-
-                if (!isEnd)
-                    temp = X;
-
-                Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
-                X = temp;
-                X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
-
-                prev = "operator";
-                isEnd = true;
-            }
+                OnEquals(input);
             else
             {
                 switch (input)
                 {
                     case "C":
-                        temp = "";
-                        Y = "";
-                        X = "0";
-                        Info = "";
-                        activeOp = "";
-                        prev = "number";
-                        isEnd = false;
+                        OnC();
                         break;
                     case "CE":
-                        X = "0";
-                        prev = "number";
+                        OnCE();
                         break;
                     case "<":
-                        if (X.Length <= 1)
-                            X = "0";
-                        else
-                            X = X.Remove(X.Length - 1, 1);
-                        prev = "number";
+                        OnRemove();
                         break;
                     default:
                         break;
@@ -256,8 +193,106 @@ namespace ProfCalculator.Services
             }
         }
 
-        //ReactOperators
+        //Methods On Input
+        public virtual void OnOperator(string input)
+        {
+            if (!isEnd)
+            {
+                if (activeOp != "" & prev == "number")
+                    Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
+                else
+                    Y = X;
+            }
 
+            activeOp = input;
+            Info = Y + " " + activeOp;
+            prev = "operator";
+            isEnd = false;
+        }
+
+        public virtual void OnReactOperator(string input)
+        {
+            X = ReactOperators[input].Invoke(Ynum, Xnum);
+            prev = "operator";
+        }
+
+        public virtual void OnNumber(string input)
+        {
+            if (prev == "operator")
+                X = input;
+            else if (prev == "number")
+                if (X == "0")
+                    X = input;
+                else
+                    X += input;
+
+            prev = "number";
+            isEnd = false;
+        }
+
+        public virtual void OnConstant(string input)
+        {
+            X = Constants[input];
+            prev = "number";
+            isEnd = false;
+        }
+
+        public virtual void OnDot(string input)
+        {
+            if (!X.Contains(input))
+            {
+                X += input;
+                isEnd = false;
+            }
+        }
+
+        public virtual void OnEquals(string input)
+        {
+            if (activeOp == "")
+            {
+                Y = X;
+                Info = $"{Y} =";
+                return;
+            }
+
+            if (!isEnd)
+                temp = X;
+
+            Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
+            X = temp;
+            X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
+
+            prev = "operator";
+            isEnd = true;
+        }
+
+        public virtual void OnC()
+        {
+            temp = "";
+            Y = "";
+            X = "0";
+            Info = "";
+            activeOp = "";
+            prev = "number";
+            isEnd = false;
+        }
+
+        public virtual void OnCE()
+        {
+            X = "0";
+            prev = "number";
+        }
+
+        public virtual void OnRemove()
+        {
+            if (X.Length <= 1)
+                X = "0";
+            else
+                X = X.Remove(X.Length - 1, 1);
+            prev = "number";
+        }
+
+        //ReactOperators
         public virtual string Negate(double x, double y)
         {
             var str = y.ToString();
@@ -290,7 +325,6 @@ namespace ProfCalculator.Services
         }
 
         //Operators
-
         public virtual string Add(double x, double y)
         {
             return (x + y).ToString();
