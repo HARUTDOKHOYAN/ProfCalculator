@@ -7,7 +7,70 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+
+
+
     <Grid>
-        <TextBlock Text="SCIENTIFIC"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition  Height="auto" 
+                            MaxHeight="32"/>
+            <RowDefinition   Height="auto" 
+                             MaxHeight="52"/>
+            <RowDefinition Height="auto" 
+                             MaxHeight="50"/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition  Width="auto" />
+        </Grid.ColumnDefinitions>
+        <TextBlock x:Name="op" 
+                   Grid.Column="0"
+                   Height="30" 
+                   
+                   Text="{x:Bind _scientificCalc.LineString , Mode=OneWay}" 
+                   TextAlignment="End" 
+                   FontSize="20" 
+                   Grid.Row="0"  />
+        <TextBlock x:Name="nu" 
+                   Grid.Column="0"
+                   Height="52" 
+                   Text="{x:Bind _scientificCalc.LineString , Mode=OneWay}" 
+                   TextAlignment="End" 
+                   FontSize="40" 
+                   Grid.Row="1" >
+        </TextBlock>
+
+        <!--Calculator-->
+        <ListView  x:Name="ListviewRoot"      
+                   
+                   Grid.Column="0"        
+                  Grid.Row="3"  HorizontalAlignment="Center"
+                   ItemClick="ListviewRoot_ItemClick"
+                   IsItemClickEnabled="True"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                  ItemsSource="{x:Bind uiViewModel.buttoncontents, Mode=OneWay}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <ItemsWrapGrid  MaximumRowsOrColumns="4"
+                                   
+                                   Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ListViewItem Style="{StaticResource ListViewItemStyle}" 
+                                  Width="{Binding Width , Mode=OneWay}"  
+                                  Height="{Binding Height , Mode=OneWay}"
+                                  Background="{Binding Color ,Mode=OneWay}">
+                        <TextBlock Text="{Binding Content ,Mode=OneWay}" 
+                                   FontFamily="{Binding FontFamily,Mode=OneWay}"
+                                   FontSize="25"/>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </UserControl>

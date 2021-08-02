@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProfCalculator.Services
-{
-    class StandardCalc : BaseCalc
+namespace ProfCalculator.Services {
+
+    //Make ReactOperators portable
+    //Move all operators into the base class
+    public class StandardCalc : BaseCalc
     {
         public StandardCalc()
         {
@@ -228,7 +230,7 @@ namespace ProfCalculator.Services
             return (x / y).ToString();
         }
 
-        public override CalcData GetData()
+        public override ICalcData GetData()
         {
             return new StandardCalcData()
             {
@@ -242,7 +244,7 @@ namespace ProfCalculator.Services
             };
         }
 
-        public override void SetData(CalcData data)
+        public override void SetData(ICalcData data)
         {
             var d = data as StandardCalcData;
             X = d.X;
