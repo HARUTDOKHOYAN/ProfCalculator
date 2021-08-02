@@ -1,74 +1,14 @@
-﻿using System;
+﻿using ProfCalculator.Services.DataTransfer;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace ProfCalculator.Services
 {
-
-    public class CalcData : INotifyPropertyChanged
+    class StandardCalc : BaseCalc
     {
-        private string _x;
-        public string X
-        {
-            get { return _x; }
-            set { _x = value; OnPropertyChanged(); }
-        }
-        private string _y;
-        public string Y
-        {
-            get { return _y; }
-            set { _y = value; OnPropertyChanged(); }
-        }
-        private string _info;
-        public string Info
-        {
-            get { return _info; }
-            set { _info = value; OnPropertyChanged(); }
-        }
-        private string _prev;
-        public string prev
-        {
-            get { return _prev; }
-            set { _prev = value; OnPropertyChanged(); }
-        }
-
-        private string _activeOp;
-        public string activeOp
-        {
-            get { return _activeOp; }
-            set { _activeOp = value; OnPropertyChanged(); }
-        }
-
-        private bool _isEnd;
-        public bool isEnd
-        {
-            get { return _isEnd; }
-            set { _isEnd = value; OnPropertyChanged(); }
-        }
-
-        private string _temp;
-        public string temp
-        {
-            get { return _temp; }
-            set { _temp = value; OnPropertyChanged(); }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-    }
-
-    public class StandardCalc : INotifyPropertyChanged
-    {
-        protected List<string> Numbers;
-        protected Dictionary<string, string> Constants = new Dictionary<string, string>();
-        protected Dictionary<string, Func<double, double, string>> Operators = new Dictionary<string, Func<double, double, string>>();
-        protected Dictionary<string, Func<double, double, string>> ReactOperators = new Dictionary<string, Func<double, double, string>>();
-
         public StandardCalc()
         {
             Numbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -85,9 +25,6 @@ namespace ProfCalculator.Services
             ReactOperators.Add("%", Precent);
         }
 
-        private readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
-        private readonly string INVALID_INPUT_MESSAGE = "Invalid input";
-
         private string _y;
         private string _x = "0";
         private string _info;
@@ -98,12 +35,12 @@ namespace ProfCalculator.Services
 
         public string Y
         {
-            get { return _y; }
+            get => _y;
             set { _y = value; OnPropertyChanged(); }
         }
         public string X
         {
-            get { return _x; }
+            get => _x;
             set { _x = value; OnPropertyChanged(); }
         }
         public double Ynum
@@ -126,127 +63,44 @@ namespace ProfCalculator.Services
         }
         public string Info
         {
-            get { return _info; }
+            get => _info;
             set { _info = value; OnPropertyChanged(); }
         }
 
-        public CalcData GetData()
+        public override bool Input(string input)
         {
-            return new CalcData()
-            {
-                X = X,
-                Y = Y,
-                Info = Info,
-                prev = prev,
-                activeOp = activeOp,
-                isEnd = isEnd,
-                temp = temp
-            };
-        }
-        public void SetData(CalcData data)
-        {
-            X = data.X;
-            Y = data.Y;
-            Info = data.Info;
-            prev = data.prev;
-            activeOp = data.activeOp;
-            isEnd = data.isEnd;
-            temp = data.temp;
-        }
+            var isCatch = base.Input(input);
+            if (isCatch)
+                return true;
 
-        public void Input(string input)
-        {
-            //OPERATOR
-            if (Operators.Keys.Contains(input))
-                OnOperator(input);
-            //REACT OPERATOR
-            else if (ReactOperators.Keys.Contains(input))
-                OnReactOperator(input);
-            //NUMBER
-            else if (Numbers.Contains(input))
-                OnNumber(input);
-            //CONSTANT
-            else if (Constants.Keys.Contains(input))
-                OnConstant(input);
-            //DOT
-            else if (input == ".")
+            //ON DOT
+            if (input == ".")
+            {
                 OnDot(input);
-            //EQUALS
-            else if (input == "=")
-                OnEquals(input);
-            else
-            {
-                switch (input)
-                {
-                    case "C":
-                        OnC();
-                        break;
-                    case "CE":
-                        OnCE();
-                        break;
-                    case "<":
-                        OnRemove();
-                        break;
-                    default:
-                        break;
-                }
-            }
-        }
-
-        //Methods On Input
-        public virtual void OnOperator(string input)
-        {
-            if (!isEnd)
-            {
-                if (activeOp != "" & prev == "number")
-                    Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
-                else
-                    Y = X;
+                return true;
             }
 
-            activeOp = input;
-            Info = Y + " " + activeOp;
-            prev = "operator";
-            isEnd = false;
+            return false;
         }
 
-        public virtual void OnReactOperator(string input)
+        public override void OnC()
         {
-            X = ReactOperators[input].Invoke(Ynum, Xnum);
-            prev = "operator";
-        }
-
-        public virtual void OnNumber(string input)
-        {
-            if (prev == "operator")
-                X = input;
-            else if (prev == "number")
-                if (X == "0")
-                    X = input;
-                else
-                    X += input;
-
+            temp = "";
+            Y = "";
+            X = "0";
+            Info = "";
+            activeOp = "";
             prev = "number";
             isEnd = false;
         }
 
-        public virtual void OnConstant(string input)
+        public override void OnCE()
         {
-            X = Constants[input];
+            X = "0";
             prev = "number";
-            isEnd = false;
         }
 
-        public virtual void OnDot(string input)
-        {
-            if (!X.Contains(input))
-            {
-                X += input;
-                isEnd = false;
-            }
-        }
-
-        public virtual void OnEquals(string input)
+        public override void OnEquals(string input)
         {
             if (activeOp == "")
             {
@@ -266,30 +120,58 @@ namespace ProfCalculator.Services
             isEnd = true;
         }
 
-        public virtual void OnC()
+        public override void OnNumber(string input)
         {
-            temp = "";
-            Y = "";
-            X = "0";
-            Info = "";
-            activeOp = "";
+            if (prev == "operator")
+                X = input;
+            else if (prev == "number")
+                if (X == "0")
+                    X = input;
+                else
+                    X += input;
+
             prev = "number";
             isEnd = false;
         }
 
-        public virtual void OnCE()
+        public override void OnOperator(string input)
         {
-            X = "0";
-            prev = "number";
+            if (!isEnd)
+            {
+                if (activeOp != "" & prev == "number")
+                    Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
+                else
+                    Y = X;
+            }
+
+            activeOp = input;
+            Info = Y + " " + activeOp;
+            prev = "operator";
+            isEnd = false;
         }
 
-        public virtual void OnRemove()
+        public override void OnReactOperator(string input)
+        {
+            X = ReactOperators[input].Invoke(Ynum, Xnum);
+            prev = "operator";
+        }
+
+        public override void OnRemove()
         {
             if (X.Length <= 1)
                 X = "0";
             else
                 X = X.Remove(X.Length - 1, 1);
             prev = "number";
+        }
+
+        public void OnDot(string input)
+        {
+            if (!X.Contains(input))
+            {
+                X += input;
+                isEnd = false;
+            }
         }
 
         //ReactOperators
@@ -347,10 +229,30 @@ namespace ProfCalculator.Services
             return (x / y).ToString();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        public override CalcData GetData()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+            return new StandardCalcData()
+            {
+                X = X,
+                Y = Y,
+                Info = Info,
+                prev = prev,
+                activeOp = activeOp,
+                isEnd = isEnd,
+                temp = temp
+            };
+        }
+
+        public override void SetData(CalcData data)
+        {
+            var d = data as StandardCalcData;
+            X = d.X;
+            Y = d.Y;
+            Info = d.Info;
+            prev = d.prev;
+            activeOp = d.activeOp;
+            isEnd = d.isEnd;
+            temp = d.temp;
         }
     }
 }
