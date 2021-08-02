@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProfCalculator.Services.DataTransfer
+namespace ProfCalculator.Services
 {
     public class CalcData : INotifyPropertyChanged
     {

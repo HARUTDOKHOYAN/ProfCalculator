@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProfCalculator.Services.DataTransfer
+namespace ProfCalculator.Services
 {
     class StandardCalcData: CalcData
     {
