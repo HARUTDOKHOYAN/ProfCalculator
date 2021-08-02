@@ -10,66 +10,56 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.ViewManagement;
 
-namespace ProfCalculator.ViewModel
+namespace ProfCalculator
 {
     public class StandardViewModel : INotifyPropertyChanged
     {
         public StandardViewModel()
         {
-            var blue = "#b4d8fa";
-            var gray = "#d5e7f7";
-
-            UIButtons = new ObservableCollection<UIButton>()
+            buttoncontents = new ObservableCollection<Buttoncontent>()
             {
-                new UIButton { Content = "%", Color = blue},
-                new UIButton { Content = "CE", Color = blue},
-                new UIButton { Content = "C",  Color = blue},
-                new UIButton { Content = "<", Color = blue },
-                new UIButton { Content = "1/x", Color = blue},
-                new UIButton { Content = "√", Color = blue},
-                new UIButton { Content = "x^2", Color = blue},
-                new UIButton { Content = "/", Color = blue},
-                new UIButton { Content = "7", Color = gray},
-                new UIButton { Content = "8", Color = gray},
-                new UIButton { Content = "9", Color = gray},
-                new UIButton { Content = "X", Color = blue},
-                new UIButton { Content = "4", Color = gray},
-                new UIButton { Content = "5", Color = gray},
-                new UIButton { Content = "6", Color = gray},
-                new UIButton { Content = "-", Color = blue},
-                new UIButton { Content = "1", Color = gray},
-                new UIButton { Content = "2", Color = gray},
-                new UIButton { Content = "3", Color = gray},
-                new UIButton { Content = "+", Color = blue},
-                new UIButton { Content = "+/-", Color = gray},
-                new UIButton { Content = "0", Color = gray},
-                new UIButton { Content = ".", Color = gray},
-                new UIButton { Content = "=", Color = blue},
-            };
+                new Buttoncontent { Content = "%", Width = 100 ,Height = 30 , Color = "#b4d8fa",},
+                new Buttoncontent { Content = "CE",Width = 100 ,Height = 30 , Color = "#b4d8fa"},
+                new Buttoncontent { Content = "C"  ,Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "<" ,Width = 100 ,Height = 30 ,Color = "#b4d8fa" },
+                new Buttoncontent { Content = "1/x" ,Width = 100,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "√",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "x^2",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "/",  Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "7",  Width = 100 ,Height = 30 ,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "8",  Width = 100 ,Height = 30 ,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "9",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "X",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "4",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "5",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "6",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "-",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "1",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "2",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "3",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "+",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
+                new Buttoncontent { Content = "+/-", Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "0",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = ".",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
+                new Buttoncontent { Content = "=",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
+        };
 
-            Visibility = false;
+            VISIBLITY = false;
+    }
+        private bool visiblity;
+        public bool VISIBLITY 
+        { 
+            get 
+            { 
+                return visiblity; 
+            } 
+            set 
+            {
+                visiblity = value;
+                OnPropertyChanged("VISIBLITY");
+            } 
         }
-
-        private bool visibility;
-        public bool Visibility 
-        {
-            get => visibility;
-            set { visibility = value;  OnPropertyChanged(); } 
-        }
-
-        public ObservableCollection<UIButton> UIButtons { get; set; }
-
-        public void WidthChange(double width)
-        {
-            foreach (var item in UIButtons)
-                item.Width = width / 4.2;
-        }
-
-        public void HeightChange(double height)
-        {
-            foreach (var item in UIButtons)
-                item.Height = (height / 6);
-        }
+        public ObservableCollection<Buttoncontent> buttoncontents { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
@@ -78,5 +68,28 @@ namespace ProfCalculator.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
 
+
+        internal void WidthCheing(double width)
+        {
+
+            foreach (var item in buttoncontents)
+            {
+
+                item.Width = width /4.2;
+
+
+            }
+        }
+
+        internal void HeightCheing(double height)
+        {
+            foreach (var item in buttoncontents)
+            {
+                //height = height - 119.7;
+                item.Height = (height/6);
+            }
+        }                   
+
+        
     }
 }

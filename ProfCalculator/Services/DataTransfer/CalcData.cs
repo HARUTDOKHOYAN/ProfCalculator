@@ -8,11 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.Services
 {
-    public interface ICalcData
-    {
-
-    }
-    public class CalcData : INotifyPropertyChanged, ICalcData
+    public class CalcData : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

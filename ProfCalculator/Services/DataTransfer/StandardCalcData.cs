@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.Services
 {
-    public class StandardCalcData: CalcData
+    class StandardCalcData: CalcData
     {
         private string _x;
         public string X
