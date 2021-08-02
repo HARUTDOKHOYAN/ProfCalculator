@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 
 namespace ProfCalculator.Services
 {
-    abstract class BaseCalc : INotifyPropertyChanged
+    public abstract class BaseCalc : INotifyPropertyChanged
     {
         protected List<string> Numbers;
         protected Dictionary<string, Func<double, double, string>> Operators = new Dictionary<string, Func<double, double, string>>();
@@ -72,8 +72,8 @@ namespace ProfCalculator.Services
         public abstract void OnRemove();
 
         //Export and Import Data
-        public abstract CalcData GetData();
-        public abstract void SetData(CalcData data);
+        public abstract ICalcData GetData();
+        public abstract void SetData(ICalcData data);
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
