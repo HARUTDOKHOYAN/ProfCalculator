@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using ProfCalculator.Services;
 
 namespace ProfCalculator.Models
 {
@@ -20,20 +21,20 @@ namespace ProfCalculator.Models
             set
             {
                 _content = value;
-                OnPropertyChanged("Content");
+                OnPropertyChanged();
             }
         }
-        private string _histeryList;
-        public string HisteryList
+        private string _historyList;
+        public string HistoryList
         {
             get
             {
-                return _histeryList;
+                return _historyList;
             }
             set
             {
-                _histeryList = value;
-                OnPropertyChanged("HisteryList");
+                _historyList = value;
+                OnPropertyChanged();
             }
         }
         private string _memoryList;
@@ -46,10 +47,17 @@ namespace ProfCalculator.Models
             set
             {
                 _memoryList = value;
-                OnPropertyChanged("MemoryList");
+                OnPropertyChanged();
             }
         }
-        private string _x ;
+        private CalcData _calcData;
+        public CalcData CalcData
+        {
+            get { return _calcData; }
+            set { _calcData = value; OnPropertyChanged(); }
+        }
+
+        private string _x;
         public string X
         {
             get { return _x; }
@@ -68,7 +76,7 @@ namespace ProfCalculator.Models
             set
             {
                 _visibility = value;
-                OnPropertyChanged("Visibility");
+                OnPropertyChanged();
             }
         }
         public event PropertyChangedEventHandler PropertyChanged;

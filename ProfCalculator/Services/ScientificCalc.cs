@@ -4,13 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProfCalculator.Models
+namespace ProfCalculator.Services
 {
-    class StandardCheckButton
+    class ScientificCalc: StandardCalc
     {
-        public StandardCheckButton(string buttonName)
+        public ScientificCalc()
         {
-
         }
+
+        
     }
+
+    
 }
