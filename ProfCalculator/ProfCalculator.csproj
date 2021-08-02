@@ -122,14 +122,12 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\MemoryCell.cs" />
-    <Compile Include="Models\UIButton.cs" />
-    <Compile Include="Models\HistoryCell.cs" />
+    <Compile Include="Models\Buttoncontent.cs" />
+    <Compile Include="Models\HistoryCalculator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\SidebarViewModel.cs" />
     <Compile Include="Services\DataTransfer\CalcData.cs" />
     <Compile Include="Services\Abstract\BaseCalc.cs" />
-    <Compile Include="Services\ScientificCalc.cs" />
     <Compile Include="Services\StandardCalc.cs" />
     <Compile Include="Services\DataTransfer\StandardCalcData.cs" />
     <Compile Include="Templates\CalculatorTemplateSelector.cs" />
@@ -152,9 +150,8 @@
     <Compile Include="Templates\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModel\HistoryCalculatorViewModel.cs" />
-    <Compile Include="ViewModel\ScientificViewModel.cs" />
-    <Compile Include="ViewModel\StandardViewModel.cs" />
+    <Compile Include="VIewModel\HistoryCalculatorVM.cs" />
+    <Compile Include="VIewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

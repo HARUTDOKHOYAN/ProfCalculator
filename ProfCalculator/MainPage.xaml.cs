@@ -6,6 +6,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using ProfCalculator.Models;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -20,9 +21,24 @@ namespace ProfCalculator
         {
             this.InitializeComponent();
             sidebarViewModel = new SidebarViewModel();
+            _uiViewModel = new StandardViewModel();
         }
 
+
+
+
         private SidebarViewModel sidebarViewModel;
+        public StandardViewModel _uiViewModel
+        {
+            get { return (StandardViewModel)GetValue(_uiViewModelProperty); }
+            set { SetValue(_uiViewModelProperty, value); }
+        }
+
+        
+        public static readonly DependencyProperty _uiViewModelProperty =
+            DependencyProperty.Register("_uiViewModel", typeof(StandardViewModel), typeof(MainPage), new PropertyMetadata(0));
+
+
 
         
         private void Menu_Click(object sender, RoutedEventArgs e)
