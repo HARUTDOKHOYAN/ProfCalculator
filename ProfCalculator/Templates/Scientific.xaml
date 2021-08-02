@@ -29,7 +29,7 @@
                    Grid.Column="0"
                    Height="30" 
                    
-                   Text="{x:Bind _scientificCalc.LineString , Mode=OneWay}" 
+                   Text="{x:Bind _scientificCalc.LineString, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />

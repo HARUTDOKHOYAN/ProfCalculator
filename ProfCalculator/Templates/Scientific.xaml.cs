@@ -18,12 +18,19 @@ namespace ProfCalculator.Templates
             scientificViewModel = new ScientificViewModel();
             historyCalculatorViewModel = new HistoryCalculatorViewModel();
             _scientificCalc = new ScientificCalc();
-
         }
-        private ScientificCalc _scientificCalc;
+
+        //private ScientificCalc _scientificCalc;
+        public static readonly DependencyProperty _scientificCalcProperty =
+            DependencyProperty.Register(nameof(_scientificCalc), typeof(ScientificCalc), typeof(Scientific), new PropertyMetadata(null));
+        public ScientificCalc _scientificCalc
+        {
+            get { return (ScientificCalc)GetValue(_scientificCalcProperty); }
+            set { SetValue(_scientificCalcProperty, value); }
+        }
 
         public static readonly DependencyProperty _historyCalculatorVMProperty =
-            DependencyProperty.Register(nameof(historyCalculatorViewModel), typeof(HistoryCalculatorViewModel), typeof(Standard), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(historyCalculatorViewModel), typeof(HistoryCalculatorViewModel), typeof(Scientific), new PropertyMetadata(null));
         public HistoryCalculatorViewModel historyCalculatorViewModel
         {
             get { return (HistoryCalculatorViewModel)GetValue(_historyCalculatorVMProperty); }
@@ -31,7 +38,7 @@ namespace ProfCalculator.Templates
         }
 
         public static readonly DependencyProperty uiViewModelProperty =
-            DependencyProperty.Register(nameof(scientificViewModel), typeof(ScientificViewModel), typeof(Standard), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(scientificViewModel), typeof(ScientificViewModel), typeof(Scientific), new PropertyMetadata(null));
         public ScientificViewModel scientificViewModel
         {
             get { return (ScientificViewModel)GetValue(uiViewModelProperty); }

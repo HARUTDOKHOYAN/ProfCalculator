@@ -10,19 +10,17 @@ namespace ProfCalculator.Services {
     //Move all operators into the base class
     public class StandardCalc : BaseCalc
     {
-        public StandardCalc()
+        public StandardCalc(): base()
         {
-            Operators.Add("+", Add);
-            Operators.Add("-", Subtract);
-            Operators.Add("X", Multiply);
-            Operators.Add("/", Divide);
-
             ReactOperators.Add("+/-", Negate);
             ReactOperators.Add("x^2", Square);
             ReactOperators.Add("√", Root);
             ReactOperators.Add("1/x", BelowOne);
             ReactOperators.Add("%", Precent);
         }
+
+
+        protected Dictionary<string, Func<double, string[]>> ReactOperators = new Dictionary<string, Func<double, string[]>>();
 
         private string _y;
         private string _x = "0";
@@ -72,7 +70,13 @@ namespace ProfCalculator.Services {
             if (isCatch)
                 return true;
 
-            //ON DOT
+            //REACT OPERATOR
+            else if (ReactOperators.Keys.Contains(input))
+            {
+                OnReactOperator(input);
+                return true;
+            }
+            //DOT
             if (input == ".")
             {
                 OnDot(input);
@@ -151,17 +155,24 @@ namespace ProfCalculator.Services {
 
         public override void OnReactOperator(string input)
         {
-            X = ReactOperators[input].Invoke(Ynum, Xnum);
+            var res = ReactOperators[input].Invoke(Xnum);
+            X = res[0];
+            if(res[1] != "")
+                Info = $"{res[1]}({res[0]})";
+
             prev = "operator";
         }
 
         public override void OnRemove()
         {
-            if (X.Length <= 1)
-                X = "0";
-            else
-                X = X.Remove(X.Length - 1, 1);
-            prev = "number";
+            if (prev == "number")
+            {
+                if (X.Length <= 1)
+                    X = "0";
+                else
+                    X = X.Remove(X.Length - 1, 1);
+                prev = "number";
+            }
         }
 
         public void OnDot(string input)
@@ -174,58 +185,41 @@ namespace ProfCalculator.Services {
         }
 
         //ReactOperators
-        public virtual string Negate(double x, double y)
+        public virtual string[] Negate(double x)
         {
-            var str = y.ToString();
-            Info = $"negate({str})";
-            return str[0] == '-' ? str.Remove(0, 1) : "-" + str;
+            var str = x.ToString();
+            var num = str[0] == '-' ? str.Remove(0, 1) : "-" + str;
+            var info = "negate";
+            return new[] { num, info };
         }
 
-        public virtual string Square(double x, double y)
+        public virtual string[] Square(double x)
         {
-            Info = $"sqr({y})";
-            return (y * y).ToString();
+            var num = (x * x).ToString();
+            var info = $"sqr";
+            return new[] { num, info };
         }
 
-        public virtual string Root(double x, double y)
+        public virtual string[] Root(double x)
         {
-            Info = $"√({y})";
-            var result = Math.Sqrt(Convert.ToDouble(y));
-            return double.IsNaN(result) ? INVALID_INPUT_MESSAGE : result.ToString();
+            var result = Math.Sqrt(Convert.ToDouble(x));
+            var num = double.IsNaN(result) ? INVALID_INPUT_MESSAGE : result.ToString();
+            var info = "√";
+            return new[] { num, info };
         }
 
-        public virtual string BelowOne(double x, double y)
+        public virtual string[] BelowOne(double x)
         {
-            Info = $"1/({y})";
-            return Divide(1, y);
+            var num = Divide(1, x);
+            var info = "1/";
+            return new[] { num, info };
         }
 
-        public virtual string Precent(double x, double y)
+        public virtual string[] Precent(double x)
         {
-            return (x / 100 * y).ToString();
-        }
-
-        //Operators
-        public virtual string Add(double x, double y)
-        {
-            return (x + y).ToString();
-        }
-
-        public virtual string Subtract(double x, double y)
-        {
-            return (x - y).ToString();
-        }
-
-        public virtual string Multiply(double x, double y)
-        {
-            return (x * y).ToString();
-        }
-
-        public virtual string Divide(double x, double y)
-        {
-            if (y == 0)
-                return DIVIDE_BY_ZERO_MESSAGE;
-            return (x / y).ToString();
+            var num = (x / 100 * Xnum).ToString();
+            var info = "";
+            return new[] { num, info };
         }
 
         public override ICalcData GetData()
