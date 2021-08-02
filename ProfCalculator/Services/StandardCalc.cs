@@ -12,8 +12,6 @@ namespace ProfCalculator.Services {
     {
         public StandardCalc()
         {
-            Numbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
-
             Operators.Add("+", Add);
             Operators.Add("-", Subtract);
             Operators.Add("X", Multiply);

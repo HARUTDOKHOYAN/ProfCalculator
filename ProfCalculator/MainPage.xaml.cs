@@ -1,4 +1,4 @@
-﻿using ProfCalculator.Models;
+﻿using ProfCalculator.ViewModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;

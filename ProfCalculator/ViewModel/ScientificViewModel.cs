@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProfCalculator.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -6,44 +7,69 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using ProfCalculator.Models;
+using Windows.Foundation;
+using Windows.UI.ViewManagement;
 
 namespace ProfCalculator.ViewModel
 {
-    class ScientificViewModel: INotifyPropertyChanged
+    public class ScientificViewModel : INotifyPropertyChanged
     {
         public ScientificViewModel()
         {
-            buttoncontents = new ObservableCollection<UIButton>()
+            var blue = "#b4d8fa";
+            var gray = "#d5e7f7";
+
+            UIButtons = new ObservableCollection<UIButton>()
             {
-                new UIButton { Content = "%", Width = 100 ,Height = 30 , Color = "#b4d8fa",},
-                new UIButton { Content = "CE",Width = 100 ,Height = 30 , Color = "#b4d8fa"},
-                new UIButton { Content = "C"  ,Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
-                new UIButton { Content = "<" ,Width = 100 ,Height = 30 ,Color = "#b4d8fa" },
-                new UIButton { Content = "1/x" ,Width = 100,Height = 30 ,Color = "#b4d8fa"},
-                new UIButton { Content = "√",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
-                new UIButton { Content = "x^2",Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
-                new UIButton { Content = "/",  Width = 100 ,Height = 30 ,Color = "#b4d8fa"},
-                new UIButton { Content = "7",  Width = 100 ,Height = 30 ,Color = "#d5e7f7"},
-                new UIButton { Content = "8",  Width = 100 ,Height = 30 ,Color = "#d5e7f7"},
-                new UIButton { Content = "9",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "X",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
-                new UIButton { Content = "4",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "5",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "6",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "-",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
-                new UIButton { Content = "1",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "2",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "3",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "+",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
-                new UIButton { Content = "+/-", Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "0",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = ".",  Width = 100 ,Height = 30,Color = "#d5e7f7"},
-                new UIButton { Content = "=",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
+                new UIButton { Content = "%", Color = blue},
+                new UIButton { Content = "CE", Color = blue},
+                new UIButton { Content = "C",  Color = blue},
+                new UIButton { Content = "<", Color = blue },
+                new UIButton { Content = "1/x", Color = blue},
+                new UIButton { Content = "√", Color = blue},
+                new UIButton { Content = "x^2", Color = blue},
+                new UIButton { Content = "/", Color = blue},
+                new UIButton { Content = "7", Color = gray},
+                new UIButton { Content = "8", Color = gray},
+                new UIButton { Content = "9", Color = gray},
+                new UIButton { Content = "X", Color = blue},
+                new UIButton { Content = "4", Color = gray},
+                new UIButton { Content = "5", Color = gray},
+                new UIButton { Content = "6", Color = gray},
+                new UIButton { Content = "-", Color = blue},
+                new UIButton { Content = "1", Color = gray},
+                new UIButton { Content = "2", Color = gray},
+                new UIButton { Content = "3", Color = gray},
+                new UIButton { Content = "+", Color = blue},
+                new UIButton { Content = "+/-", Color = gray},
+                new UIButton { Content = "0", Color = gray},
+                new UIButton { Content = ".", Color = gray},
+                new UIButton { Content = "=", Color = blue},
             };
+
+            Visibility = false;
         }
 
-        public ObservableCollection<UIButton> buttoncontents { get; set; }
+        private bool visibility;
+        public bool Visibility
+        {
+            get => visibility;
+            set { visibility = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<UIButton> UIButtons { get; set; }
+
+        public void WidthChange(double width)
+        {
+            foreach (var item in UIButtons)
+                item.Width = width / 4.2;
+        }
+
+        public void HeightChange(double height)
+        {
+            foreach (var item in UIButtons)
+                item.Height = (height / 6);
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")
@@ -51,5 +77,6 @@ namespace ProfCalculator.ViewModel
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(prop));
         }
+
     }
 }
