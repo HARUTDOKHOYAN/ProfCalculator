@@ -13,7 +13,7 @@
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
         <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -41,33 +41,33 @@
                    FontSize="40" 
                    Grid.Row="1" >
             </TextBlock>
-            
+
             <TextBlock x:Name="Hex"
                    Grid.Row="2" 
                    Text="Hex"
                    Height="25"
                    FontSize="15"/>
-            
+
             <TextBlock x:Name="Dec"
                    Grid.Row="3" 
                    Text="Dec"
                    Height="25"
                    FontSize="15"/>
- 
+
             <TextBlock x:Name="Oct" 
                    Grid.Row="4" 
                    Text="Oct"
                    Height="25"
                    FontSize="15"/>
-         
+
             <TextBlock x:Name="Bin" 
                    Grid.Row="5" 
                    Text="Bin"
                    Height="25"
                    FontSize="15"/>
-            
+
             <!--Buttens for control-->
-            <StackPanel x:Name="ButtensForControl"
+            <StackPanel x:Name="ButtonsForControl"
                     Height="15"
                     Grid.Row="6" 
                     Orientation="Horizontal">
@@ -101,7 +101,7 @@
                 Margin="100,0,0,0">
                 </Button>
             </StackPanel>
-            
+
             <!--DropDownButtons-->
             <StackPanel x:Name="DropDownButtons"
                     Grid.Row="7" 
@@ -139,34 +139,34 @@
                 </DropDownButton>
             </StackPanel>
         </Grid>
-        
+
         <Grid Grid.Row="1"
               HorizontalAlignment="Stretch"
               SizeChanged="Root_SizeChanged">
-        <!--ProgramerButtons-->
-        <ListView Grid.Row="1"  HorizontalAlignment="Center"
+            <!--ProgramerButtons-->
+            <ListView Grid.Row="1"  HorizontalAlignment="Center"
                   VerticalAlignment="Center"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   ScrollViewer.VerticalScrollBarVisibility="Disabled" 
-                  ItemsSource="{Binding ElementName=Root , Path=_programmerVM.buttonProgrammer}">
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid  MaximumRowsOrColumns="5"
+                  ItemsSource="{Binding ElementName=Root , Path=programmerViewModel.UIButtons}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid  MaximumRowsOrColumns="5"
                                    Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
                         <ListViewItem Style="{StaticResource ListViewItemStyle}"
                             Height="{Binding Height}"
                                       Width="{Binding Width}"                                    
                                       Background="{Binding Color, Mode=OneWay}">
                             <TextBlock Text="{Binding Content, Mode=OneWay}" 
                                        FontSize="25"/>
-                    </ListViewItem>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                        </ListViewItem>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </UserControl>

@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.System
 {
-     class Processor
+    class Processor
     {
-        public virtual string 
     }
 }

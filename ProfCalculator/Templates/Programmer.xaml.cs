@@ -1,4 +1,4 @@
-﻿using ProfCalculator.VIewModel;
+﻿using ProfCalculator.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -17,34 +16,35 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
+// The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace ProfCalculator.Templates
 {
-    public sealed partial class Programmer : UserControl , INotifyPropertyChanged
+    public sealed partial class Programmer : UserControl, INotifyPropertyChanged
     {
         public Programmer()
         {
             this.InitializeComponent();
-            _programmerVM = new ProgrammerVM();
+            programmerViewModel = new ProgrammerViewModel();
         }
 
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            _programmerVM.WidthCheing(e.NewSize.Width);
-            _programmerVM.HeightCheing(e.NewSize.Height);
+            programmerViewModel.WidthChange(e.NewSize.Width);
+            programmerViewModel.HeightChange(e.NewSize.Height);
 
         }
 
 
 
-        public ProgrammerVM _programmerVM
+        public ProgrammerViewModel programmerViewModel
         {
-            get { return (ProgrammerVM)GetValue(_programmerVMProperty); }
-            set { SetValue(_programmerVMProperty, value); }
+            get { return (ProgrammerViewModel)GetValue(programmerViewModelProperty); }
+            set { SetValue(programmerViewModelProperty, value); }
         }
-        public static readonly DependencyProperty _programmerVMProperty =
-            DependencyProperty.Register("_programmerVM", typeof(ProgrammerVM), typeof(Programmer), new PropertyMetadata(0));
+        public static readonly DependencyProperty programmerViewModelProperty =
+            DependencyProperty.Register(nameof(programmerViewModel), typeof(ProgrammerViewModel), typeof(Programmer), new PropertyMetadata(0));
 
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName] string name = null)
