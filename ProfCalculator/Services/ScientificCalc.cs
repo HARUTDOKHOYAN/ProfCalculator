@@ -1,52 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ProfCalculator.Services
 {
-    class StandardCalc : BaseCalc
+    public class ScientificCalc : BaseCalc, INotifyPropertyChanged
     {
-        public StandardCalc(): base()
+        public ScientificCalc(): base()
         {
             ReactOperators.Add("+/-", Negate);
             ReactOperators.Add("x^2", Square);
             ReactOperators.Add("√", Root);
             ReactOperators.Add("1/x", BelowOne);
-            ReactOperators.Add("%", Precent);
-        }
 
+            //Update LineString on ObservableCollection change
+            _line.CollectionChanged += (sender, e) => LineString = "";
+        }
 
         protected Dictionary<string, Func<double, string[]>> ReactOperators = new Dictionary<string, Func<double, string[]>>();
 
-        private string _y;
         private string _x = "0";
-        private string _info;
+        private ObservableCollection<string> _line = new ObservableCollection<string>();
+        private ObservableCollection<string> _underline = new ObservableCollection<string>();
         private string prev = "number";
-        private string activeOp = "";
         private bool isEnd = false;
-        private string temp = "";
 
-        public string Y
+        public ObservableCollection<string> Line
         {
-            get => _y;
-            set { _y = value; OnPropertyChanged(); }
+            get => _line;
+            set { _line = value; OnPropertyChanged(); }
+        }
+        public string LineString
+        {
+            get => string.Join(" ", _line);
+            private set => OnPropertyChanged();
         }
         public string X
         {
             get => _x;
             set { _x = value; OnPropertyChanged(); }
         }
-        public double Ynum
-        {
-            get
-            {
-                if (double.TryParse(_y, out double res))
-                    return res;
-                return 0;
-            }
-        }
+
         public double Xnum
         {
             get
@@ -55,11 +54,6 @@ namespace ProfCalculator.Services
                     return res;
                 return 0;
             }
-        }
-        public string Info
-        {
-            get => _info;
-            set { _info = value; OnPropertyChanged(); }
         }
 
         public override bool Input(string input)
@@ -84,13 +78,20 @@ namespace ProfCalculator.Services
             return false;
         }
 
+        public void OnDot(string input)
+        {
+            if (!X.Contains(input))
+            {
+                X += input;
+                isEnd = false;
+            }
+        }
+
         public override void OnC()
         {
-            temp = "";
-            Y = "";
             X = "0";
-            Info = "";
-            activeOp = "";
+            Line.Clear();
+            _underline.Clear();
             prev = "number";
             isEnd = false;
         }
@@ -103,27 +104,28 @@ namespace ProfCalculator.Services
 
         public override void OnEquals(string input)
         {
-            if (activeOp == "")
+            if(prev == "number")
             {
-                Y = X;
-                Info = $"{Y} =";
-                return;
+                Line.Add(X);
+                _underline.Add(X);
             }
-
-            if (!isEnd)
-                temp = X;
-
-            Info = $"{(Y == "" ? X : Y)} {activeOp} {temp} =";
-            X = temp;
-            X = Y = Operators[activeOp].Invoke(Ynum, Xnum);
-
-            prev = "operator";
+            
+            var str = string.Join(" ", _underline).Replace('X', '*');
+            X = new DataTable().Compute(str, "") + "";
+            _underline.Clear();
+            Line.Add(input);
             isEnd = true;
         }
 
         public override void OnNumber(string input)
         {
-            if (prev == "operator")
+            if (isEnd)
+            {
+                Line.Clear();
+                _underline.Clear();
+                prev = "number";
+            }
+            if (prev == "operator" | prev == "reactOperator")
                 X = input;
             else if (prev == "number")
                 if (X == "0")
@@ -137,16 +139,27 @@ namespace ProfCalculator.Services
 
         public override void OnOperator(string input)
         {
-            if (!isEnd)
+            if (isEnd)
             {
-                if (activeOp != "" & prev == "number")
-                    Y = X = Operators[activeOp].Invoke(Ynum, Xnum);
-                else
-                    Y = X;
+                Line.Clear();
+                _underline.Clear();
+                prev = "number";
+            }
+            var lastItem = Line.Count > 0 ? Line.Last() : "";
+            if (Operators.Keys.Contains(lastItem) & prev == "operator")
+            {
+                Line.RemoveAt(Line.Count - 1);
+                _underline.RemoveAt(_underline.Count - 1);
+
+            } else if (prev == "number")
+            {
+                Line.Add(X);
+                _underline.Add(X);
             }
 
-            activeOp = input;
-            Info = Y + " " + activeOp;
+            Line.Add(input);
+            _underline.Add(input);
+
             prev = "operator";
             isEnd = false;
         }
@@ -154,11 +167,22 @@ namespace ProfCalculator.Services
         public override void OnReactOperator(string input)
         {
             var res = ReactOperators[input].Invoke(Xnum);
+            var info = $"{res[1]}({X})";
             X = res[0];
-            if(res[1] != "")
-                Info = $"{res[1]}({res[0]})";
 
-            prev = "operator";
+            if(Line.Count > 0)
+            {
+                if (!Operators.Keys.Contains(Line.Last()))
+                {
+                    Line.RemoveAt(Line.Count - 1);
+                    _underline.RemoveAt(Line.Count - 1);
+                }
+            }
+
+            Line.Add(info);
+            _underline.Add(res[0]);
+
+            prev = "reactOperator";
         }
 
         public override void OnRemove()
@@ -170,17 +194,7 @@ namespace ProfCalculator.Services
                 else
                     X = X.Remove(X.Length - 1, 1);
                 prev = "number";
-            }
-        }
-
-        public void OnDot(string input)
-        {
-            if (!X.Contains(input))
-            {
-                X += input;
-                isEnd = false;
-            }
-        }
+            }        }
 
         //ReactOperators
         public virtual string[] Negate(double x)
@@ -194,7 +208,7 @@ namespace ProfCalculator.Services
         public virtual string[] Square(double x)
         {
             var num = (x * x).ToString();
-            var info = $"sqr";
+            var info = "sqr";
             return new[] { num, info };
         }
 
@@ -213,37 +227,26 @@ namespace ProfCalculator.Services
             return new[] { num, info };
         }
 
-        public virtual string[] Precent(double x)
+        public override ICalcData GetData()
         {
-            var num = (x / 100 * Xnum).ToString();
-            var info = "";
-            return new[] { num, info };
-        }
-
-        public override CalcData GetData()
-        {
-            return new StandardCalcData()
+            return new ScientificCalcData()
             {
                 X = X,
-                Y = Y,
-                Info = Info,
                 prev = prev,
-                activeOp = activeOp,
                 isEnd = isEnd,
-                temp = temp
+                Line = Line,
+                Underline = _underline
             };
         }
 
-        public override void SetData(CalcData data)
+        public override void SetData(ICalcData data)
         {
-            var d = data as StandardCalcData;
+            var d = data as ScientificCalcData;
             X = d.X;
-            Y = d.Y;
-            Info = d.Info;
             prev = d.prev;
-            activeOp = d.activeOp;
             isEnd = d.isEnd;
-            temp = d.temp;
+            Line = d.Line;
+            _underline = d.Underline;
         }
     }
 }

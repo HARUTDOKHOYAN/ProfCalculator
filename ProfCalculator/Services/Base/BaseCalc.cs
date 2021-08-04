@@ -8,9 +8,16 @@ namespace ProfCalculator.Services
 {
     abstract class BaseCalc : INotifyPropertyChanged
     {
-        protected List<string> Numbers;
+        public BaseCalc()
+        {
+            Operators.Add("+", Add);
+            Operators.Add("-", Subtract);
+            Operators.Add("X", Multiply);
+            Operators.Add("/", Divide);
+        }
+
+        protected List<string> Numbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
         protected Dictionary<string, Func<double, double, string>> Operators = new Dictionary<string, Func<double, double, string>>();
-        protected Dictionary<string, Func<double, double, string>> ReactOperators = new Dictionary<string, Func<double, double, string>>();
 
         protected readonly string DIVIDE_BY_ZERO_MESSAGE = "Cannot divide by zero";
         protected readonly string INVALID_INPUT_MESSAGE = "Invalid input";
@@ -23,12 +30,6 @@ namespace ProfCalculator.Services
             if (Operators.Keys.Contains(input))
             {
                 OnOperator(input);
-                return true;
-            }
-            //REACT OPERATOR
-            else if (ReactOperators.Keys.Contains(input))
-            {
-                OnReactOperator(input);
                 return true;
             }
             //NUMBER
@@ -70,6 +71,30 @@ namespace ProfCalculator.Services
         public abstract void OnC();
         public abstract void OnCE();
         public abstract void OnRemove();
+
+        //Operators
+        public virtual string Add(double x, double y)
+        {
+            return (x + y).ToString();
+        }
+
+        public virtual string Subtract(double x, double y)
+        {
+            return (x - y).ToString();
+        }
+
+        public virtual string Multiply(double x, double y)
+        {
+            return (x * y).ToString();
+        }
+
+        public virtual string Divide(double x, double y)
+        {
+            if (y == 0)
+                return DIVIDE_BY_ZERO_MESSAGE;
+            return (x / y).ToString();
+        }
+
 
         //Export and Import Data
         public abstract CalcData GetData();

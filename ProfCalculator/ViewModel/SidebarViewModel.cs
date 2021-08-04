@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
-namespace ProfCalculator.Models
+namespace ProfCalculator.ViewModel
 {
     public class SidebarViewModel : INotifyPropertyChanged
     {
