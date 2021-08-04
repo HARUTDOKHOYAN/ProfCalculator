@@ -12,9 +12,9 @@ using Windows.UI.ViewManagement;
 
 namespace ProfCalculator.ViewModel
 {
-    public class ScientificViewModel : INotifyPropertyChanged
+    public class StandardViewModel : INotifyPropertyChanged
     {
-        public ScientificViewModel()
+        public StandardViewModel()
         {
             var blue = "#b4d8fa";
             var gray = "#d5e7f7";
@@ -51,10 +51,10 @@ namespace ProfCalculator.ViewModel
         }
 
         private bool visibility;
-        public bool Visibility
+        public bool Visibility 
         {
             get => visibility;
-            set { visibility = value; OnPropertyChanged(); }
+            set { visibility = value;  OnPropertyChanged(); } 
         }
 
         public ObservableCollection<UIButton> UIButtons { get; set; }

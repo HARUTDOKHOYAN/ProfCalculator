@@ -49,7 +49,7 @@
                    Grid.RowSpan="3"
                    x:Name="ListHistoryAndMemory"
                    Visibility="{Binding ElementName=Root,
-                                        Path=uiViewModel.VISIBLITY}"
+                                        Path=standardViewModel.Visibility}"
  
                   
                    VerticalAlignment="Top">
@@ -64,18 +64,16 @@
                     <ListView Grid.Row="1" x:Name="ListHistory"
                                    Width="300"
                                    ItemsSource="{Binding ElementName=Root,
-                                                         Path=_historyCalculatorVM.HistoryList}"
+                                                         Path=historyCalculatorViewModel.HistoryList}"
                                ItemClick="ListHistory_ItemClick"
                                IsItemClickEnabled="True"
                           >
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel HorizontalAlignment="Right">
-                                    <TextBlock Text="{Binding CalcData.Info,
-                                                              Mode=OneWay}" 
+                                    <TextBlock Text="{Binding calcData.Info, Mode=OneWay}"
                                                FontSize="10"/>
-                                    <TextBlock Text="{Binding  CalcData.X,
-                                                               Mode=OneWay}"
+                                    <TextBlock Text="{Binding calcData.X, Mode=OneWay}"
                                                FontSize="25"/>
                                 </StackPanel>
                             </DataTemplate>
@@ -105,10 +103,10 @@
                     <ListView Grid.Row="1" x:Name="ListMemory"
                             Width="300"
                             SelectedItem="{Binding ElementName=Root, 
-                                                    Path=_historyCalculatorVM.SelectedItem,
+                                                    Path=historyCalculatorViewModel.SelectedItem,
                                                     Mode=TwoWay}"
                             ItemsSource="{Binding ElementName=Root , 
-                                                Path=_historyCalculatorVM.MemoryList}"
+                                                Path=historyCalculatorViewModel.MemoryList}"
                             ItemContainerStyle="{StaticResource ListMemoryStyle}"
                                 >
                         <ListView.ItemTemplate>
@@ -117,7 +115,7 @@
                                         PointerExited="ListMemory_PointerCanceled"
                                             Background="Transparent"
                                                 Orientation="Horizontal">
-                                    <TextBlock  Text="{Binding MemoryList,
+                                    <TextBlock  Text="{Binding Number,
                                                                 Mode=OneWay}" 
                                                 FontSize="25"/>
                                     <Button Width="30"
@@ -126,7 +124,7 @@
                                             Padding="0"
                                             Visibility="{Binding Visibility,
                                                                     Mode=OneWay}"
-                                            Click="Button_Click">
+                                            Click="MemoryDelete_Click">
                                         <SymbolIcon  Symbol="Delete"/>
                                             </Button>
                                 </StackPanel>
@@ -139,16 +137,16 @@
         
         
         <!--Calculator-->
-        <ListView  x:Name="ListviewRoot"      
+        <ListView    
                    
                    Grid.Column="0"        
                   Grid.Row="3"  HorizontalAlignment="Center"
-                   ItemClick="ListviewRoot_ItemClick"
+                   ItemClick="ButtonsList_ItemClick"
                    IsItemClickEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
                   ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
-                                        Path=uiViewModel.buttoncontents,
+                                        Path=standardViewModel.UIButtons,
                                         Mode=OneWay}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate >
@@ -164,22 +162,21 @@
                                   Height="{Binding Height , Mode=OneWay}"
                                   Background="{Binding Color ,Mode=OneWay}">
                         <TextBlock Text="{Binding Content ,Mode=OneWay}" 
-                                   FontFamily="{Binding FontFamily,Mode=OneWay}"
                                    FontSize="25"/>
                     </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <!--HistoryCalculator-->
-        <ListView  x:Name="HistoryCalc"      
+        <!--MemoryCalculator-->
+        <ListView  x:Name="MemoryCalc"
                    Height="30"
                    Grid.Column="0"  
                    HorizontalAlignment="Center"
                    Grid.Row="2"  
-                   ItemClick="HistoryCalc_ItemClick"
+                   ItemClick="MemoryCalc_ItemClick"
                    IsItemClickEnabled="True"
-                   ItemsSource="{Binding ElementName=Root , 
-                                        Path=_historyCalculatorVM.HistoryCalculator,
+                   ItemsSource="{Binding ElementName=Root,
+                                        Path=historyCalculatorViewModel.MemoryButtons,
                                         Mode=OneWay}">
             
             <ListView.ItemsPanel>
@@ -193,7 +190,7 @@
                     <ListViewItem Style="{StaticResource ListViewItemStyle}" 
                                   Background="#aed3f2"
                                  >
-                        <TextBlock Text="{Binding Content ,
+                        <TextBlock Text="{Binding Content,
                                                   Mode=OneWay}"  
                                    Margin="20,0,0,00" 
                                    FontSize="20"/>
