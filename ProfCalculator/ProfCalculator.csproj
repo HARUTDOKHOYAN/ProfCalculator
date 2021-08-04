@@ -126,6 +126,13 @@
     <Compile Include="Models\UIButton.cs" />
     <Compile Include="Models\HistoryCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\DataTransfer\ScirentificCalcData.cs" />
+    <Compile Include="System\BinCalc.cs" />
+    <Compile Include="System\DecCalc.cs" />
+    <Compile Include="System\HexCalc.cs" />
+    <Compile Include="System\OctCalc.cs" />
+    <Compile Include="System\ProcessorCalc.cs" />
+    <Compile Include="ViewModel\ProgrammerViewModel.cs" />
     <Compile Include="ViewModel\SidebarViewModel.cs" />
     <Compile Include="Services\DataTransfer\CalcData.cs" />
     <Compile Include="Services\Base\BaseCalc.cs" />

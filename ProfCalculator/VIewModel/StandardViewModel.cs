@@ -68,7 +68,7 @@ namespace ProfCalculator.ViewModel
         public void HeightChange(double height)
         {
             foreach (var item in UIButtons)
-                item.Height = (height / 6);
+                item.Height = height / 6;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

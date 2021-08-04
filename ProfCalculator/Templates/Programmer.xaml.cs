@@ -1,7 +1,10 @@
-﻿using System;
+﻿using ProfCalculator.ViewModel;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -17,11 +20,38 @@ using Windows.UI.Xaml.Navigation;
 
 namespace ProfCalculator.Templates
 {
-    public sealed partial class Programmer : UserControl
+    public sealed partial class Programmer : UserControl, INotifyPropertyChanged
     {
         public Programmer()
         {
             this.InitializeComponent();
+            programmerViewModel = new ProgrammerViewModel();
         }
+
+
+        private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            programmerViewModel.WidthChange(e.NewSize.Width);
+            programmerViewModel.HeightChange(e.NewSize.Height);
+
+        }
+
+
+
+        public ProgrammerViewModel programmerViewModel
+        {
+            get { return (ProgrammerViewModel)GetValue(programmerViewModelProperty); }
+            set { SetValue(programmerViewModelProperty, value); }
+        }
+        public static readonly DependencyProperty programmerViewModelProperty =
+            DependencyProperty.Register(nameof(programmerViewModel), typeof(ProgrammerViewModel), typeof(Programmer), new PropertyMetadata(0));
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+
     }
 }
