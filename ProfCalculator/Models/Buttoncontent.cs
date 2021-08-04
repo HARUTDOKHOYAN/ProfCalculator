@@ -24,21 +24,6 @@ namespace ProfCalculator.Models
             }
         }
 
-        private string _fontFamily;
-
-        public string FontFamily
-        {
-            get 
-            {
-                return _fontFamily; 
-            }
-            set 
-            { 
-                _fontFamily = value;
-                OnPropertyChanged("FontFamily");
-            }
-        }
-
         private double _height;
         public double Height { get 
             {

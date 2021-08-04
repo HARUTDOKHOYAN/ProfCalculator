@@ -26,6 +26,7 @@ namespace ProfCalculator.VIewModel
             MemoryList = new ObservableCollection<HistoryCalculator>();
             HistoryList = new ObservableCollection<HistoryCalculator>();
         }
+
         public ObservableCollection<HistoryCalculator> HistoryCalculator { get; set; }
         public ObservableCollection<HistoryCalculator> HistoryList { get; set; }
         public ObservableCollection<HistoryCalculator> MemoryList { get; set; }
@@ -41,7 +42,7 @@ namespace ProfCalculator.VIewModel
             }
         }
 
-        internal void InputMemory(string content, StandardCalc calc)
+        public void InputMemory(string content, string X)
         {
             if(SelectedItem == null & content != "MS")
             {
@@ -55,34 +56,35 @@ namespace ProfCalculator.VIewModel
             switch (content)
             {
                 case "M+":
-                    SelectedItem.MemoryList = (double.Parse(SelectedItem.MemoryList) + double.Parse(calc.X)).ToString();
+
+                    SelectedItem.MemoryList = (double.Parse(SelectedItem.MemoryList) + double.Parse(X)).ToString();
                     break;
                 case "M-":
-                    SelectedItem.MemoryList = (double.Parse(SelectedItem.MemoryList) - double.Parse(calc.X)).ToString();
+                    SelectedItem.MemoryList = (double.Parse(SelectedItem.MemoryList) - double.Parse(X)).ToString();
                     break;
                 case "MS":
-                    MemoryList.Add(new HistoryCalculator { MemoryList = "0" });
+                    MemoryList.Add(new HistoryCalculator { MemoryList = X });
                     break;
                 case "MC":
                     MemoryList.Clear();
                     break;
                 case "MR":
-                    calc.X = SelectedItem.MemoryList;
+                    X = SelectedItem.MemoryList;
                     break;
             }
         }
 
-        internal void HistoryChange(StandardCalc calc)
+        public void HistoryChange(CalcData Data)
         {
-            HistoryList.Add(new HistoryCalculator { CalcData = calc.GetData() });
+            HistoryList.Add(new HistoryCalculator { CalcData = Data});
         }
 
-        internal void HistoryClear()
+        public void HistoryClear()
         {
             HistoryList.Clear();
         }
 
-        internal void DeleteList(HistoryCalculator data)
+        public void DeleteList(HistoryCalculator data)
         {
             if (MemoryList.Count > 0)
                 MemoryList.Remove(data);

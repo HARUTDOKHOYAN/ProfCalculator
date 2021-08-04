@@ -22,22 +22,7 @@ namespace ProfCalculator.Templates
         }
         private StandardCalc _standardCalc;
 
-        public HistoryCalculatorVM _historyCalculatorVM
-        {
-            get { return (HistoryCalculatorVM)GetValue(_historyCalculatorVMProperty); }
-            set { SetValue(_historyCalculatorVMProperty, value); }
-        }
-        public static readonly DependencyProperty _historyCalculatorVMProperty =
-            DependencyProperty.Register("_historyCalculatorVM", typeof(HistoryCalculatorVM), typeof(Standard), new PropertyMetadata(null));
-
-        public StandardViewModel uiViewModel
-        {
-            get { return (StandardViewModel)GetValue(uiViewModelProperty); }
-            set { SetValue(uiViewModelProperty, value); }
-        }
-        public static readonly DependencyProperty uiViewModelProperty =
-            DependencyProperty.Register("uiViewModel", typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
-
+       
         public event PropertyChangedEventHandler PropertyChanged;
 
         void OnPropertyChanged([CallerMemberName] string name = null)
@@ -69,7 +54,7 @@ namespace ProfCalculator.Templates
             _standardCalc.Input(buttonName.Content); 
             if(buttonName.Content == "=")
             {
-                _historyCalculatorVM.HistoryChange(_standardCalc);
+                _historyCalculatorVM.HistoryChange(_standardCalc.GetData());
                 historyIsEmpty.Visibility = Visibility.Collapsed;
                 HistoryClean.Visibility = Visibility.Visible;
             }
@@ -78,7 +63,7 @@ namespace ProfCalculator.Templates
         private void HistoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
             var buttonName = e.ClickedItem as HistoryCalculator;
-            _historyCalculatorVM.InputMemory(buttonName.Content, _standardCalc);
+            _historyCalculatorVM.InputMemory(buttonName.Content, _standardCalc.X);
             memoryIsEmpty.Visibility = _historyCalculatorVM.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
 
         }
@@ -88,6 +73,7 @@ namespace ProfCalculator.Templates
             var bat = sender as Button;
             var data = bat.DataContext as HistoryCalculator;
             _historyCalculatorVM.DeleteList(data);
+            memoryIsEmpty.Visibility = _historyCalculatorVM.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ListHistory_ItemClick(object sender, ItemClickEventArgs e)
@@ -116,5 +102,22 @@ namespace ProfCalculator.Templates
             var stec = sender as StackPanel;
                 stec.Children[1].Visibility = Visibility.Collapsed;
         }
-    }                                                                 
+
+        public HistoryCalculatorVM _historyCalculatorVM
+        {
+            get { return (HistoryCalculatorVM)GetValue(_historyCalculatorVMProperty); }
+            set { SetValue(_historyCalculatorVMProperty, value); }
+        }
+        public static readonly DependencyProperty _historyCalculatorVMProperty =
+            DependencyProperty.Register("_historyCalculatorVM", typeof(HistoryCalculatorVM), typeof(Standard), new PropertyMetadata(null));
+
+        public StandardViewModel uiViewModel
+        {
+            get { return (StandardViewModel)GetValue(uiViewModelProperty); }
+            set { SetValue(uiViewModelProperty, value); }
+        }
+        public static readonly DependencyProperty uiViewModelProperty =
+            DependencyProperty.Register("uiViewModel", typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
+
+    }
 }                                                                     

@@ -69,7 +69,7 @@ namespace ProfCalculator
         }
 
 
-        internal void WidthCheing(double width)
+        public void WidthCheing(double width)
         {
 
             foreach (var item in buttoncontents)
