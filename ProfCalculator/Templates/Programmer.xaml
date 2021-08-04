@@ -5,9 +5,168 @@
     xmlns:local="using:ProfCalculator.Templates"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
-
+    mc:Ignorable="d"
+    x:Name="Root"
+    >
     <Grid>
-        <TextBlock Text="PROGRAMMER"></TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <TextBlock x:Name="INFO" 
+                   Height="30" 
+                   Text="INFO" 
+                   TextAlignment="End" 
+                   FontSize="20" 
+                   Grid.Row="0"
+                       />
+            <TextBlock x:Name="Xnumber" 
+                   Grid.Column="0"
+                   Height="52" 
+                   Text="Xnumber" 
+                   TextAlignment="End" 
+                   FontSize="40" 
+                   Grid.Row="1" >
+            </TextBlock>
+            
+            <TextBlock x:Name="Hex"
+                   Grid.Row="2" 
+                   Text="Hex"
+                   Height="25"
+                   FontSize="15"/>
+            
+            <TextBlock x:Name="Dec"
+                   Grid.Row="3" 
+                   Text="Dec"
+                   Height="25"
+                   FontSize="15"/>
+ 
+            <TextBlock x:Name="Oct" 
+                   Grid.Row="4" 
+                   Text="Oct"
+                   Height="25"
+                   FontSize="15"/>
+         
+            <TextBlock x:Name="Bin" 
+                   Grid.Row="5" 
+                   Text="Bin"
+                   Height="25"
+                   FontSize="15"/>
+            
+            <!--Buttens for control-->
+            <StackPanel x:Name="ButtensForControl"
+                    Height="15"
+                    Grid.Row="6" 
+                    Orientation="Horizontal">
+                <Button 
+                Background="Transparent"
+                Content="#"
+                Height="34"
+                Width="50"
+                Margin="15,0,0,0">
+                </Button>
+                <Button
+                Background="Transparent"
+                Content="#"
+                Height="34"
+                Width="50"
+                Margin="5,0,0,0">
+                </Button>
+                <Button
+                Background="Transparent"
+                Padding="0"
+                Content="WORD"
+                Height="34"
+                Width="50"
+                Margin="100,0,0,0">
+                </Button>
+                <Button
+                Background="Transparent"
+                Content="MS"
+                Height="34"
+                Width="50"
+                Margin="100,0,0,0">
+                </Button>
+            </StackPanel>
+            
+            <!--DropDownButtons-->
+            <StackPanel x:Name="DropDownButtons"
+                    Grid.Row="7" 
+                    Orientation="Horizontal"
+                    Height="30">
+                <!--BIT SHIFT-->
+                <DropDownButton Content="BitShift"
+                            Margin="10,0,0,0"
+                            Background="Transparent">
+                    <DropDownButton.Flyout>
+                        <Flyout Placement="Bottom">
+                            <StackPanel>
+                                <RadioButton Content="Airthmetic Shift"/>
+                                <RadioButton Content="Logical Shift"/>
+                                <RadioButton Content="Rotate Circular Shift"/>
+                                <RadioButton Content="Rotate Through Carry Circular Shift"/>
+                            </StackPanel>
+                        </Flyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+                <!--Bitwise-->
+                <DropDownButton Content="Bitwise"
+                            Margin="10,0,0,0"
+                            Background="Transparent">
+                    <DropDownButton.Flyout>
+                        <MenuFlyout Placement="Bottom">
+                            <MenuFlyoutItem  Text="AND"/>
+                            <MenuFlyoutItem Text="OR"/>
+                            <MenuFlyoutItem Text="NOT"/>
+                            <MenuFlyoutItem Text="NAND"/>
+                            <MenuFlyoutItem Text="NOR"/>
+                            <MenuFlyoutItem Text="XOR"/>
+                        </MenuFlyout>
+                    </DropDownButton.Flyout>
+                </DropDownButton>
+            </StackPanel>
+        </Grid>
+        
+        <Grid Grid.Row="1"
+              HorizontalAlignment="Stretch"
+              SizeChanged="Root_SizeChanged">
+        <!--ProgramerButtons-->
+        <ListView Grid.Row="1"  HorizontalAlignment="Center"
+                  VerticalAlignment="Center"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
+                  ItemsSource="{Binding ElementName=Root , Path=_programmerVM.buttonProgrammer}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid  MaximumRowsOrColumns="5"
+                                   Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                        <ListViewItem Style="{StaticResource ListViewItemStyle}"
+                            Height="{Binding Height}"
+                                      Width="{Binding Width}"                                    
+                                      Background="{Binding Color, Mode=OneWay}">
+                            <TextBlock Text="{Binding Content, Mode=OneWay}" 
+                                       FontSize="25"/>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        </Grid>
     </Grid>
 </UserControl>

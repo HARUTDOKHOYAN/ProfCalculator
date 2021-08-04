@@ -48,8 +48,6 @@
                                     </VisualState.Setters>
                                 </VisualState>
                                 <VisualState x:Name="PressedSelected">
-                                    <VisualState.Setters>
-                                    </VisualState.Setters>
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="DisabledStates">
@@ -58,6 +56,50 @@
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
                     </ContentPresenter>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="ListMemoryStyle" TargetType="ListViewItem">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Stretch"/>
+    </Style>
+    <Style x:Key="MyStyle" TargetType="ListViewItem">
+        <Setter Property="FontSize" Value="30"/>
+        <Setter Property="Width" Value="30"/>
+        <Setter Property="Height" Value="30"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ListViewItem">
+                    <Grid>
+                        <ContentPresenter FontSize="{TemplateBinding FontSize}" x:Name="Root"
+                                     
+                                      Foreground="{TemplateBinding Foreground}"
+                                       HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                      VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup>
+                                <VisualState>
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="800"/>
+                                        <AdaptiveTrigger MinWindowHeight="800"/>
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.Background" Value="Red"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState>
+                                    <VisualState.StateTriggers>
+                                        <AdaptiveTrigger MinWindowWidth="0"/>
+                                        <AdaptiveTrigger MinWindowHeight="0"/>
+                                    </VisualState.StateTriggers>
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.Background" Value="Yellow"/>
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

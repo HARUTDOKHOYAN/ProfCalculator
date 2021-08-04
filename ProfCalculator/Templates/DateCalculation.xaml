@@ -5,9 +5,40 @@
     xmlns:local="using:ProfCalculator.Templates"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    xmlns:dateTemplates="using:ProfCalculator.Templates.DateTemplates"
+    mc:Ignorable="d"
+    x:Name="root">
 
-    <Grid>
-        <TextBlock Text="PROGRAMMER"></TextBlock>
+    <UserControl.Resources>
+        <DataTemplate x:Key="DifferenceTemplate" >
+            <dateTemplates:Difference/>
+        </DataTemplate>
+        <DataTemplate x:Key="AddSubtractTemplate">
+            <dateTemplates:AddSubtract/>
+        </DataTemplate>
+        <dateTemplates:DateTemplateSelector x:Key="Selector" Difference="{StaticResource DifferenceTemplate}" AddSubtract="{StaticResource AddSubtractTemplate}"/>
+    </UserControl.Resources>
+    <Grid Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="6*"/>
+        </Grid.RowDefinitions>
+        
+        <DropDownButton Content="{Binding ElementName=root, Path=ContentName, Mode=OneWay}" Grid.Row="0" Click="DropDownButton_Click">
+            <DropDownButton.Flyout>
+                <MenuFlyout Placement="Bottom">
+                    <MenuFlyoutItem Click="MenuFlyoutItem_Click_1" Text="Difference between dates"/>
+                    <MenuFlyoutItem Click="MenuFlyoutItem_Click_2" Text="Add or subtract days"/>
+                </MenuFlyout>
+            </DropDownButton.Flyout>
+        </DropDownButton>
+
+        <ContentControl Width="auto" Height="auto" Grid.Row="1"  
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"
+                        Content="{Binding ElementName=root, Path=ContentName, Mode=OneWay}" 
+                        ContentTemplateSelector="{StaticResource Selector}" />
+
     </Grid>
 </UserControl>

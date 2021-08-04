@@ -2,7 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -10,9 +12,9 @@ using Windows.UI.ViewManagement;
 
 namespace ProfCalculator
 {
-    public class UiViewModel
+    public class StandardViewModel : INotifyPropertyChanged
     {
-        public UiViewModel()
+        public StandardViewModel()
         {
             buttoncontents = new ObservableCollection<Buttoncontent>()
             {
@@ -42,9 +44,32 @@ namespace ProfCalculator
                 new Buttoncontent { Content = "=",  Width = 100 ,Height = 30,Color = "#b4d8fa"},
         };
 
+            VISIBLITY = false;
     }
+        private bool visiblity;
+        public bool VISIBLITY 
+        { 
+            get 
+            { 
+                return visiblity; 
+            } 
+            set 
+            {
+                visiblity = value;
+                OnPropertyChanged("VISIBLITY");
+            } 
+        }
+        public ObservableCollection<Buttoncontent> buttoncontents { get; set; }
 
-        internal void WidthCheing(double width)
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void OnPropertyChanged([CallerMemberName] string prop = "")
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(prop));
+        }
+
+
+        public void WidthCheing(double width)
         {
 
             foreach (var item in buttoncontents)
@@ -65,8 +90,6 @@ namespace ProfCalculator
             }
         }                   
 
-        public double Higet { get; set; }
-
-        public ObservableCollection<Buttoncontent> buttoncontents { get; set; }
+        
     }
 }
