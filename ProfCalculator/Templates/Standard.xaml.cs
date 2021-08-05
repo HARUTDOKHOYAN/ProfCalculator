@@ -1,5 +1,5 @@
 ﻿using ProfCalculator.Models;
-using ProfCalculator.VIewModel;
+using ProfCalculator.ViewModel;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -15,115 +15,102 @@ namespace ProfCalculator.Templates
         public Standard()
         {
             this.InitializeComponent();
-            uiViewModel = new StandardViewModel();
-            _historyCalculatorVM = new HistoryCalculatorVM();
+            standardViewModel = new StandardViewModel();
+            historyCalculatorViewModel = new HistoryCalculatorViewModel();
             _standardCalc = new StandardCalc();
 
         }
         private StandardCalc _standardCalc;
 
-        public HistoryCalculatorVM _historyCalculatorVM
+        public static readonly DependencyProperty _historyCalculatorVMProperty =
+            DependencyProperty.Register(nameof(historyCalculatorViewModel), typeof(HistoryCalculatorViewModel), typeof(Standard), new PropertyMetadata(null));
+        public HistoryCalculatorViewModel historyCalculatorViewModel
         {
-            get { return (HistoryCalculatorVM)GetValue(_historyCalculatorVMProperty); }
+            get { return (HistoryCalculatorViewModel)GetValue(_historyCalculatorVMProperty); }
             set { SetValue(_historyCalculatorVMProperty, value); }
         }
-        public static readonly DependencyProperty _historyCalculatorVMProperty =
-            DependencyProperty.Register("_historyCalculatorVM", typeof(HistoryCalculatorVM), typeof(Standard), new PropertyMetadata(null));
 
-        public StandardViewModel uiViewModel
+        public static readonly DependencyProperty uiViewModelProperty =
+            DependencyProperty.Register(nameof(standardViewModel), typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
+        public StandardViewModel standardViewModel
         {
             get { return (StandardViewModel)GetValue(uiViewModelProperty); }
             set { SetValue(uiViewModelProperty, value); }
         }
-        public static readonly DependencyProperty uiViewModelProperty =
-            DependencyProperty.Register("uiViewModel", typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            var v = (ListHistoryAndMemory.SelectedItem as PivotItem).Name;
-            var h = e.NewSize.Height - op.Height - nu.Height - HistoryCalc.Height ;
+            var h = e.NewSize.Height - op.Height - nu.Height - MemoryCalc.Height;
             var w = e.NewSize.Width - ListHistoryAndMemory.Width;
-            uiViewModel.WidthCheing(e.NewSize.Width);
-            uiViewModel.HeightCheing(h);
+            standardViewModel.WidthChange(e.NewSize.Width);
+            standardViewModel.HeightChange(h);
             if (e.NewSize.Width >= 600)
             {
-               uiViewModel.WidthCheing(w);
-                uiViewModel.VISIBLITY = true;
-                if (v == "History")
-                    HisteryClean.Visibility = Visibility.Visible;
+               standardViewModel.WidthChange(w);
+               standardViewModel.Visibility = true;
             }
             else
+                standardViewModel.Visibility = false;
+        }
+
+        private void ButtonsList_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var button = e.ClickedItem as UIButton;
+            _standardCalc.Input(button.Content);
+            if(button.Content == "=")
             {
-                HisteryClean.Visibility = Visibility.Collapsed;
-                uiViewModel.VISIBLITY = false;
+                historyCalculatorViewModel.InputHistory(_standardCalc.GetData());
+                historyIsEmpty.Visibility = Visibility.Collapsed;
+                HistoryClean.Visibility = Visibility.Visible;
             }
-
         }
 
-        private void ListviewRoot_ItemClick(object sender, ItemClickEventArgs e)
+        private void MemoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var buttonName = e.ClickedItem as Buttoncontent;
-            _standardCalc.Input(buttonName.Content);
-            _historyCalculatorVM.Histerycheng(buttonName.Content, _standardCalc);
+            var button = e.ClickedItem as UIButton;
+            var memory = historyCalculatorViewModel.InputMemory(button.Content, _standardCalc.X);
+            if (memory != "")
+                _standardCalc.X = memory;
+            memoryIsEmpty.Visibility = historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void HistoryCalc_ItemClick(object sender, ItemClickEventArgs e)
+        private void MemoryDelete_Click(object sender, RoutedEventArgs e)
         {
-            var buttonName = e.ClickedItem as HistoryCalculator;
-            _historyCalculatorVM.InputMemory(buttonName.Content, _standardCalc);
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            var bat = sender as Button;
-            var data = bat.DataContext as HistoryCalculator;
-            _historyCalculatorVM.DeletList(data);
+            var button = sender as Button;
+            var data = button.DataContext as MemoryCell;
+            historyCalculatorViewModel.RemoveMemory(data);
+            memoryIsEmpty.Visibility = historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void ListHistory_ItemClick(object sender, ItemClickEventArgs e)
         {
-            var list = e.ClickedItem as HistoryCalculator;
-            if(_historyCalculatorVM.HistoryList[0].X != "HistoryList empty")
-            {
-            _standardCalc.X = list.X;
-            _standardCalc.Info = list.Info;
-            }
-        }
-
-        private void ListHistoryAndMemory_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var h = (ListHistoryAndMemory.SelectedItem as PivotItem).Name;
-            if (h == "Memory")
-                HisteryClean.Visibility = Visibility.Collapsed;
-            if (h == "History")
-                HisteryClean.Visibility = Visibility.Visible;
+            var list = e.ClickedItem as HistoryCell;
+            _standardCalc.SetData(list.calcData);
         }
 
         private void ListMemory_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            var stec = sender as StackPanel;
-            if (_historyCalculatorVM.MemoryList[0].MemoryList != "MemoryList empty")
-                stec.Children[1].Visibility = Visibility.Visible;
-        }
-
-        private void HisteryClean_Click(object sender, RoutedEventArgs e)
-        {
-            _historyCalculatorVM.HistoryList.Clear();
-            _historyCalculatorVM.HistoryList.Add(new HistoryCalculator { X = "HistoryList empty", Info = "" });
+            var stackPanel = sender as StackPanel;
+            stackPanel.Children[1].Visibility = Visibility.Visible;
         }
 
         private void ListMemory_PointerCanceled(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            var stec = sender as StackPanel;
-            if(_historyCalculatorVM.HistoryList[0].MemoryList != "MemoryList empty")
-                stec.Children[1].Visibility = Visibility.Collapsed;
+            var stackPanel = sender as StackPanel;
+            stackPanel.Children[1].Visibility = Visibility.Collapsed;
+        }
+
+        private void HistoryClean_Click(object sender, RoutedEventArgs e)
+        {
+            historyCalculatorViewModel.CleanHistory();
+            historyIsEmpty.Visibility = Visibility.Visible;
+            HistoryClean.Visibility = Visibility.Collapsed;
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }                                                                 
 }                                                                     

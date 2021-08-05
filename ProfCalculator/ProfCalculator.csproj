@@ -122,12 +122,24 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Buttoncontent.cs" />
-    <Compile Include="Models\HistoryCalculator.cs" />
+    <Compile Include="Models\MemoryCell.cs" />
+    <Compile Include="Models\UIButton.cs" />
+    <Compile Include="Models\HistoryCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\SidebarViewModel.cs" />
+    <Compile Include="Services\DataTransfer\ScirentificCalcData.cs" />
+    <Compile Include="System\BinCalc.cs" />
+    <Compile Include="System\DecCalc.cs" />
+    <Compile Include="System\HexCalc.cs" />
+    <Compile Include="System\OctCalc.cs" />
+    <Compile Include="System\ProcessorCalc.cs" />
+    <Compile Include="ViewModel\DateViewModel.cs" />
+    <Compile Include="ViewModel\ProgrammerViewModel.cs" />
+    <Compile Include="ViewModel\SidebarViewModel.cs" />
+    <Compile Include="Services\DataTransfer\CalcData.cs" />
+    <Compile Include="Services\Base\BaseCalc.cs" />
     <Compile Include="Services\ScientificCalc.cs" />
     <Compile Include="Services\StandardCalc.cs" />
+    <Compile Include="Services\DataTransfer\StandardCalcData.cs" />
     <Compile Include="Templates\CalculatorTemplateSelector.cs" />
     <Compile Include="Templates\DateCalculation.xaml.cs">
       <DependentUpon>DateCalculation.xaml</DependentUpon>
@@ -148,9 +160,9 @@
     <Compile Include="Templates\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="VIewModel\HistoryCalculatorVM.cs" />
-    <None Include="TEMPORARYStandard.xaml.temp" />
-    <Compile Include="VIewModel\StandardViewModel.cs" />
+    <Compile Include="ViewModel\HistoryCalculatorViewModel.cs" />
+    <Compile Include="ViewModel\ScientificViewModel.cs" />
+    <Compile Include="ViewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
