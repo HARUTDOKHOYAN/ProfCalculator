@@ -145,6 +145,7 @@
     <Compile Include="Templates\Standard.xaml.cs">
       <DependentUpon>Standard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="VIewModel\DateViewModel.cs" />
     <Compile Include="VIewModel\StandardViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
