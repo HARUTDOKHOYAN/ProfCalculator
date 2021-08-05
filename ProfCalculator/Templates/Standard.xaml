@@ -10,27 +10,131 @@
 
 
 
-    <Grid Background="Transparent">
+    <Grid >
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition  Height="auto" 
+                            MaxHeight="32"/>
+            <RowDefinition   Height="auto" 
+                             MaxHeight="52"/>
+            <RowDefinition Height="auto" 
+                             MaxHeight="50"/>
+            <RowDefinition/>
+
         </Grid.RowDefinitions>
-        <TextBlock x:Name="op" Height="27" Text="{Binding ElementName=Root, Path=YNumber, Mode=OneWay}" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition  Width="auto" />
+        </Grid.ColumnDefinitions>
+        <Button Grid.Row="0" 
+                x:Name="HisteryClean"
+                Grid.Column="1" 
+                HorizontalAlignment="Right"
+                Visibility="Visible"
+                Padding="0"
+                Height="30"
+                Width="30"
+                Click="HisteryClean_Click"
+               >
+            
+            <SymbolIcon  Symbol="Delete"/>
+        </Button>
+        <TextBlock x:Name="op" 
+                   Grid.Column="0"
+                   Height="30" 
+                   
+                   Text="{x:Bind _standardCalc.Info , Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
-        <TextBlock x:Name="nu" Height="52" Text="{Binding ElementName=Root, Path=XNumber, Mode=OneWay}" 
+        <TextBlock x:Name="nu" 
+                   Grid.Column="0"
+                   Height="52" 
+                   Text="{x:Bind _standardCalc.X , Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" >
-
         </TextBlock>
-        <ListView  x:Name="ListviewRoot"              
-                  Grid.Row="2"  HorizontalAlignment="Center"
+        <!--ListHistoryAndMemory-->
+            <Pivot Width="300" 
+                   Grid.Column="1"
+                   Grid.Row="1"
+                   Grid.RowSpan="3" SelectionChanged="ListHistoryAndMemory_SelectionChanged"
+                   x:Name="ListHistoryAndMemory"
+                   Visibility="{Binding ElementName=Root,
+                                        Path=uiViewModel.VISIBLITY}"
+ 
+                  
+                   VerticalAlignment="Top">
+            <PivotItem x:Name="History" Header="History">
+                <ListView  x:Name="ListHistory"
+                                   Grid.Row="0"
+                                   Width="300"
+                                   ItemsSource="{Binding ElementName=Root , 
+                                                         Path=_historyCalculatorVM.HistoryList}"
+                               ItemClick="ListHistory_ItemClick"
+                               IsItemClickEnabled="True"
+                          >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel HorizontalAlignment="Right">
+                                <TextBlock Text="{Binding Info , 
+                                                              Mode=TwoWay}" 
+                                               FontSize="10"/>
+                                <TextBlock Text="{Binding  X,
+                                                               Mode=TwoWay}"
+                                               FontSize="25"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </PivotItem>
+            <PivotItem Header="Memory" x:Name="Memory">
+                    <ListView  x:Name="ListMemory"
+                          Width="300"
+                          SelectedItem="{Binding ElementName=Root, 
+                                                 Path=_historyCalculatorVM.SelectedItems,
+                                                 Mode=TwoWay
+                                       }"     
+                          ItemsSource="{Binding ElementName=Root , 
+                                                Path=_historyCalculatorVM.MemoryList
+                                       }"
+                          ItemContainerStyle="{StaticResource ListMemoryStyle}"
+                              >
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                            <StackPanel PointerEntered="ListMemory_PointerEntered"
+                                        PointerExited="ListMemory_PointerCanceled"
+                                            Background="Transparent"
+                                              Orientation="Horizontal">
+                                    <TextBlock  Text="{Binding MemoryList,
+                                                               Mode=OneWay}" 
+                                                FontSize="25"/>
+                                    <Button Width="30"
+                                            Height="30" 
+                                            Margin="20,5,5,5"
+                                            Padding="0"
+                                            Visibility="{Binding Visibility,
+                                                                 Mode=OneWay}"
+                                            Click="Button_Click">
+                                        <SymbolIcon  Symbol="Delete"/>
+                                            </Button>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </PivotItem>
+            </Pivot>
+        
+        
+        <!--Calculator-->
+        <ListView  x:Name="ListviewRoot"      
+                   
+                   Grid.Column="0"        
+                  Grid.Row="3"  HorizontalAlignment="Center"
                    ItemClick="ListviewRoot_ItemClick"
                    IsItemClickEnabled="True"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                  ScrollViewer.VerticalScrollBarVisibility="Disabled" 
                   ItemsSource="{Binding ElementName=Root , 
                                         Path=uiViewModel.buttoncontents,
                                         Mode=OneWay}">
@@ -50,6 +154,37 @@
                         <TextBlock Text="{Binding Content ,Mode=OneWay}" 
                                    FontFamily="{Binding FontFamily,Mode=OneWay}"
                                    FontSize="25"/>
+                    </ListViewItem>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <!--HistoryCalculator-->
+        <ListView  x:Name="HistoryCalc"      
+                   Height="30"
+                   Grid.Column="0"  
+                   HorizontalAlignment="Center"
+                   Grid.Row="2"  
+                   ItemClick="HistoryCalc_ItemClick"
+                   IsItemClickEnabled="True"
+                   ItemsSource="{Binding ElementName=Root , 
+                                        Path=_historyCalculatorVM.HistoryCalculator,
+                                        Mode=OneWay}">
+            
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate >
+                    <ItemsWrapGrid  MaximumRowsOrColumns="5"
+                                    Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ListViewItem Style="{StaticResource ListViewItemStyle}" 
+                                  Background="#aed3f2"
+                                 >
+                        <TextBlock Text="{Binding Content ,
+                                                  Mode=OneWay}"  
+                                   Margin="20,0,0,00" 
+                                   FontSize="20"/>
                     </ListViewItem>
                 </DataTemplate>
             </ListView.ItemTemplate>
