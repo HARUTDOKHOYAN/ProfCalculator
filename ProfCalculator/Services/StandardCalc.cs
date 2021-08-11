@@ -12,6 +12,7 @@ namespace ProfCalculator.Services {
     {
         public StandardCalc(): base()
         {
+
             ReactOperators.Add("+/-", Negate);
             ReactOperators.Add("x^2", Square);
             ReactOperators.Add("√", Root);
