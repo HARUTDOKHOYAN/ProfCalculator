@@ -16,7 +16,6 @@
             <RowDefinition/>
             <RowDefinition/>
             <RowDefinition/>
-            
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -73,7 +72,7 @@
                     </Flyout>
                 </DropDownButton.Flyout>
             </DropDownButton>
-            
+
         </Grid>
 
         <Grid Grid.Row="4" Grid.ColumnSpan="3">
@@ -85,8 +84,6 @@
             <TextBlock FontSize="20" Text="Date" Grid.Row="0"/>
             <TextBlock FontSize="25" Text="{Binding ElementName=Root, Path=Result, Mode=OneWay}" Grid.Row="1"/>
         </Grid>
-
-        
 
 
     </Grid>

@@ -1,20 +1,9 @@
-﻿using ProfCalculator.ViewModel;
-using System;
-using System.Collections.Generic;
+using ProfCalculator.Models;
+using ProfCalculator.ViewModel;
 using System.ComponentModel;
-using System.IO;
-using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -26,6 +15,7 @@ namespace ProfCalculator.Templates
         {
             this.InitializeComponent();
             programmerViewModel = new ProgrammerViewModel();
+            _historyCalculatorViewModel = new HistoryCalculatorViewModel();
         }
 
 
@@ -33,18 +23,91 @@ namespace ProfCalculator.Templates
         {
             programmerViewModel.WidthChange(e.NewSize.Width);
             programmerViewModel.HeightChange(e.NewSize.Height);
+        }
 
+        private void MemoryCalc_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var button = e.ClickedItem as UIButton;
+            var memory = _historyCalculatorViewModel.InputMemory(button.Content, programmerViewModel.displayInfo.Display);
+            if (memory != "")
+               programmerViewModel.displayInfo.Display = memory;
+            memoryIsEmpty.Visibility = _historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+        }
+        private void ProgramerButtons_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var button = e.ClickedItem as UIButton;
+            programmerViewModel.displayInfo.Display = programmerViewModel.displayInfo.Display + button.Content;
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
+            programmerViewModel.Input(button.Content);
+        }
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 600)
+            {
+                programmerViewModel.Visibility = true;
+            }
+            else
+                programmerViewModel.Visibility = false;
+        }
+
+        private void BIN_Click(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            programmerViewModel.displayInfo.Display = BinNum.Text;
+            programmerViewModel.displayInfo.CalculatorModе = but.Name;
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
+        }
+
+        private void OCT_Click(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+             programmerViewModel.displayInfo.CalculatorModе = but.Name;
+            programmerViewModel.displayInfo.Display = OctNum.Text;
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
+        }
+
+        private void Dec_Click(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            programmerViewModel.displayInfo.CalculatorModе= but.Name;
+            programmerViewModel.displayInfo.Display = DecNum.Text;
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
+        }
+
+        private void Hex_Click(object sender, RoutedEventArgs e)
+        {
+            var but = sender as Button;
+            programmerViewModel.displayInfo.CalculatorModе = but.Name;
+            programmerViewModel.displayInfo.Display = HexNum.Text;
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
+        }
+        private void Bit_Click(object sender, RoutedEventArgs e)
+        {
+            programmerViewModel.BitCount++;
+            programmerViewModel.BitChanged();
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
         }
 
 
 
+        //HistoryCalculatorViewModel object
+        public HistoryCalculatorViewModel _historyCalculatorViewModel
+        {
+            get { return (HistoryCalculatorViewModel)GetValue(_historyCalculatorViewModelProperty); }
+            set { SetValue(_historyCalculatorViewModelProperty, value); }
+        }
+        public static readonly DependencyProperty _historyCalculatorViewModelProperty =
+            DependencyProperty.Register("_historyCalculatorViewModel", typeof(HistoryCalculatorViewModel), typeof(Programmer), new PropertyMetadata(0));
+        
+        //ProgrammerViewModel object
         public ProgrammerViewModel programmerViewModel
         {
             get { return (ProgrammerViewModel)GetValue(programmerViewModelProperty); }
             set { SetValue(programmerViewModelProperty, value); }
         }
         public static readonly DependencyProperty programmerViewModelProperty =
-            DependencyProperty.Register(nameof(programmerViewModel), typeof(ProgrammerViewModel), typeof(Programmer), new PropertyMetadata(0));
+            DependencyProperty.Register(nameof(programmerViewModel), typeof(ProgrammerViewModel), typeof(Programmer), new PropertyMetadata(null));
+
 
         public event PropertyChangedEventHandler PropertyChanged;
         void OnPropertyChanged([CallerMemberName] string name = null)
@@ -52,6 +115,18 @@ namespace ProfCalculator.Templates
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        private void MemoryDelete_Click(object sender, RoutedEventArgs e)
+        {
 
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

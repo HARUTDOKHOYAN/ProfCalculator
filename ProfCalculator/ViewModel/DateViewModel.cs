@@ -99,7 +99,7 @@ namespace ProfCalculator.VIewModel
             string Result = "";
             if (Date.HasValue == true)
             {
-                
+
                 int d = Date.Value.Day;
                 int m = Date.Value.Month;
                 int y = Date.Value.Year;
@@ -110,10 +110,8 @@ namespace ProfCalculator.VIewModel
                 Result = ResultDate.ToString();
                 Result = Result.Substring(0, 10);
             }
-            
-
             return Result;
         }
-        
+
     }
 }

@@ -25,7 +25,7 @@ namespace ProfCalculator.Templates.DateTemplates
         public Difference()
         {
             this.InitializeComponent();
-            
+
         }
         DateViewModel ViewModel = new DateViewModel();
 
@@ -49,10 +49,10 @@ namespace ProfCalculator.Templates.DateTemplates
         public string DaysDiff
         {
             get
-            { 
+            {
                 return _daysDiff;
             }
-            set 
+            set
             {
                 _daysDiff = value;
                 OnPropertyChanged();
@@ -85,8 +85,3 @@ namespace ProfCalculator.Templates.DateTemplates
         }
     }
 }
-
-
-    
-
-

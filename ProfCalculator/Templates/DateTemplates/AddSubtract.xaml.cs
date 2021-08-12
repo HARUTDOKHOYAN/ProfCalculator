@@ -39,52 +39,54 @@ namespace ProfCalculator.Templates.DateTemplates
 
         private string _result;
 
-        public  string Result
+
+        public string Result
         {
-            get 
-            { 
-                return _result; 
+            get
+            {
+                return _result;
             }
-            set 
-            { 
+            set
+            {
                 _result = value;
                 OnPropertyChanged();
             }
         }
 
 
-        public string  Year
+        public string Year
         {
             get
-            { 
-                return _year; 
-            }
-            set 
             {
-                _year= value;
+                return _year;
+            }
+            set
+            {
+                _year = value;
+
                 OnPropertyChanged();
             }
         }
         public string Month
         {
-            get 
+            get
             {
                 return _month;
             }
-            set 
-            { 
+            set
+            {
                 _month = value;
                 OnPropertyChanged();
             }
         }
         public string Day
         {
-            get 
+            get
             {
                 return _day;
             }
-            set 
-            { 
+            set
+            {
                 _day = value;
                 OnPropertyChanged();
             }
