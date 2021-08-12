@@ -43,7 +43,6 @@ namespace ProfCalculator.Models
 
         private bool BitSizeSet(string value)
         {
-            string cont ;
             if (BitStatus == 0)
                 BitStatus = 16;
 
