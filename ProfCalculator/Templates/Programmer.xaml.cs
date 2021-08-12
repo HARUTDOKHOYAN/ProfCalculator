@@ -53,8 +53,8 @@ namespace ProfCalculator.Templates
         private void BIN_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
-            programmerViewModel.displayInfo.Display = BinNum.Text;
             programmerViewModel.displayInfo.CalculatorModе = but.Name;
+            programmerViewModel.displayInfo.Display = BinNum.Text;
             programmerViewModel.INotifyPropertyChanged("displayInfo");
         }
 

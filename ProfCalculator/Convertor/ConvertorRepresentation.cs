@@ -184,24 +184,18 @@ namespace ProfCalculator.Convertor
             return DecToOct(res.ToString(), size);
         }
 
+       
+
         public static string OctToDec(string s, int size = 16)
         {
-            long octalToDecimal(long n)
+            long result = 0;
+            int count = s.Length - 1;
+            for (int i = 0; i < s.Length; i++)
             {
-                long num = n;
-                long dec_value = 0;
-                long b = 1;
-                long temp = num;
-                while (temp != 0)
-                {
-                    long last_digit = temp % 10;
-                    temp = temp / 10;
-                    dec_value += last_digit * b;
-                    b = b * 8;
-                }
-                return dec_value;
+                result += (-48 + (int)s[i]) * (int)(Math.Pow(8, count));
+                count--;
             }
-            long result = octalToDecimal(Int32.Parse(s));
+
             switch (size)
             {
                 case 8:
