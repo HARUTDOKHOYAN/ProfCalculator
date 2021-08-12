@@ -1,4 +1,5 @@
 ﻿using ProfCalculator.Models;
+using ProfCalculator.System;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -16,48 +17,56 @@ namespace ProfCalculator.ViewModel
     {
         public StandardViewModel()
         {
-            var blue = "#b4d8fa";
-            var gray = "#d5e7f7";
-
-            UIButtons = new ObservableCollection<UIButton>()
+            Operators = new Dictionary<string, Func<double, double, string>>()
             {
-                new UIButton { Content = "%", Color = blue},
-                new UIButton { Content = "CE", Color = blue},
-                new UIButton { Content = "C",  Color = blue},
-                new UIButton { Content = "<", Color = blue },
-                new UIButton { Content = "1/x", Color = blue},
-                new UIButton { Content = "√", Color = blue},
-                new UIButton { Content = "x^2", Color = blue},
-                new UIButton { Content = "/", Color = blue},
-                new UIButton { Content = "7", Color = gray},
-                new UIButton { Content = "8", Color = gray},
-                new UIButton { Content = "9", Color = gray},
-                new UIButton { Content = "X", Color = blue},
-                new UIButton { Content = "4", Color = gray},
-                new UIButton { Content = "5", Color = gray},
-                new UIButton { Content = "6", Color = gray},
-                new UIButton { Content = "-", Color = blue},
-                new UIButton { Content = "1", Color = gray},
-                new UIButton { Content = "2", Color = gray},
-                new UIButton { Content = "3", Color = gray},
-                new UIButton { Content = "+", Color = blue},
-                new UIButton { Content = "+/-", Color = gray},
-                new UIButton { Content = "0", Color = gray},
-                new UIButton { Content = ".", Color = gray},
-                new UIButton { Content = "=", Color = blue},
+                
             };
-
-            Visibility = false;
+            ReactOperators = new Dictionary<string, Func<double, string[]>>()
+            {
+                ["+/-"] = ReactOps.Negate,
+                ["x^2"] = ReactOps.Square,
+                ["√"] = ReactOps.Root,
+                ["1/x"] = ReactOps.BelowOne
+            };
         }
 
-        private bool visibility;
-        public bool Visibility 
+        private static string blue = "#b4d8fa";
+        private static string gray = "#d5e7f7";
+
+        public ObservableCollection<UIButton> UIButtons { get; set; } = new ObservableCollection<UIButton>()
+        {
+            new UIButton { Content = "%", Color = blue},
+            new UIButton { Content = "CE", Color = blue},
+            new UIButton { Content = "C",  Color = blue},
+            new UIButton { Content = "<", Color = blue},
+            new UIButton { Content = "1/x", Color = blue},
+            new UIButton { Content = "√", Color = blue},
+            new UIButton { Content = "x^2", Color = blue},
+            new UIButton { Content = "/", Color = blue},
+            new UIButton { Content = "7", Color = gray},
+            new UIButton { Content = "8", Color = gray},
+            new UIButton { Content = "9", Color = gray},
+            new UIButton { Content = "X", Color = blue},
+            new UIButton { Content = "4", Color = gray},
+            new UIButton { Content = "5", Color = gray},
+            new UIButton { Content = "6", Color = gray},
+            new UIButton { Content = "-", Color = blue},
+            new UIButton { Content = "1", Color = gray},
+            new UIButton { Content = "2", Color = gray},
+            new UIButton { Content = "3", Color = gray},
+            new UIButton { Content = "+", Color = blue},
+            new UIButton { Content = "+/-", Color = gray},
+            new UIButton { Content = "0", Color = gray},
+            new UIButton { Content = ".", Color = gray},
+            new UIButton { Content = "=", Color = blue}
+        };
+
+        private bool visibility = false;
+        public bool Visibility
         {
             get => visibility;
-            set { visibility = value;  OnPropertyChanged(); } 
+            set { visibility = value; OnPropertyChanged(); }
         }
-
-        public ObservableCollection<UIButton> UIButtons { get; set; }
 
         public void WidthChange(double width)
         {
@@ -70,6 +79,16 @@ namespace ProfCalculator.ViewModel
             foreach (var item in UIButtons)
                 item.Height = height / 6;
         }
+
+        private Dictionary<string, Func<double, string[]>> ReactOperators;
+        private Dictionary<string, Func<double, double, string>> Operators;
+        private string _y;
+        private string _x = "0";
+        private string _info;
+        private string prev = "number";
+        private string activeOp = "";
+        private bool isEnd = false;
+        private string temp = "";
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "")

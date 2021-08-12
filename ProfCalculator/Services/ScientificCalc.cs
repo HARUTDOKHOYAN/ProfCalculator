@@ -19,27 +19,28 @@ namespace ProfCalculator.Services
             ReactOperators.Add("1/x", BelowOne);
 
             //Update LineString on ObservableCollection change
-            _line.CollectionChanged += (sender, e) => LineString = "";
+            //_line.CollectionChanged += (sender, e) => LineString = "";
+            expression.CollectionChanged += (sender, e) => ExpressionString = "";
         }
 
         protected Dictionary<string, Func<double, string[]>> ReactOperators = new Dictionary<string, Func<double, string[]>>();
 
         private string _x = "0";
-        private ObservableCollection<string> _line = new ObservableCollection<string>();
-        private ObservableCollection<string> _underline = new ObservableCollection<string>();
+        //private ObservableCollection<string> _line = new ObservableCollection<string>();
+        //private ObservableCollection<string> _underline = new ObservableCollection<string>();
         private string prev = "number";
         private bool isEnd = false;
 
-        public ObservableCollection<string> Line
-        {
-            get => _line;
-            set { _line = value; OnPropertyChanged(); }
-        }
-        public string LineString
-        {
-            get => string.Join(" ", _line);
-            private set => OnPropertyChanged();
-        }
+        //public ObservableCollection<string> Line
+        //{
+        //    get => _line;
+        //    set { _line = value; OnPropertyChanged(); }
+        //}
+        //public string LineString
+        //{
+        //    get => string.Join(" ", _line);
+        //    private set => OnPropertyChanged();
+        //}
         public string X
         {
             get => _x;
@@ -55,6 +56,27 @@ namespace ProfCalculator.Services
                 return 0;
             }
         }
+
+
+
+
+
+
+        //////////////////////////////////
+        private ObservableCollection<string> expression = new ObservableCollection<string>();
+
+        public ObservableCollection<string> Expression
+        {
+            get { return expression; }
+            set { expression = value; }
+        }
+
+        public string ExpressionString
+        {
+            get => string.Join(" ", expression);
+            private set => OnPropertyChanged();
+        }
+
 
         public override bool Input(string input)
         {
@@ -74,9 +96,40 @@ namespace ProfCalculator.Services
                 OnDot(input);
                 return true;
             }
+            //BRACe OPEN
+            if (input == "(")
+            {
+                OnBraceOpen(input);
+                return true;
+            }
+            //BRACE CLOSE
+            if (input == ")")
+            {
+                OnBraceClose(input);
+                return true;
+            }
 
             return false;
         }
+
+        
+        public void OnBraceOpen(string input)
+        {
+            Expression.Add(input);
+        }
+
+        public void OnBraceClose(string input)
+        {
+            if (Expression.Contains("("))
+            {
+                if (Operators.Keys.Contains(Expression.Last()))
+                {
+                    Expression.Add(Double.Parse(X).ToString());
+                }
+                Expression.Add(input);
+            }
+        }
+
 
         public void OnDot(string input)
         {
@@ -90,8 +143,7 @@ namespace ProfCalculator.Services
         public override void OnC()
         {
             X = "0";
-            Line.Clear();
-            _underline.Clear();
+            Expression.Clear();
             prev = "number";
             isEnd = false;
         }
@@ -104,25 +156,32 @@ namespace ProfCalculator.Services
 
         public override void OnEquals(string input)
         {
-            if(prev == "number")
-            {
-                Line.Add(X);
-                _underline.Add(X);
-            }
+            //Eval(ExpressionString);
             
-            var str = string.Join(" ", _underline).Replace('X', '*');
-            X = new DataTable().Compute(str, "") + "";
-            _underline.Clear();
-            Line.Add(input);
-            isEnd = true;
+            //if (isEnd)
+            //{
+            //    Line.Clear();
+            //    _underline.Clear();
+            //}
+
+            //if(prev == "number")
+            //{
+            //    Line.Add(X);
+            //    _underline.Add(X);
+            //}
+            
+            //var str = string.Join(" ", _underline).Replace('X', '*');
+            //X = new DataTable().Compute(str, "") + "";
+            //_underline.Clear();
+            //Line.Add(input);
+            //isEnd = true;
         }
 
         public override void OnNumber(string input)
         {
             if (isEnd)
             {
-                Line.Clear();
-                _underline.Clear();
+                Expression.Clear();
                 prev = "number";
             }
             if (prev == "operator" | prev == "reactOperator")
@@ -139,26 +198,22 @@ namespace ProfCalculator.Services
 
         public override void OnOperator(string input)
         {
+            //Calc all and fill result in X
             if (isEnd)
             {
-                Line.Clear();
-                _underline.Clear();
+                Expression.Clear();
                 prev = "number";
             }
-            var lastItem = Line.Count > 0 ? Line.Last() : "";
+            var lastItem = Expression.Count > 0 ? Expression.Last() : "";
             if (Operators.Keys.Contains(lastItem) & prev == "operator")
             {
-                Line.RemoveAt(Line.Count - 1);
-                _underline.RemoveAt(_underline.Count - 1);
-
+                Expression.RemoveAt(Expression.Count - 1);
             } else if (prev == "number")
             {
-                Line.Add(X);
-                _underline.Add(X);
+                Expression.Add(X);
             }
 
-            Line.Add(input);
-            _underline.Add(input);
+            Expression.Add(input);
 
             prev = "operator";
             isEnd = false;
@@ -168,20 +223,39 @@ namespace ProfCalculator.Services
         {
             var res = ReactOperators[input].Invoke(Xnum);
             var info = $"{res[1]}({X})";
-            X = res[0];
+            //X = res[0];
 
-            if(Line.Count > 0)
+            if(Expression.Count > 0)
             {
-                if (!Operators.Keys.Contains(Line.Last()))
+                if (Operators.Keys.Contains(Expression.Last()))
                 {
-                    Line.RemoveAt(Line.Count - 1);
-                    _underline.RemoveAt(Line.Count - 1);
+                    Expression.Add(X);
+                }
+                if (Expression.Last() == ")")
+                {
+                    for (var i = Expression.Count - 1; i >= 0; i--)
+                    {
+                        if (Expression[i] == "(")
+                        {
+                            Expression.Insert(i == 0 ? 0 : i - 1, res[1]);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    Expression.Insert(Expression.Count - 1, res[1]);
+                    Expression.Insert(Expression.Count - 1, "(");
+                    Expression.Add(")");
                 }
             }
-
-            Line.Add(info);
-            _underline.Add(res[0]);
-
+            else
+            {
+                Expression.Add(X);
+                Expression.Insert(0, res[1]);
+                Expression.Insert(1, "(");
+                Expression.Add(")");
+            }
             prev = "reactOperator";
         }
 
@@ -234,8 +308,7 @@ namespace ProfCalculator.Services
                 X = X,
                 prev = prev,
                 isEnd = isEnd,
-                Line = Line,
-                Underline = _underline
+                Line = Expression
             };
         }
 
@@ -245,8 +318,7 @@ namespace ProfCalculator.Services
             X = d.X;
             prev = d.prev;
             isEnd = d.isEnd;
-            Line = d.Line;
-            _underline = d.Underline;
+            Expression = d.Line;
         }
     }
 }

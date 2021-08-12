@@ -129,9 +129,14 @@
     <Compile Include="Services\DataTransfer\ScirentificCalcData.cs" />
     <Compile Include="System\BinCalc.cs" />
     <Compile Include="System\DecCalc.cs" />
+    <Compile Include="System\ErrorMessages.cs" />
     <Compile Include="System\HexCalc.cs" />
     <Compile Include="System\OctCalc.cs" />
+    <Compile Include="System\Operator.cs" />
     <Compile Include="System\ProcessorCalc.cs" />
+    <Compile Include="System\ReactOps.cs" />
+    <Compile Include="System\RPNEval.cs" />
+    <Compile Include="System\ScientificReactOps.cs" />
     <Compile Include="ViewModel\ProgrammerViewModel.cs" />
     <Compile Include="ViewModel\SidebarViewModel.cs" />
     <Compile Include="Services\DataTransfer\CalcData.cs" />
