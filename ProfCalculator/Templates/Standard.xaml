@@ -29,14 +29,14 @@
                    Grid.Column="0"
                    Height="30" 
                    
-                   Text="{x:Bind _standardCalc.Info , Mode=OneWay}" 
+                   Text="{x:Bind standardViewModel.Info , Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
         <TextBlock x:Name="nu" 
                    Grid.Column="0"
                    Height="52" 
-                   Text="{x:Bind _standardCalc.X , Mode=OneWay}" 
+                   Text="{x:Bind standardViewModel.X , Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" >

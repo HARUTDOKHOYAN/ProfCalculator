@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.System
 {
-    class Operator: IPrecendencable
+    class ReactOperator : IPrecendencable
     {
-        public Operator(int precedence, Func<string, string, string> function)
+        public ReactOperator(string infoName, int precedence, Func<double, string[]> function)
         {
+            InfoName = infoName;
             Precedence = precedence;
             Function = function;
         }
+        public string InfoName { get; set; }
         public int Precedence { get; set; }
-        public Func<string, string, string> Function { get; set; }
+        public Func<double, string[]> Function { get; set; }
     }
 }

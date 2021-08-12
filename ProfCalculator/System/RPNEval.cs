@@ -6,18 +6,42 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.System
 {
-
     class RPNEval
     {
-        Dictionary<string, Operator> ops = new Dictionary<string, Operator>()
+        //private List<Operator> ops {
+        //    get
+        //    {
+        //        return ops;
+        //    }
+        //    set
+        //    {
+        //        opsNames = value.Select(item => item.Name).ToList();
+        //        ops = value;
+        //    }
+        //}
+        //private List<string> opsNames;
+
+        
+        public RPNEval(Dictionary<string, Operator> opers, Dictionary<string, ReactOperator> reactOpers = null)
         {
-            ["+"] = new Operator(1),
-            ["-"] = new Operator(1),
-            ["*"] = new Operator(2),
-            ["/"] = new Operator(2),
-            ["sin"] = new Operator(3),
-            ["sqr"] = new Operator(3)
-        };
+            ops = opers;
+            reactOps = reactOpers;
+            ops.ToList().ForEach(x => allOps.Add(x.Key, x.Value));
+            reactOps.ToList().ForEach(x => allOps.Add(x.Key, x.Value));
+        }
+        Dictionary<string, Operator> ops;
+        Dictionary<string, ReactOperator> reactOps;
+
+        Dictionary<string, IPrecendencable> allOps = new Dictionary<string, IPrecendencable>();
+        //= new Dictionary<string, Operator>()
+        //{
+        //    ["+"] = new Operator(1),
+        //    ["-"] = new Operator(1),
+        //    ["*"] = new Operator(2),
+        //    ["/"] = new Operator(2),
+        //    ["sin"] = new Operator(3),
+        //    ["sqr"] = new Operator(3)
+        //};
         private double evalRPN(Stack<string> tks)
         {
             string tk = tks.Pop();
@@ -45,6 +69,7 @@ namespace ProfCalculator.System
         }
         public Stack<string> ToRPN(string input)
         {
+
             var tokens = new Queue<string>(input.Split(' '));
             var output = new Stack<string>();
             var operators = new Stack<string>();
@@ -53,20 +78,20 @@ namespace ProfCalculator.System
             {
                 var token = tokens.Dequeue();
 
-                if (ops.ContainsKey(token))
+                if (allOps.ContainsKey(token))
                 {
-                    Operator op = ops[token];
+                    IPrecendencable op = allOps[token];
                     if (op != null && operators.Count > 0)
                     {
                         var lastOp = operators.Peek();
-                        if (ops.ContainsKey(lastOp))
+                        if (allOps.ContainsKey(lastOp))
                         {
-                            if (op.Precedence <= ops[lastOp].Precedence)
+                            if (op.Precedence <= allOps[lastOp].Precedence)
                             {
                                 output.Push(operators.Pop());
                                 if (operators.Count > 0)
                                 {
-                                    if (ops.ContainsKey(operators.Peek()))
+                                    if (allOps.ContainsKey(operators.Peek()))
                                     {
                                         output.Push(operators.Pop());
                                     }
@@ -104,12 +129,6 @@ namespace ProfCalculator.System
                 reversed.Push(output.Pop());
 
             return reversed;
-            //return string.Join(" ", reversed);
-        }
-
-        public static string Eval(string input)
-        {
-            return "";
         }
     }
 }
