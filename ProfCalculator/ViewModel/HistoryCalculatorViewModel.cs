@@ -1,4 +1,4 @@
-﻿using ProfCalculator.Models;
+using ProfCalculator.Models;
 using ProfCalculator.Services;
 using System;
 using System.Collections.Generic;
@@ -58,6 +58,7 @@ namespace ProfCalculator.ViewModel
                     SelectedItem.Number = (double.Parse(SelectedItem.Number) - double.Parse(X)).ToString();
                     break;
                 case "MS":
+
                     MemoryList.Add(new MemoryCell() { Number = X });
                     break;
                 case "MC":

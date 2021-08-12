@@ -21,10 +21,12 @@
             <ColumnDefinition/>
             <ColumnDefinition  Width="auto"/>
         </Grid.ColumnDefinitions>
+    >
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
+
         <!--Memory list-->
         <Grid Grid.Column="1"
               Grid.Row="0"

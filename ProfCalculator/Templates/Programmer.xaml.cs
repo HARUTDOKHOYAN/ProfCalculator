@@ -1,4 +1,4 @@
-﻿using ProfCalculator.Models;
+using ProfCalculator.Models;
 using ProfCalculator.ViewModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -128,7 +128,5 @@ namespace ProfCalculator.Templates
         {
 
         }
-
-        
     }
 }

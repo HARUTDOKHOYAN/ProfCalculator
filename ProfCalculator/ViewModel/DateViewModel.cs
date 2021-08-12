@@ -110,8 +110,6 @@ namespace ProfCalculator.VIewModel
                 Result = ResultDate.ToString();
                 Result = Result.Substring(0, 10);
             }
-
-
             return Result;
         }
 

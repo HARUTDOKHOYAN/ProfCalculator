@@ -39,6 +39,7 @@ namespace ProfCalculator.Templates.DateTemplates
 
         private string _result;
 
+
         public string Result
         {
             get
@@ -62,6 +63,7 @@ namespace ProfCalculator.Templates.DateTemplates
             set
             {
                 _year = value;
+
                 OnPropertyChanged();
             }
         }

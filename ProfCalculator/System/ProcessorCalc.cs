@@ -21,6 +21,5 @@ namespace ProfCalculator.System
 
 
         string Percent(string x, string y);
-
     }
 }
