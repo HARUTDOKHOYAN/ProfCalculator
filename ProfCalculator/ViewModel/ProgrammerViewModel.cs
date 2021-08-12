@@ -123,8 +123,6 @@ namespace ProfCalculator.ViewModel
 
         }
 
-
-
         public void WidthChange(double width)
         {
             foreach (var item in UIButtons)
