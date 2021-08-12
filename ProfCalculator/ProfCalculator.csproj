@@ -119,9 +119,12 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Convertor\ConvertorRepresentation.cs" />
+    <Compile Include="Convertor\DisplayConvertor.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\DisplayInfo.cs" />
     <Compile Include="Models\MemoryCell.cs" />
     <Compile Include="Models\UIButton.cs" />
     <Compile Include="Models\HistoryCell.cs" />

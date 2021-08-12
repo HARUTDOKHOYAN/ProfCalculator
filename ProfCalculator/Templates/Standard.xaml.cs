@@ -31,7 +31,8 @@ namespace ProfCalculator.Templates
         }
 
         public static readonly DependencyProperty uiViewModelProperty =
-            DependencyProperty.Register(nameof(standardViewModel), typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
+        DependencyProperty.Register(nameof(standardViewModel), typeof(StandardViewModel), typeof(Standard), new PropertyMetadata(null));
+
         public StandardViewModel standardViewModel
         {
             get { return (StandardViewModel)GetValue(uiViewModelProperty); }
