@@ -9,17 +9,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     x:Name="Root"
+    SizeChanged="Page_SizeChanged"
     >
 
 
     <Grid>
         <Grid.Resources>
             <Convertor:DisplayConvertor x:Key="Conv"/>
-            <VM:ProgrammerViewModel x:Key="Parameter"/>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
-            <ColumnDefinition/>
+            <ColumnDefinition  Width="auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -27,20 +27,62 @@
         </Grid.RowDefinitions>
         <!--Memory list-->
         <Grid Grid.Column="1"
-              Grid.Row="1"
-              Grid.RowSpan="9">
+              Grid.Row="0"
+              Grid.RowSpan="7"
+              Margin="10,0,0,0"
+               Visibility="{Binding ElementName=Root,
+                                    Path=programmerViewModel.Visibility,
+                                    Mode=OneWay}">
             <Grid.RowDefinitions>
+                <RowDefinition Height="30" />
                 <RowDefinition Height="30" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <TextBlock Grid.Row="0" Text="Memory is empty" Visibility="Visible" x:Name="memoryIsEmpty" />
-            <ListView Grid.Row="1" x:Name="ListMemory"
-                            Width="300"
-                            SelectedItem="{Binding ElementName=Root, 
+            <!--MemoryCalc-->
+            <ListView  x:Name="MemoryCalc"
+                       Height="30" 
+                       Grid.Row="0"
+                       HorizontalAlignment="Center"
+                       Visibility="{Binding ElementName=Root , Path=programmerViewModel.Visibility}"
+                       IsItemClickEnabled="True"
+                       ItemClick="MemoryCalc_ItemClick" 
+                       ItemsSource="{Binding ElementName=Root,
+                                        Path=_historyCalculatorViewModel.MemoryButtons,
+                                        Mode=OneWay}">
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <ItemsWrapGrid  MaximumRowsOrColumns="5"
+                                    Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ListViewItem Style="{StaticResource ListViewItemStyle}" 
+                                  Background="#aed3f2"
+                                 >
+                            <TextBlock Text="{Binding Content,
+                                                  Mode=OneWay}"  
+                                   Margin="20,0,0,00" 
+                                   FontSize="20"/>
+                        </ListViewItem>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+            
+            <TextBlock Grid.Row="1" 
+                       Text="Memory is empty" 
+                       Visibility="Visible" 
+                       x:Name="memoryIsEmpty" />
+            
+            <ListView Grid.Row="2" 
+                      x:Name="ListMemory"
+                      Width="300"
+                      SelectedItem="{Binding ElementName=Root, 
                                                     Path=_historyCalculatorViewModel.SelectedItem,
                                                     Mode=TwoWay}"
                             ItemsSource="{Binding ElementName=Root , 
-                                                Path=_historyCalculatorViewModel.MemoryList}"
+                                                  Path=_historyCalculatorViewModel.MemoryList}"
                             ItemContainerStyle="{StaticResource ListMemoryStyle}"
                                 >
                 <ListView.ItemTemplate>

@@ -6,8 +6,88 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    >
+    x:Name="Root">
 
-    <Grid Background="Blue">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+            <RowDefinition/>
+
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <CalendarDatePicker x:Name="MyDate" DateChanged="CalendarDatePicker_DateChanged" PlaceholderText="Pick a date" Header="From" Grid.Row="0"/>
+
+        <RadioButton x:Name="Add" Checked="Add_Checked" Content="Add" Grid.Row="1" Grid.Column="0" IsChecked="True"/>
+        <RadioButton x:Name="Subtract" Checked="Subtract_Checked" Content="Subtract" Grid.Row="1" Grid.Column="1" IsChecked="False"/>
+
+        <Grid Grid.Row="2" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Grid.Row="0" Grid.Column="0"  Text="Years"/>
+
+            <DropDownButton x:Name="dropdown" Width="80" Content="{Binding ElementName=Root, Path=Year, Mode=OneWay}" Grid.Row="1" Grid.Column="0">
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ListView ItemsSource="{x:Bind NumberCollection}"  ItemClick="Years_ItemClick"  IsItemClickEnabled="True"/>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+
+            <TextBlock Grid.Row="0"  Grid.Column="2" Text="Months"/>
+
+            <DropDownButton Width="80" Content="{Binding ElementName=Root, Path=Month, Mode=OneWay}" Grid.Row="1" Grid.Column="2">
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ListView ItemsSource="{x:Bind NumberCollection}" ItemClick="Months_ItemClick"  IsItemClickEnabled="True"/>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+
+            <TextBlock Grid.Row="0"  Grid.Column="4" Text="Days"/>
+
+            <DropDownButton Width="80" Content="{Binding ElementName=Root, Path=Day, Mode=OneWay}" Grid.Row="1" Grid.Column="4">
+                <DropDownButton.Flyout>
+                    <Flyout>
+                        <ListView ItemsSource="{x:Bind NumberCollection}" ItemClick="Days_ItemClick"  IsItemClickEnabled="True"/>
+                    </Flyout>
+                </DropDownButton.Flyout>
+            </DropDownButton>
+
+        </Grid>
+
+        <Grid Grid.Row="4" Grid.ColumnSpan="3">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <TextBlock FontSize="20" Text="Date" Grid.Row="0"/>
+            <TextBlock FontSize="25" Text="{Binding ElementName=Root, Path=Result, Mode=OneWay}" Grid.Row="1"/>
+        </Grid>
+
+
+
+
     </Grid>
 </UserControl>

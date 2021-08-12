@@ -58,7 +58,7 @@ namespace ProfCalculator.ViewModel
                     SelectedItem.Number = (double.Parse(SelectedItem.Number) - double.Parse(X)).ToString();
                     break;
                 case "MS":
-                    MemoryList.Add(new MemoryCell());
+                    MemoryList.Add(new MemoryCell() { Number = X });
                     break;
                 case "MC":
                     MemoryList.Clear();

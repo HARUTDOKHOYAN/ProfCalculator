@@ -15,6 +15,7 @@ namespace ProfCalculator.Templates
         {
             this.InitializeComponent();
             programmerViewModel = new ProgrammerViewModel();
+            _historyCalculatorViewModel = new HistoryCalculatorViewModel();
         }
 
 
@@ -22,17 +23,31 @@ namespace ProfCalculator.Templates
         {
             programmerViewModel.WidthChange(e.NewSize.Width);
             programmerViewModel.HeightChange(e.NewSize.Height);
-
         }
 
-
+        private void MemoryCalc_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            var button = e.ClickedItem as UIButton;
+            var memory = _historyCalculatorViewModel.InputMemory(button.Content, programmerViewModel.displayInfo.Display);
+            if (memory != "")
+               programmerViewModel.displayInfo.Display = memory;
+            memoryIsEmpty.Visibility = _historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
+        }
         private void ProgramerButtons_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
             programmerViewModel.displayInfo.Display = programmerViewModel.displayInfo.Display + button.Content;
             programmerViewModel.INotifyPropertyChanged("displayInfo");
             programmerViewModel.Input(button.Content);
-            
+        }
+        private void Page_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (e.NewSize.Width >= 600)
+            {
+                programmerViewModel.Visibility = true;
+            }
+            else
+                programmerViewModel.Visibility = false;
         }
 
         private void BIN_Click(object sender, RoutedEventArgs e)
@@ -108,5 +123,12 @@ namespace ProfCalculator.Templates
         private void Button_Click(object sender, RoutedEventArgs e)
         {
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
     }
 }

@@ -9,10 +9,6 @@ namespace ProfCalculator.Convertor
 {
     class ConvertorRepresentation
     {
-
-        
-
-
         public static string DecToBin(string decimal_number, int size=16)
         {
             long number = Int64.Parse(decimal_number);
@@ -27,12 +23,22 @@ namespace ProfCalculator.Convertor
             }
             foreach (var x in arr)
                 res += x.ToString();
+
+            int i = 0;
+            for (; i < res.Length; ++i)
+                if (res[i] == '1')
+                    break;
+            res = res.Substring(i, res.Length - i);
             return res;
         }
         public static string DecToHex(string s, int size=16)
         {
             string res = "";
             string str = DecToBin(s, size);
+
+            if (str.Length != size)
+                str = str.Insert(0, new string('0', size - str.Length));
+
             int n = size / 4;
             for (int j = 0; n > 0; --n, j += 4)
             {
@@ -60,6 +66,8 @@ namespace ProfCalculator.Convertor
         {
             string res = "";
             string str = DecToBin(s, size);
+            if (str.Length != size)
+                str = str.Insert(0, new string('0', size - str.Length));
             int n = size / 3;
             string input = str.Substring(0, size % 3);
             int output = Convert.ToInt32(input, 2);

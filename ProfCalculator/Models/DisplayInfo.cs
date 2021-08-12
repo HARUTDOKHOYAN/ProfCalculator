@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProfCalculator.Convertor;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.Models
 {
-    public class DisplayInfo: INotifyPropertyChanged
+    public class DisplayInfo : INotifyPropertyChanged
     {
         private string _calculatorMode;
         public string CalculatorModе
@@ -33,9 +34,46 @@ namespace ProfCalculator.Models
             }
             set
             {
-                _display = value;
+                if (BitSizeSet(value) == true)
+                        _display = value;
                 INotifyPropertyChanged("Display");
             }
+        }
+
+        private bool BitSizeSet(string value)
+        {
+            string cont ;
+            if (BitStatus == 0)
+                BitStatus = 16;
+
+            switch (CalculatorModе)
+            {
+                case "HEX":
+                    cont = ConvertorRepresentation.HexToDec(value, 64);
+                    break;
+                    
+                case "BIN":
+                    cont = ConvertorRepresentation.BinToDec(value, 64);
+                    break;
+                case "OCT":
+                    cont =  ConvertorRepresentation.OctToDec(value, 64);
+                    break;
+                default:
+                    cont = value;
+                    break;
+            }
+            switch (BitStatus)
+            {
+                case 8:
+                    if(long.Parse(cont) > sbyte.MinValue || long.Parse(cont) < sbyte.MaxValue)
+                    {
+                        return true;
+                    }
+                    return false;
+                default:
+                    return true;
+            }
+
         }
 
         private string _bitName;

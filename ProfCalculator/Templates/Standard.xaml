@@ -28,7 +28,6 @@
         <TextBlock x:Name="op" 
                    Grid.Column="0"
                    Height="30" 
-                   
                    Text="{x:Bind _standardCalc.Info , Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 

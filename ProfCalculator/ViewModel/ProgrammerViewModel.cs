@@ -50,6 +50,7 @@ namespace ProfCalculator.ViewModel
                 new UIButton { Content = ".", Color = gray},
                 new UIButton { Content = "=", Color = blue},
             };
+            Visibility = true;
             _displayInfo = new DisplayInfo() { CalculatorModе = "HEX", Display = "FFDD", BitName = "WORD", BitStatus = 16 };
             BitCount = 0;
         }
@@ -68,11 +69,18 @@ namespace ProfCalculator.ViewModel
                 _displayInfo = value;
 
             }
-        }
+        }  //propertyChanged
         public ObservableCollection<UIButton> UIButtons { get; set; }
         public int BitCount;
-
-
+        private bool visibility;
+        public bool Visibility
+        {
+            get => visibility;
+            set {
+                if (visibility.Equals(value)) return;
+                visibility = value; 
+                INotifyPropertyChanged("Visibility"); }
+        }
 
         public void Input(string content)
         {

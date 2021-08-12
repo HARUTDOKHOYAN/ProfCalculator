@@ -135,6 +135,7 @@
     <Compile Include="System\HexCalc.cs" />
     <Compile Include="System\OctCalc.cs" />
     <Compile Include="System\ProcessorCalc.cs" />
+    <Compile Include="ViewModel\DateViewModel.cs" />
     <Compile Include="ViewModel\ProgrammerViewModel.cs" />
     <Compile Include="ViewModel\SidebarViewModel.cs" />
     <Compile Include="Services\DataTransfer\CalcData.cs" />
