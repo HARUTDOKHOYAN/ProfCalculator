@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.System
 {
-    class Operator: IPrecendencable
+    public class Operator: IPrecendencable
     {
         public Operator(int precedence, Func<string, string, string> function)
         {

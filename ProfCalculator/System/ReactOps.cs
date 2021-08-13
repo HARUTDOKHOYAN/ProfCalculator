@@ -8,34 +8,27 @@ namespace ProfCalculator.System
 {
     class ReactOps
     {
-        public static string[] Negate(double x)
+        public static string Negate(string x)
         {
-            var str = x.ToString();
-            var num = str[0] == '-' ? str.Remove(0, 1) : "-" + str;
-            var info = "negate";
-            return new[] { num, info };
+            return x[0] == '-' ? x.Remove(0, 1) : "-" + x;
         }
 
-        public static string[] Square(double x)
+        public static string Square(string x)
         {
-            var num = (x * x).ToString();
-            var info = $"sqr";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return (_x * _x).ToString();
         }
 
-        public static string[] Root(double x)
+        public static string Root(string x)
         {
             var result = Math.Sqrt(Convert.ToDouble(x));
-            var num = double.IsNaN(result) ? ErrorMessages.INVALID_INPUT : result.ToString();
-            var info = "√";
-            return new[] { num, info };
+            return double.IsNaN(result) ? ErrorMessages.INVALID_INPUT : result.ToString();
         }
 
-        public static string[] BelowOne(double x)
+        public static string BelowOne(string x)
         {
-            var num = x == 0 ? ErrorMessages.DIVIDE_BY_ZERO : (1 / x).ToString();
-            var info = "1/";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return _x == 0 ? ErrorMessages.DIVIDE_BY_ZERO : (1 / _x).ToString();
         }
     }
 }

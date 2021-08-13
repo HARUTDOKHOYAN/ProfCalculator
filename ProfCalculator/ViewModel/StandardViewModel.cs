@@ -1,5 +1,4 @@
 ﻿using ProfCalculator.Models;
-using ProfCalculator.Services;
 using ProfCalculator.System;
 using System;
 using System.Collections.Generic;
@@ -7,10 +6,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation;
-using Windows.UI.ViewManagement;
 
 namespace ProfCalculator.ViewModel
 {
@@ -82,8 +77,8 @@ namespace ProfCalculator.ViewModel
         }
 
         private DoubleCalc doubleCalc = new DoubleCalc();
-        protected Dictionary<string, Func<string, string, string>> Operators = new Dictionary<string, Func<string, string, string>>();
-        private Dictionary<string, Func<double, string[]>> ReactOperators = new Dictionary<string, Func<double, string[]>>();
+        private Dictionary<string, Func<string, string, string>> Operators = new Dictionary<string, Func<string, string, string>>();
+        private Dictionary<string, Func<string, string>> ReactOperators = new Dictionary<string, Func<string, string>>();
         private string _y;
         private string _x = "0";
         private string _info;
@@ -236,10 +231,10 @@ namespace ProfCalculator.ViewModel
 
         public void OnReactOperator(string input)
         {
-            var res = ReactOperators[input].Invoke(Xnum);
-            X = res[0];
-            if (res[1] != "")
-                Info = $"{res[1]}({res[0]})";
+            var res = ReactOperators[input].Invoke(X);
+            X = res;
+            if (input != "")
+                Info = $"{input}({res})";
 
             prev = "operator";
         }

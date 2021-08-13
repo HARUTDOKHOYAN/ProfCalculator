@@ -60,7 +60,7 @@ namespace ProfCalculator.System
         public string[] EX(double x)
         {
             var num = Math.Pow(Math.E, x).ToString();
-            var info = "2^";
+            var info = "e^";
             return new[] { num, info };
         }
 

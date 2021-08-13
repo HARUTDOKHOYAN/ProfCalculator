@@ -8,66 +8,44 @@ namespace ProfCalculator.System
 {
     class RPNEval
     {
-        //private List<Operator> ops {
-        //    get
-        //    {
-        //        return ops;
-        //    }
-        //    set
-        //    {
-        //        opsNames = value.Select(item => item.Name).ToList();
-        //        ops = value;
-        //    }
-        //}
-        //private List<string> opsNames;
-
-        
         public RPNEval(Dictionary<string, Operator> opers, Dictionary<string, ReactOperator> reactOpers = null)
         {
             ops = opers;
             reactOps = reactOpers;
             ops.ToList().ForEach(x => allOps.Add(x.Key, x.Value));
-            reactOps.ToList().ForEach(x => allOps.Add(x.Key, x.Value));
+            if(reactOps != null) reactOps.ToList().ForEach(x => allOps.Add(x.Key, x.Value));
         }
         Dictionary<string, Operator> ops;
         Dictionary<string, ReactOperator> reactOps;
 
         Dictionary<string, IPrecendencable> allOps = new Dictionary<string, IPrecendencable>();
-        //= new Dictionary<string, Operator>()
-        //{
-        //    ["+"] = new Operator(1),
-        //    ["-"] = new Operator(1),
-        //    ["*"] = new Operator(2),
-        //    ["/"] = new Operator(2),
-        //    ["sin"] = new Operator(3),
-        //    ["sqr"] = new Operator(3)
-        //};
-        private double evalRPN(Stack<string> tks)
+
+        public string Eval(string expression)
+        {
+            var rpnExpression = ToRPN(expression);
+            var result = evalRPN(new Stack<string>(rpnExpression.Split(' '))).ToString();
+            return result;
+        }
+
+        private string evalRPN(Stack<string> tks)
         {
             string tk = tks.Pop();
-            double x, y;
-            if (!Double.TryParse(tk, out x))
+            string x, y;
+            x = tk;
+            if (reactOps != null && reactOps.ContainsKey(tk))
             {
                 x = evalRPN(tks);
-                if (tk != "sin")
-                {
-                    y = evalRPN(tks);
-                    if (tk == "+") x = y + x;
-                    else if (tk == "-") x = y - x;
-                    else if (tk == "*") x = y * x;
-                    else if (tk == "/") x = y / x;
-                    else throw new Exception("Unknown operator");
-                }
-                else
-                {
-                    if (tk == "sin") x = Math.Sin(x);
-                    else throw new Exception("Unknown operator");
-                }
-
+                x = reactOps[tk].Function.Invoke(x);
+            }
+            else if(ops.ContainsKey(tk))
+            {
+                x = evalRPN(tks);
+                y = evalRPN(tks);
+                x = ops[tk].Function.Invoke(y.ToString(), x.ToString());
             }
             return x;
         }
-        public Stack<string> ToRPN(string input)
+        public string ToRPN(string input)
         {
 
             var tokens = new Queue<string>(input.Split(' '));
@@ -128,7 +106,7 @@ namespace ProfCalculator.System
             while (output.Count > 0)
                 reversed.Push(output.Pop());
 
-            return reversed;
+            return string.Join(" ", reversed);
         }
     }
 }

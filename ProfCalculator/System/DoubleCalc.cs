@@ -10,7 +10,6 @@ namespace ProfCalculator.System
     {
         public string Add(string x, string y)
         {
-
             return (Convertor(x) + Convertor(y)).ToString();
         }
 
