@@ -111,7 +111,7 @@ namespace ProfCalculator.Convertor
                     default: temp = -48 + (int)bin_number[i]; break;
                 }
 
-                result += temp * (int)(Math.Pow(16, count));
+                result += temp * (int)Math.Pow(16, count);
                 count--;
             }
             switch (size)
@@ -173,14 +173,14 @@ namespace ProfCalculator.Convertor
                     return result.ToString();
             }
         }
-        public static string BinToHex(string bin_number , int size = 16)
+        public static string BinToHex(string bin_number, int size = 16)
         {
             var res = Convert.ToInt64(bin_number, 2);
             return DecToHex(res.ToString(), size);
         }
         public static string BinToOct(string bin_number, int size = 16)
         {
-            var res = Convert.ToInt64(bin_number, 2);
+            var res = Convert.ToInt32(bin_number, 2);
             return DecToOct(res.ToString(), size);
         }
 
@@ -201,7 +201,7 @@ namespace ProfCalculator.Convertor
                 }
                 return dec_value;
             }
-            long result = octalToDecimal(Int32.Parse(s));
+            long result = octalToDecimal(Int64.Parse(s));
             switch (size)
             {
                 case 8:

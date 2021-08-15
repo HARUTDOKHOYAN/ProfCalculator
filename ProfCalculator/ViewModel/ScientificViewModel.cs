@@ -83,6 +83,15 @@ namespace ProfCalculator.ViewModel
             ReactOperators.Add("sqr", new ReactOperator("x^2", 3, ScientificReactOps.Square));
             ReactOperators.Add("√", new ReactOperator("√", 3, ScientificReactOps.Root));
             ReactOperators.Add("1/", new ReactOperator("1/x", 3, ScientificReactOps.BelowOne));
+            ReactOperators.Add("abs", new ReactOperator("|x|", 3, ScientificReactOps.Abs));
+            ReactOperators.Add("fact", new ReactOperator("n!", 3, ScientificReactOps.Factorial));
+            ReactOperators.Add("10^", new ReactOperator("10^x", 3, ScientificReactOps.TenX));
+            ReactOperators.Add("2^", new ReactOperator("2^x", 3, ScientificReactOps.TwoX));
+            ReactOperators.Add("e^", new ReactOperator("e^x", 3, ScientificReactOps.EX));
+            ReactOperators.Add("log", new ReactOperator("log", 3, ScientificReactOps.Log));
+            ReactOperators.Add("ln", new ReactOperator("ln", 3, ScientificReactOps.Ln));
+            ReactOperators.Add("cube", new ReactOperator("x^3", 3, ScientificReactOps.Cube));
+            ReactOperators.Add("cuberoot", new ReactOperator("3√", 3, ScientificReactOps.CubeRoot));
 
             rpn = new RPNEval(Operators, ReactOperators);
         }
@@ -162,7 +171,7 @@ namespace ProfCalculator.ViewModel
             else if (ReactOperators.Values.FirstOrDefault((ReactOperator x) => x.InfoName == input) != null)
             {
                 var reactOp = ReactOperators.FirstOrDefault((x) => x.Value.InfoName == input);
-                OnReactOperator(reactOp.Value, reactOp.Key);
+                OnReactOperator(reactOp.Key);
             }
             //DOT
             else if (input == ".")
@@ -191,6 +200,14 @@ namespace ProfCalculator.ViewModel
                         break;
                     case "<":
                         OnRemove();
+                        break;
+                    case "π":
+                        X = Math.PI.ToString();
+                        prev = "ReactOperator";
+                        break;
+                    case "e":
+                        X = Math.E.ToString();
+                        prev = "ReactOperator";
                         break;
                     default:
                         OnNumber(input);
@@ -301,10 +318,8 @@ namespace ProfCalculator.ViewModel
             isEnd = false;
         }
 
-        public void OnReactOperator(ReactOperator reactOp, string name)
+        public void OnReactOperator(string name)
         {
-            var res = reactOp.Function.Invoke(X);
-
             if (Expression.Count > 0)
             {
                 if (Operators.Keys.Contains(Expression.Last()))
@@ -313,13 +328,28 @@ namespace ProfCalculator.ViewModel
                 }
                 if (Expression.Last() == ")")
                 {
+                    var index = 0;
+                    var openBraces = 0;
                     for (var i = Expression.Count - 1; i >= 0; i--)
                     {
+                        if (Expression[i] == ")" && openBraces > 0) break;
                         if (Expression[i] == "(")
                         {
-                            Expression.Insert(i == 0 ? 0 : i - 1, name);
-                            break;
+                            openBraces++;
+                            index = i;
                         }
+                    }
+                    index = index == 0 ? 0 : index - 1;
+
+                    if (ReactOperators.ContainsKey(Expression[index]))
+                    {
+                        Expression.Insert(index, name);
+                        Expression.Insert(index + 1, "(");
+                        Expression.Insert(Expression.Count - 1, ")");
+                    }
+                    else
+                    {
+                        Expression.Insert(index + 1, name);
                     }
                 }
                 else

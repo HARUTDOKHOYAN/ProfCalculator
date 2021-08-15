@@ -15,6 +15,7 @@ namespace ProfCalculator.Convertor
         {
             DisplayInfo content = value as DisplayInfo;
             string _parameter = parameter as string;
+            if (content.Display == "0") return "0";
             switch (_parameter)
             {
                 case "HEX":
@@ -30,7 +31,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string HexConvert(string cont, string x , int bit)
+        public string HexConvert(string cont, string x , int bit)
         {
             switch (x)
             {
@@ -46,7 +47,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string DecConvert(string cont, string x, int bit)
+        public string DecConvert(string cont, string x, int bit)
         {
             switch (x)
             {
@@ -62,7 +63,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string OctConvert(string cont, string x, int bit)
+        public string OctConvert(string cont, string x, int bit)
         {
             switch (x)
             {
@@ -78,7 +79,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string BinConvert(string cont, string x, int bit)
+        public string BinConvert(string cont, string x, int bit)
         {
             switch (x)
             {

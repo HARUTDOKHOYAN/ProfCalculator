@@ -8,15 +8,15 @@ namespace ProfCalculator.System
 {
     class ScientificReactOps: ReactOps
     {
-        public string[] Abs(double x)
+        public static string Abs(string x)
         {
-            var num = Math.Abs(x).ToString();
-            var info = "abs";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Abs(_x).ToString();
         }
 
-        public string[] Factorial(double x)
+        public static string Factorial(string x)
         {
+            var _x = Convert.ToDouble(x);
             double fact(double n)
             {
                 if (n <= 1)
@@ -24,101 +24,71 @@ namespace ProfCalculator.System
                 return n * fact(n - 1);
             }
 
-            var num = fact(x).ToString();
-            var info = "fact";
-            return new[] { num, info };
+            return fact(_x).ToString();
         }
 
-        public string[] Pi()
+        public static string TenX(string x)
         {
-            var num = Math.PI.ToString();
-            var info = "";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Pow(10, _x).ToString();
         }
 
-        public string[] E()
+        public static string TwoX(string x)
         {
-            var num = Math.E.ToString();
-            var info = "";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Pow(2, _x).ToString();
         }
 
-        public string[] TenX(double x)
+        public static string EX(string x)
         {
-            var num = Math.Pow(10, x).ToString();
-            var info = "10^";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Pow(Math.E, _x).ToString();
         }
 
-        public string[] TwoX(double x)
+        public static string Log(string x)
         {
-            var num = Math.Pow(2, x).ToString();
-            var info = "2^";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Log10(_x).ToString();
         }
 
-        public string[] EX(double x)
+        public static string Ln(string x)
         {
-            var num = Math.Pow(Math.E, x).ToString();
-            var info = "e^";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Log(_x).ToString();
         }
 
-        public string[] Log(double x)
+        public static string Cube(string x)
         {
-            var num = Math.Log10(x).ToString();
-            var info = "log";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Pow(_x, 3).ToString();
         }
 
-        public string[] Ln(double x)
+        public static string CubeRoot(string x)
         {
-            var num = Math.Log(x).ToString();
-            var info = "ln";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Pow(_x, 1 / 3).ToString();
         }
 
-        public string[] Cube(double x)
+        public static string Floor(string x)
         {
-            var num = Math.Pow(x, 3).ToString();
-            var info = "cube";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Floor(_x).ToString();
         }
 
-        public string[] CubeRoot(double x)
+        public static string Ceil(string x)
         {
-            var num = Math.Pow(x, 1 / 3).ToString();
-            var info = "cuberoot";
-            return new[] { num, info };
+            var _x = Convert.ToDouble(x);
+            return Math.Ceiling(_x).ToString();
         }
 
-        public string[] Floor(double x)
+        public static string Random(string x)
         {
-            var num = Math.Floor(x).ToString();
-            
-            var info = "floor";
-            return new[] { num, info };
-        }
-
-        public string[] Ceil(double x)
-        {
-            var num = Math.Ceiling(x).ToString();
-
-            var info = "ceil";
-            return new[] { num, info };
-        }
-
-        public string[] Random()
-        {
-            var num = new Random().NextDouble().ToString();
-
-            var info = "rand";
-            return new[] { num, info };
+            return new Random().NextDouble().ToString();
         }
 
         //Trigonometry
 
-        public string[] Sin(double x, string type = "")
+        public static string[] Sin(double x, string type = "")
         {
             double num;
             switch (type)
@@ -138,7 +108,7 @@ namespace ProfCalculator.System
             return new[] { num.ToString(), info };
         }
         
-        public string[] Cos(double x, string type = "")
+        public static string[] Cos(double x, string type = "")
         {
             double num;
             switch (type)
@@ -157,7 +127,7 @@ namespace ProfCalculator.System
             return new[] { num.ToString(), info };
         }
 
-        public string[] Tan(double x, string type = "")
+        public static string[] Tan(double x, string type = "")
         {
             double num;
             switch (type)
@@ -176,7 +146,7 @@ namespace ProfCalculator.System
             return new[] { num.ToString(), info };
         }
 
-        public string[] Cot(double x, string type = "")
+        public static string[] Cot(double x, string type = "")
         {
             double num;
             switch (type)
@@ -195,7 +165,7 @@ namespace ProfCalculator.System
             return new[] { num.ToString(), info };
         }
 
-        public string[] Sec(double x, string type = "")
+        public static string[] Sec(double x, string type = "")
         {
             double num;
             switch (type)
@@ -214,7 +184,7 @@ namespace ProfCalculator.System
             return new[] { num.ToString(), info };
         }
 
-        public string[] Csc(double x, string type = "")
+        public static string[] Csc(double x, string type = "")
         {
             double num;
             switch (type)

@@ -34,7 +34,7 @@ namespace ProfCalculator.System
             return (Convertor(x) / Convertor(y)).ToString();
         }
 
-        private int  Convertor(string x )
+        private int  Convertor(string x)
         {
             return Convert.ToInt32(x, 16);
         }

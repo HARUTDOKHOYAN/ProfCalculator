@@ -48,6 +48,7 @@ namespace ProfCalculator.ViewModel
             Operators.Add("-", doubleCalc.Subtract);
             Operators.Add("X", doubleCalc.Multiply);
             Operators.Add("/", doubleCalc.Divide);
+            Operators.Add("%", doubleCalc.Percent);
 
             ReactOperators.Add("+/-", ReactOps.Negate);
             ReactOperators.Add("x^2", ReactOps.Square);
