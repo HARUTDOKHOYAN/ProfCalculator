@@ -282,7 +282,7 @@ namespace ProfCalculator.ViewModel
                 Expression.Clear();
                 prev = "number";
             }
-            if (prev == "operator" | prev == "reactOperator")
+            if (prev == "operator" | prev == "reactOperator" | prev == "braceOpen")
                 X = input;
             else if (prev == "number")
                 if (X == "0")
@@ -307,7 +307,7 @@ namespace ProfCalculator.ViewModel
             {
                 Expression.RemoveAt(Expression.Count - 1);
             }
-            else if (prev == "number")
+            else if (prev == "number" | prev == "braceOpen")
             {
                 Expression.Add(X);
             }
