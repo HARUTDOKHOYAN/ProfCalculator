@@ -62,6 +62,7 @@ namespace ProfCalculator.Templates
         {
             var but = sender as Button;
             UpdateMode(but.Name, BinNum.Text);
+
         }
 
         private void OCT_Click(object sender, RoutedEventArgs e)
