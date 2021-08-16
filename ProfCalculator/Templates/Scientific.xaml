@@ -29,14 +29,14 @@
                    Grid.Column="0"
                    Height="30" 
                    
-                   Text="{x:Bind _scientificCalc.LineString, Mode=OneWay}" 
+                   Text="{x:Bind scientificViewModel.ExpressionString, Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"  />
         <TextBlock x:Name="nu" 
                    Grid.Column="0"
                    Height="52" 
-                   Text="{x:Bind _scientificCalc.X , Mode=OneWay}" 
+                   Text="{x:Bind scientificViewModel.X , Mode=OneWay}" 
                    TextAlignment="End" 
                    FontSize="40" 
                    Grid.Row="1" >
@@ -71,7 +71,7 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel HorizontalAlignment="Right">
-                                    <TextBlock Text="{Binding calcData.LineString, Mode=OneWay}"
+                                    <TextBlock Text="{Binding calcData.ExpressionString, Mode=OneWay}"
                                                FontSize="10"/>
                                     <TextBlock Text="{Binding calcData.X, Mode=OneWay}"
                                                FontSize="25"/>
@@ -150,7 +150,7 @@
                                         Mode=OneWay}">
             <ListView.ItemsPanel>
                 <ItemsPanelTemplate >
-                    <ItemsWrapGrid  MaximumRowsOrColumns="4"
+                    <ItemsWrapGrid  MaximumRowsOrColumns="6"
                                    
                                    Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
@@ -167,6 +167,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+        
         <!--MemoryCalculator-->
         <ListView  x:Name="MemoryCalc"
                    Height="30"

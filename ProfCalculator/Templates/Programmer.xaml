@@ -21,7 +21,6 @@
             <ColumnDefinition/>
             <ColumnDefinition  Width="auto"/>
         </Grid.ColumnDefinitions>
-    
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="*"/>
@@ -125,7 +124,7 @@
 
             <TextBlock x:Name="INFO" 
                    Height="30" 
-                   Text="INFO" 
+                   Text="{Binding ElementName=Root, Path=programmerViewModel.ExpressionString}" 
                    TextAlignment="End" 
                    FontSize="20" 
                    Grid.Row="0"

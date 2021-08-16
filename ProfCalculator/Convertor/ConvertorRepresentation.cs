@@ -111,7 +111,7 @@ namespace ProfCalculator.Convertor
                     default: temp = -48 + (int)bin_number[i]; break;
                 }
 
-                result += temp * (int)(Math.Pow(16, count));
+                result += temp * (int)Math.Pow(16, count);
                 count--;
             }
             switch (size)
@@ -123,7 +123,7 @@ namespace ProfCalculator.Convertor
                     result = (short)result;
                     return result.ToString();
                 case 32:
-                    result = (int)(result);
+                    result = (int)result;
                     return result.ToString();
                 default:
                     return result.ToString();
@@ -173,14 +173,14 @@ namespace ProfCalculator.Convertor
                     return result.ToString();
             }
         }
-        public static string BinToHex(string bin_number , int size = 16)
+        public static string BinToHex(string bin_number, int size = 16)
         {
             var res = Convert.ToInt64(bin_number, 2);
             return DecToHex(res.ToString(), size);
         }
         public static string BinToOct(string bin_number, int size = 16)
         {
-            var res = Convert.ToInt64(bin_number, 2);
+            var res = Convert.ToInt32(bin_number, 2);
             return DecToOct(res.ToString(), size);
         }
 
@@ -192,10 +192,11 @@ namespace ProfCalculator.Convertor
             int count = s.Length - 1;
             for (int i = 0; i < s.Length; i++)
             {
+
                 result += (-48 + (int)s[i]) * (int)(Math.Pow(8, count));
                 count--;
             }
-
+          
             switch (size)
             {
                 case 8:
@@ -205,7 +206,7 @@ namespace ProfCalculator.Convertor
                     result = (short)result;
                     return result.ToString();
                 case 32:
-                    result = (int)(result);
+                    result = (int)result;
                     return result.ToString();
                 default:
                     return result.ToString();
