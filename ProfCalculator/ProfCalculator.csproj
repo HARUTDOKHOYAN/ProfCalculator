@@ -129,7 +129,7 @@
     <Compile Include="Models\UIButton.cs" />
     <Compile Include="Models\HistoryCell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="System\DataTransfer\ScirentificCalcData.cs" />
+    <Compile Include="System\DataTransfer\ScientificCalcData.cs" />
     <Compile Include="System\BinCalc.cs" />
     <Compile Include="System\DecCalc.cs" />
     <Compile Include="System\DoubleCalc.cs" />

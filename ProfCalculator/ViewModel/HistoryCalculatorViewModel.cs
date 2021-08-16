@@ -261,7 +261,7 @@ namespace ProfCalculator.ViewModel
 
             }
 
-            public void InputHistory(ICalcData data)
+            public void InputHistory(object data)
             {
                 HistoryList.Add(new HistoryCell() { calcData = data });
             }
