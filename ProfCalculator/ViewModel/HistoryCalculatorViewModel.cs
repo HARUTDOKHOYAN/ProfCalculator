@@ -58,7 +58,6 @@ namespace ProfCalculator.ViewModel
                     SelectedItem.Number = (double.Parse(SelectedItem.Number) - double.Parse(X)).ToString();
                     break;
                 case "MS":
-
                     MemoryList.Add(new MemoryCell() { Number = X });
                     break;
                 case "MC":
@@ -71,7 +70,7 @@ namespace ProfCalculator.ViewModel
             return "";
         }
 
-        public void InputHistory(ICalcData data)
+        public void InputHistory(object data)
         {
             HistoryList.Add(new HistoryCell() { calcData = data });
         }

@@ -72,8 +72,6 @@ namespace ProfCalculator.ViewModel
                 new UIButton { Content = "=", Color = blue}
             };
 
-            expression.CollectionChanged += (sender, e) => ExpressionString = "";
-
             Operators.Add("+", new Operator(1, doubleCalc.Add));
             Operators.Add("-", new Operator(1, doubleCalc.Subtract));
             Operators.Add("×", new Operator(2, doubleCalc.Multiply));
@@ -94,6 +92,8 @@ namespace ProfCalculator.ViewModel
             ReactOperators.Add("cuberoot", new ReactOperator("3√", 3, ScientificReactOps.CubeRoot));
 
             rpn = new RPNEval(Operators, ReactOperators);
+
+            Expression = new ObservableCollection<string>();
         }
 
         private bool visibility = false;
@@ -141,18 +141,17 @@ namespace ProfCalculator.ViewModel
             }
         }
 
-        private ObservableCollection<string> expression = new ObservableCollection<string>();
+        private ObservableCollection<string> _expression;
 
         public ObservableCollection<string> Expression
         {
-            get { return expression; }
-            set { expression = value; }
+            get { return _expression; }
+            set { _expression = value; _expression.CollectionChanged += (sender, e) => OnPropertyChanged("ExpressionString"); }
         }
 
         public string ExpressionString
         {
-            get => string.Join(" ", expression);
-            private set => OnPropertyChanged();
+            get => string.Join(" ", _expression);
         }
 
         public void Input(string input)
@@ -343,7 +342,7 @@ namespace ProfCalculator.ViewModel
                     }
                     else
                     {
-                        Expression.Insert(index + 1, name);
+                        Expression.Insert(index, name);
                     }
                 }
                 else
@@ -378,24 +377,24 @@ namespace ProfCalculator.ViewModel
         private Dictionary<string, Operator> Operators = new Dictionary<string, Operator>();
         private Dictionary<string, ReactOperator> ReactOperators = new Dictionary<string, ReactOperator>();
 
-        public ICalcData GetData()
+        public object GetData()
         {
             return new ScientificCalcData()
             {
                 X = X,
                 prev = prev,
-                isEnd = isEnd,
-                Line = Expression
+                Expression = Expression.ToList()
             };
         }
 
-        public void SetData(ICalcData data)
+        public void SetData(object data)
         {
             var d = data as ScientificCalcData;
             X = d.X;
             prev = d.prev;
-            isEnd = d.isEnd;
-            Expression = d.Line;
+            isEnd = false;
+            Expression = new ObservableCollection<string>(d.Expression);
+            OnPropertyChanged("ExpressionString");
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

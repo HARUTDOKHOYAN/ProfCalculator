@@ -38,46 +38,49 @@
         </Grid.RowDefinitions>
 
         <!--Menu-->
-        <Button Click="Menu_Click" Grid.Row="0" Grid.Column="0" Width="60" Height="60" Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Button Click="Menu_Click" Grid.Row="0" Grid.Column="0" Width="60" Height="60" Background="Transparent">
             <Viewbox MaxHeight="30" MaxWidth="30">
                 <SymbolIcon Symbol="GlobalNavigationButton" />
             </Viewbox>
         </Button>
         <TextBlock VerticalAlignment="Center" FontSize="30" Margin="10 0 0 0" Grid.Row="0" Grid.Column="1" Text="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" />
         <Grid Canvas.ZIndex="2" Grid.RowSpan="2" Grid.ColumnSpan="2">
-            <Grid x:Name="Sidebar"  Width="400" HorizontalAlignment="Left">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="60" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+            <Button x:Name="SidebarWindow" Click="Menu_Click" Visibility="Collapsed" Margin="0" Padding="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <Button.Template>
+                    <ControlTemplate>
+                        <Grid Background="Transparent" x:Name="Sidebar" HorizontalAlignment="Stretch">
+                            <Grid HorizontalAlignment="Left" Width="250" Background="White">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="60" />
+                                    <RowDefinition Height="*" />
+                                </Grid.RowDefinitions>
+                                <Button Background="Transparent" Grid.Row="0" Grid.Column="0" Width="60" Height="60" Click="Menu_Click">
+                                    <Viewbox MaxHeight="30" MaxWidth="30">
+                                        <SymbolIcon Symbol="GlobalNavigationButton" />
+                                    </Viewbox>
+                                </Button>
+                                <ListView x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1" Grid.RowSpan="2">
+                                    <ListView.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="FontSize" Value="20"/>
+                                        </Style>
+                                    </ListView.Resources>
 
-                <Grid.RenderTransform>
-                    <CompositeTransform x:Name="SidebarTransform" TranslateX="-400"/>
-                </Grid.RenderTransform>
-                <Button Grid.Row="0" Grid.Column="0" Width="60" Height="60" Click="Menu_Click">
-                    <Viewbox MaxHeight="30" MaxWidth="30">
-                        <SymbolIcon Symbol="GlobalNavigationButton" />
-                    </Viewbox>
-                </Button>
-                <ListView Background="Gray" x:Name="SidebarList" SelectionChanged="SidebarList_SelectionChanged" Grid.Row="1">
-
-                    <ListView.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="FontSize" Value="20"/>
-                        </Style>
-                    </ListView.Resources>
-
-                    <TextBlock Text="Standard" />
-                    <TextBlock Text="Scientific" />
-                    <TextBlock Text="Programmer" />
-                    <TextBlock Text="Date Calculation" />
-                </ListView>
-            </Grid>
+                                    <TextBlock Text="Standard" />
+                                    <TextBlock Text="Scientific" />
+                                    <TextBlock Text="Programmer" />
+                                    <TextBlock Text="Date Calculation" />
+                                </ListView>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
         </Grid>
 
         <!--Calculator buttons-->
-        <ContentControl   Background="#b4cad6" Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}" 
+        <ContentControl Background="#b4cad6" Content="{x:Bind sidebarViewModel.ActiveMode, Mode=OneWay}"
                         HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
                         Canvas.ZIndex="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.Column="0"
                         ContentTemplateSelector="{StaticResource CalculatorTemplateSelector}" />

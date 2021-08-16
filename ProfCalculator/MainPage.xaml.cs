@@ -5,7 +5,6 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -32,14 +31,14 @@ namespace ProfCalculator
 
         private void ToggleSidebar()
         {
-            SidebarTransform.TranslateX = SidebarTransform.TranslateX == -400 ? 0 : -400;
+            SidebarWindow.Visibility = SidebarWindow.Visibility == Visibility.Visible ? Visibility.Collapsed : Visibility.Visible;
         }
 
         private void SidebarList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var item =  SidebarList.SelectedItem as TextBlock;
+            var list = sender as ListView;
+            var item = list.SelectedItem as TextBlock;
             sidebarViewModel.ActiveMode = item.Text;
-
             ToggleSidebar();
         }
     }
