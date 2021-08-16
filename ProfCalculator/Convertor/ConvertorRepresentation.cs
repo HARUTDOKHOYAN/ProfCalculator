@@ -9,7 +9,7 @@ namespace ProfCalculator.Convertor
 {
     class ConvertorRepresentation
     {
-        public static string DecToBin(string decimal_number, int size=16)
+        public static string DecToBin(string decimal_number, int size = 16)
         {
             long number = Int64.Parse(decimal_number);
             long[] arr = new long[size];
@@ -31,7 +31,7 @@ namespace ProfCalculator.Convertor
             res = res.Substring(i, res.Length - i);
             return res;
         }
-        public static string DecToHex(string s, int size=16)
+        public static string DecToHex(string s, int size = 16)
         {
             string res = "";
             string str = DecToBin(s, size);
@@ -62,7 +62,7 @@ namespace ProfCalculator.Convertor
             result = res.Substring(count, res.Length - count);
             return result;
         }
-        public static string DecToOct(string s, int size=16)
+        public static string DecToOct(string s, int size = 16)
         {
             string res = "";
             string str = DecToBin(s, size);
@@ -111,7 +111,7 @@ namespace ProfCalculator.Convertor
                     default: temp = -48 + (int)bin_number[i]; break;
                 }
 
-                result += temp * (int)(Math.Pow(16, count));
+                result += temp * (int)Math.Pow(16, count);
                 count--;
             }
             switch (size)
@@ -123,13 +123,13 @@ namespace ProfCalculator.Convertor
                     result = (short)result;
                     return result.ToString();
                 case 32:
-                    result = (int)(result);
+                    result = (int)result;
                     return result.ToString();
                 default:
                     return result.ToString();
             }
         }
-        public static string HexToOct(string bin_number,int size = 16)
+        public static string HexToOct(string bin_number, int size = 16)
         {
             var res = Convert.ToInt64(bin_number, 16);
             return DecToOct(res.ToString(), size);
@@ -173,7 +173,7 @@ namespace ProfCalculator.Convertor
                     return result.ToString();
             }
         }
-        public static string BinToHex(string bin_number , int size = 16)
+        public static string BinToHex(string bin_number, int size = 16)
         {
             var res = Convert.ToInt64(bin_number, 2);
             return DecToHex(res.ToString(), size);
@@ -184,7 +184,7 @@ namespace ProfCalculator.Convertor
             return DecToOct(res.ToString(), size);
         }
 
-       
+
 
         public static string OctToDec(string s, int size = 16)
         {
@@ -192,6 +192,7 @@ namespace ProfCalculator.Convertor
             int count = s.Length - 1;
             for (int i = 0; i < s.Length; i++)
             {
+
                 result += (-48 + (int)s[i]) * (int)(Math.Pow(8, count));
                 count--;
             }
@@ -205,7 +206,7 @@ namespace ProfCalculator.Convertor
                     result = (short)result;
                     return result.ToString();
                 case 32:
-                    result = (int)(result);
+                    result = (int)result;
                     return result.ToString();
                 default:
                     return result.ToString();
@@ -222,6 +223,25 @@ namespace ProfCalculator.Convertor
             return DecToHex(res.ToString(), size);
         }
 
+        public static string BitConverter(string number,  string calcmode, int size = 16)
+        {
+            string C;
+            switch (calcmode)
+            {
+                case "HEX":
+                    C = ConvertorRepresentation.HexToDec(number, size);
+                    return ConvertorRepresentation.DecToHex(C, size);
+                case "OCT":
+                    C = ConvertorRepresentation.OctToDec(number, size);
+                    return ConvertorRepresentation.DecToOct(C, size);
+                case "BIN":
+                    C = ConvertorRepresentation.BinToDec(number, size);
+                    return ConvertorRepresentation.DecToBin(C, size);
+                default:
+                    C = ConvertorRepresentation.DecToBin(number, size);
+                    return ConvertorRepresentation.BinToDec(C, size);
 
+            }
+        }
     }
 }

@@ -15,10 +15,11 @@ namespace ProfCalculator.Convertor
         {
             DisplayInfo content = value as DisplayInfo;
             string _parameter = parameter as string;
+            if (content.Display == "0") return "0";
             switch (_parameter)
             {
                 case "HEX":
-                    return HexConvert(content.Display , content.CalculatorModе , content.BitStatus);
+                    return HexConvert(content.Display, content.CalculatorModе, content.BitStatus);
                 case "DEC":
                     return DecConvert(content.Display, content.CalculatorModе, content.BitStatus);
                 case "OCT":
@@ -30,7 +31,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string HexConvert(string cont, string x , int bit)
+        public string HexConvert(string cont, string x , int bit)
         {
             switch (x)
             {
@@ -46,14 +47,14 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string DecConvert(string cont, string x, int bit)
+        public string DecConvert(string cont, string x, int bit)
         {
             switch (x)
             {
                 case "HEX":
-                    return ConvertorRepresentation.HexToDec(cont,bit);
+                    return ConvertorRepresentation.HexToDec(cont, bit);
                 case "OCT":
-                    return ConvertorRepresentation.OctToDec(cont,bit);
+                    return ConvertorRepresentation.OctToDec(cont, bit);
                 case "BIN":
                     return ConvertorRepresentation.BinToDec(cont, bit);
                 default:
@@ -62,7 +63,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string OctConvert(string cont, string x, int bit)
+        public string OctConvert(string cont, string x, int bit)
         {
             switch (x)
             {
@@ -78,7 +79,7 @@ namespace ProfCalculator.Convertor
             }
         }
 
-        private string BinConvert(string cont, string x, int bit)
+        public string BinConvert(string cont, string x, int bit)
         {
             switch (x)
             {

@@ -36,7 +36,7 @@ namespace ProfCalculator.Models
             set
             {
                 if (BitSizeSet(value) == true)
-                        _display = value;
+                    _display = value;
                 INotifyPropertyChanged("Display");
             }
         }

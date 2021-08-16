@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using ProfCalculator.Services;
 
 
 namespace ProfCalculator.Templates
@@ -17,10 +16,10 @@ namespace ProfCalculator.Templates
             this.InitializeComponent();
             standardViewModel = new StandardViewModel();
             historyCalculatorViewModel = new HistoryCalculatorViewModel();
-            _standardCalc = new StandardCalc();
+            //_standardCalc = new StandardCalc();
 
         }
-        private StandardCalc _standardCalc;
+        //private StandardCalc _standardCalc;
 
         public static readonly DependencyProperty _historyCalculatorVMProperty =
             DependencyProperty.Register(nameof(historyCalculatorViewModel), typeof(HistoryCalculatorViewModel), typeof(Standard), new PropertyMetadata(null));
@@ -57,10 +56,10 @@ namespace ProfCalculator.Templates
         private void ButtonsList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
-            _standardCalc.Input(button.Content);
+            standardViewModel.Input(button.Content);
             if(button.Content == "=")
             {
-                historyCalculatorViewModel.InputHistory(_standardCalc.GetData());
+                historyCalculatorViewModel.InputHistory(standardViewModel.GetData());
                 historyIsEmpty.Visibility = Visibility.Collapsed;
                 HistoryClean.Visibility = Visibility.Visible;
             }
@@ -69,9 +68,9 @@ namespace ProfCalculator.Templates
         private void MemoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
-            var memory = historyCalculatorViewModel.InputMemory(button.Content, _standardCalc.X);
+            var memory = historyCalculatorViewModel.InputMemory(button.Content, standardViewModel.X);
             if (memory != "")
-                _standardCalc.X = memory;
+                standardViewModel.X = memory;
             memoryIsEmpty.Visibility = historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
@@ -86,7 +85,7 @@ namespace ProfCalculator.Templates
         private void ListHistory_ItemClick(object sender, ItemClickEventArgs e)
         {
             var list = e.ClickedItem as HistoryCell;
-            _standardCalc.SetData(list.calcData);
+            standardViewModel.SetData(list.calcData);
         }
 
         private void ListMemory_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)

@@ -5,7 +5,6 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using ProfCalculator.Services;
 
 
 namespace ProfCalculator.Templates
@@ -17,16 +16,6 @@ namespace ProfCalculator.Templates
             this.InitializeComponent();
             scientificViewModel = new ScientificViewModel();
             historyCalculatorViewModel = new HistoryCalculatorViewModel();
-            _scientificCalc = new ScientificCalc();
-        }
-
-        //private ScientificCalc _scientificCalc;
-        public static readonly DependencyProperty _scientificCalcProperty =
-            DependencyProperty.Register(nameof(_scientificCalc), typeof(ScientificCalc), typeof(Scientific), new PropertyMetadata(null));
-        public ScientificCalc _scientificCalc
-        {
-            get { return (ScientificCalc)GetValue(_scientificCalcProperty); }
-            set { SetValue(_scientificCalcProperty, value); }
         }
 
         public static readonly DependencyProperty _historyCalculatorVMProperty =
@@ -63,10 +52,10 @@ namespace ProfCalculator.Templates
         private void ButtonsList_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
-            _scientificCalc.Input(button.Content);
+            scientificViewModel.Input(button.Content);
             if (button.Content == "=")
             {
-                historyCalculatorViewModel.InputHistory(_scientificCalc.GetData());
+                historyCalculatorViewModel.InputHistory(scientificViewModel.GetData());
                 historyIsEmpty.Visibility = Visibility.Collapsed;
                 HistoryClean.Visibility = Visibility.Visible;
             }
@@ -75,9 +64,9 @@ namespace ProfCalculator.Templates
         private void MemoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
-            var memory = historyCalculatorViewModel.InputMemory(button.Content, _scientificCalc.X);
+            var memory = historyCalculatorViewModel.InputMemory(button.Content, scientificViewModel.X);
             if (memory != "")
-                _scientificCalc.X = memory;
+                scientificViewModel.X = memory;
             memoryIsEmpty.Visibility = historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
@@ -92,7 +81,7 @@ namespace ProfCalculator.Templates
         private void ListHistory_ItemClick(object sender, ItemClickEventArgs e)
         {
             var list = e.ClickedItem as HistoryCell;
-            _scientificCalc.SetData(list.calcData);
+            scientificViewModel.SetData(list.calcData);
         }
 
         private void ListMemory_PointerEntered(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)

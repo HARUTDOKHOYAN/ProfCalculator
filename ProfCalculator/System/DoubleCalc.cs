@@ -6,41 +6,36 @@ using System.Threading.Tasks;
 
 namespace ProfCalculator.System
 {
-    class DecCalc: IProcessorCalc
+    class DoubleCalc : IProcessorCalc
     {
         public string Add(string x, string y)
         {
-            return Result(Convertor(x) + Convertor(y));
+            return (Convertor(x) + Convertor(y)).ToString();
         }
 
         public string Subtract(string x, string y)
         {
-            return Result(Convertor(x) - Convertor(y));
+            return (Convertor(x) - Convertor(y)).ToString();
         }
 
         public string Multiply(string x, string y)
         {
-            return Result(Convertor(x) * Convertor(y));
+            return (Convertor(x) * Convertor(y)).ToString();
         }
 
         public string Percent(string x, string y)
         {
-            return Result(Convertor(x) / 100 * Convertor(y));
+            return (Convertor(x) / 100 * Convertor(y)).ToString();
         }
 
         public string Divide(string x, string y)
         {
-            return Result(Convertor(x) / Convertor(y));
+            return (Convertor(x) / Convertor(y)).ToString();
         }
 
-        private string Result(int num)
+        private double Convertor(string x)
         {
-            return Convert.ToString(num, 10);
-        }
-
-        private int Convertor(string x)
-        {
-            return Convert.ToInt32(x, 10);
+            return Convert.ToDouble(x);
         }
     }
 }
