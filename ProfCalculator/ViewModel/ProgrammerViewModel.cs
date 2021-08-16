@@ -7,9 +7,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Data;
 
 namespace ProfCalculator.ViewModel
 {
@@ -89,6 +86,11 @@ namespace ProfCalculator.ViewModel
             }
 
             INotifyPropertyChanged("ExpressionString");
+        }
+
+        public void BitDisplayChanged()
+        {
+            displayInfo.Display =  ConvertorRepresentation.BitConverter(displayInfo.Display, displayInfo.CalculatorModе, displayInfo.BitStatus);
         }
 
         public void UpdateByMode(string mode, string oldMode)

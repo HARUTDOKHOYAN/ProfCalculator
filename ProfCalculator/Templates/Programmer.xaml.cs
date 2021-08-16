@@ -16,8 +16,10 @@ namespace ProfCalculator.Templates
             this.InitializeComponent();
             programmerViewModel = new ProgrammerViewModel();
             _historyCalculatorViewModel = new HistoryCalculatorViewModel();
+            ListMode = "HEX";
         }
 
+        private string ListMode;
 
         private void Root_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -28,7 +30,8 @@ namespace ProfCalculator.Templates
         private void MemoryCalc_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
-            var memory = _historyCalculatorViewModel.InputMemory(button.Content, programmerViewModel.displayInfo.Display);
+            var memory = _historyCalculatorViewModel.InputMemory(button.Content, programmerViewModel.displayInfo.Display,
+                                                                                 programmerViewModel.displayInfo.CalculatorModе);
             if (memory != "")
                programmerViewModel.displayInfo.Display = memory;
             memoryIsEmpty.Visibility = _historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
@@ -62,6 +65,10 @@ namespace ProfCalculator.Templates
         {
             var but = sender as Button;
             UpdateMode(but.Name, BinNum.Text);
+            _historyCalculatorViewModel.ListConver(programmerViewModel.displayInfo.CalculatorModе,
+                                                   programmerViewModel.displayInfo.BitStatus,
+                                                   ListMode);
+            ListMode = but.Name;
 
         }
 
@@ -69,23 +76,36 @@ namespace ProfCalculator.Templates
         {
             var but = sender as Button;
             UpdateMode(but.Name, OctNum.Text);
+            _historyCalculatorViewModel.ListConver(programmerViewModel.displayInfo.CalculatorModе,
+                                       programmerViewModel.displayInfo.BitStatus,
+                                       ListMode);
+            ListMode = but.Name;
         }
 
         private void Dec_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
             UpdateMode(but.Name, DecNum.Text);
+            _historyCalculatorViewModel.ListConver(programmerViewModel.displayInfo.CalculatorModе,
+                                       programmerViewModel.displayInfo.BitStatus,
+                                       ListMode);
+            ListMode = but.Name;
         }
 
         private void Hex_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
-            UpdateMode(but.Name, HexNum.Text);
+            UpdateMode(but.Name, HexNum.Text); 
+            _historyCalculatorViewModel.ListConver(programmerViewModel.displayInfo.CalculatorModе,
+                            programmerViewModel.displayInfo.BitStatus,
+                            ListMode);
+            ListMode = but.Name;
         }
         private void Bit_Click(object sender, RoutedEventArgs e)
         {
             programmerViewModel.BitCount++;
             programmerViewModel.BitChanged();
+            programmerViewModel.BitDisplayChanged();
             programmerViewModel.INotifyPropertyChanged("displayInfo");
         }
 

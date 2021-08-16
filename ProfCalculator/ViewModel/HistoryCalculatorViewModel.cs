@@ -1,3 +1,4 @@
+﻿using ProfCalculator.Convertor;
 using ProfCalculator.Models;
 using ProfCalculator.System;
 using System;
@@ -38,9 +39,9 @@ namespace ProfCalculator.ViewModel
             set { _selectedItem = value; OnPropertyChanged(); }
         }
 
-        public string InputMemory(string content, string X)
+        public string InputMemory(string content, string X, string calcmode = "DEC")
         {
-            if(SelectedItem == null & content != "MS")
+            if (SelectedItem == null & content != "MS")
             {
                 if (MemoryList.Count == 0)
                     MemoryList.Add(new MemoryCell());
@@ -52,10 +53,44 @@ namespace ProfCalculator.ViewModel
             switch (content)
             {
                 case "M+":
-                    SelectedItem.Number = (double.Parse(SelectedItem.Number) + double.Parse(X)).ToString();
+                    switch (calcmode)
+                    {
+                        case "HEX":
+                            var hexcalc = new HexCalc();
+                            SelectedItem.Number = hexcalc.Add(SelectedItem.Number, X);
+                            break;
+                        case "OCT":
+                            var octcalc = new OctCalc();
+                            SelectedItem.Number = octcalc.Add(SelectedItem.Number, X);
+                            break;
+                        case "BIN":
+                            var bincalc = new BinCalc();
+                            SelectedItem.Number = bincalc.Add(SelectedItem.Number, X);
+                            break;
+                        default:
+                            SelectedItem.Number = (double.Parse(SelectedItem.Number) + double.Parse(X)).ToString();
+                            break;
+                    }
                     break;
                 case "M-":
-                    SelectedItem.Number = (double.Parse(SelectedItem.Number) - double.Parse(X)).ToString();
+                    switch (calcmode)
+                    {
+                        case "HEX":
+                            var hexcalc = new HexCalc();
+                            SelectedItem.Number = hexcalc.Subtract(SelectedItem.Number, X);
+                            break;
+                        case "OCT":
+                            var octcalc = new OctCalc();
+                            SelectedItem.Number = octcalc.Subtract(SelectedItem.Number, X);
+                            break;
+                        case "BIN":
+                            var bincalc = new BinCalc();
+                            SelectedItem.Number = bincalc.Subtract(SelectedItem.Number, X);
+                            break;
+                        default:
+                            SelectedItem.Number = (double.Parse(SelectedItem.Number) + double.Parse(X)).ToString();
+                            break;
+                    }
                     break;
                 case "MS":
                     MemoryList.Add(new MemoryCell() { Number = X });
@@ -70,21 +105,177 @@ namespace ProfCalculator.ViewModel
             return "";
         }
 
-        public void InputHistory(object data)
+        public void ListConver(string calculatorModе, int bitStatus, string NumberMode)
         {
-            HistoryList.Add(new HistoryCell() { calcData = data });
-        }
 
-        public void CleanHistory()
-        {
-            HistoryList.Clear();
-        }
 
-        public void RemoveMemory(MemoryCell data)
-        {
-            if (MemoryList.Count > 0)
-                MemoryList.Remove(data);
-        }
+            switch (calculatorModе)
+            {
+                case "HEX":
+                    HexConvert(bitStatus);
+                    break;
+                case "DEC":
+                    DecConvert(bitStatus);
+                    break;
+                case "OCT":
+                    OctConvert(bitStatus);
+                    break;
+                case "BIN":
+                    BinConvert(bitStatus);
+                    break;
+                default:
+                    break;
+
+            }
+
+
+            void HexConvert(int bit)
+            {
+                switch (NumberMode)
+                {
+                    case "DEC":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.DecToHex(item.Number, bit);
+                        }
+                        break;
+                    case "OCT":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.OctToHex(item.Number, bit);
+                        }
+                        break;
+                    case "BIN":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.BinToHex(item.Number, bit);
+                        }
+                        break;
+                    default:
+                        foreach (var item in MemoryList)
+                        {
+                            var cont = ConvertorRepresentation.HexToBin(item.Number, bit);
+                            item.Number = ConvertorRepresentation.BinToHex(cont, bit);
+                        }
+                        break;
+
+                }
+            }
+
+            void DecConvert(int bit)
+            {
+                switch (NumberMode)
+                {
+                    case "HEX":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.HexToDec(item.Number, bit);
+                        }
+                        break;
+                    case "OCT":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.OctToDec(item.Number, bit);
+                        }
+                        break;
+                    case "BIN":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.BinToDec(item.Number, bit);
+                        }
+                        break;
+                    default:
+                        foreach (var item in MemoryList)
+                        {
+                            var cont = ConvertorRepresentation.DecToBin(item.Number, bit);
+                            item.Number = ConvertorRepresentation.BinToDec(cont, bit);
+                        }
+                        break;
+                }
+            }
+
+            void OctConvert(int bit)
+            {
+                switch (NumberMode)
+                {
+                    case "DEC":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.DecToOct(item.Number, bit);
+                        }
+                        break;
+                    case "HEX":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.HexToOct(item.Number, bit);
+                        }
+                        break;
+                    case "BIN":
+                        foreach (var item in MemoryList)
+                        {
+                            item.Number = ConvertorRepresentation.BinToOct(item.Number, bit);
+                        }
+                        break;
+                    default:
+                        foreach (var item in MemoryList)
+                        {
+                            var cont = ConvertorRepresentation.OctToBin(item.Number, bit);
+                            item.Number = ConvertorRepresentation.BinToOct(cont, bit);
+                        }
+                        break;
+                }
+            }
+
+                void BinConvert(int bit)
+                {
+                    switch (NumberMode)
+                    {
+                        case "DEC":
+                            foreach (var item in MemoryList)
+                            {
+                                item.Number = ConvertorRepresentation.DecToBin(item.Number, bit);
+                            }
+                            break;
+                        case "OCT":
+                            foreach (var item in MemoryList)
+                            {
+                                item.Number = ConvertorRepresentation.OctToBin(item.Number, bit);
+                            }
+                            break;
+                        case "HEX":
+                            foreach (var item in MemoryList)
+                            {
+                                item.Number = ConvertorRepresentation.HexToBin(item.Number, bit);
+                            }
+                            break;
+                        default:
+                            foreach (var item in MemoryList)
+                            {
+                                var cont = ConvertorRepresentation.BinToDec(item.Number, bit);
+                                item.Number = ConvertorRepresentation.DecToBin(cont, bit);
+                            }
+                            break;
+                    }
+                }
+
+
+            }
+
+            public void InputHistory(ICalcData data)
+            {
+                HistoryList.Add(new HistoryCell() { calcData = data });
+            }
+
+            public void CleanHistory()
+            {
+                HistoryList.Clear();
+            }
+
+            public void RemoveMemory(MemoryCell data)
+            {
+                if (MemoryList.Count > 0)
+                    MemoryList.Remove(data);
+            }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

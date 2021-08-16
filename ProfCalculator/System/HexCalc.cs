@@ -33,14 +33,14 @@ namespace ProfCalculator.System
             return Result(Convertor(x) / Convertor(y));
         }
 
-        private string Result(int num)
+        private string Result(long num)
         {
             return Convert.ToString(num, 16).ToUpper();
         }
 
-        private int Convertor(string x)
+        private long Convertor(string x)
         {
-            return Convert.ToInt32(x, 16);
+            return Convert.ToInt64(x, 16);
         }
     }
 }

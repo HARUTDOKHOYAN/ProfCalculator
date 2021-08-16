@@ -9,7 +9,7 @@ namespace ProfCalculator.Convertor
 {
     class ConvertorRepresentation
     {
-        public static string DecToBin(string decimal_number, int size=16)
+        public static string DecToBin(string decimal_number, int size = 16)
         {
             long number = Int64.Parse(decimal_number);
             long[] arr = new long[size];
@@ -31,7 +31,7 @@ namespace ProfCalculator.Convertor
             res = res.Substring(i, res.Length - i);
             return res;
         }
-        public static string DecToHex(string s, int size=16)
+        public static string DecToHex(string s, int size = 16)
         {
             string res = "";
             string str = DecToBin(s, size);
@@ -62,7 +62,7 @@ namespace ProfCalculator.Convertor
             result = res.Substring(count, res.Length - count);
             return result;
         }
-        public static string DecToOct(string s, int size=16)
+        public static string DecToOct(string s, int size = 16)
         {
             string res = "";
             string str = DecToBin(s, size);
@@ -129,7 +129,7 @@ namespace ProfCalculator.Convertor
                     return result.ToString();
             }
         }
-        public static string HexToOct(string bin_number,int size = 16)
+        public static string HexToOct(string bin_number, int size = 16)
         {
             var res = Convert.ToInt64(bin_number, 16);
             return DecToOct(res.ToString(), size);
@@ -180,11 +180,11 @@ namespace ProfCalculator.Convertor
         }
         public static string BinToOct(string bin_number, int size = 16)
         {
-            var res = Convert.ToInt32(bin_number, 2);
+            var res = Convert.ToInt64(bin_number, 2);
             return DecToOct(res.ToString(), size);
         }
 
-       
+
 
         public static string OctToDec(string s, int size = 16)
         {
@@ -196,7 +196,7 @@ namespace ProfCalculator.Convertor
                 result += (-48 + (int)s[i]) * (int)(Math.Pow(8, count));
                 count--;
             }
-          
+
             switch (size)
             {
                 case 8:
@@ -223,6 +223,25 @@ namespace ProfCalculator.Convertor
             return DecToHex(res.ToString(), size);
         }
 
+        public static string BitConverter(string number,  string calcmode, int size = 16)
+        {
+            string C;
+            switch (calcmode)
+            {
+                case "HEX":
+                    C = ConvertorRepresentation.HexToDec(number, size);
+                    return ConvertorRepresentation.DecToHex(C, size);
+                case "OCT":
+                    C = ConvertorRepresentation.OctToDec(number, size);
+                    return ConvertorRepresentation.DecToOct(C, size);
+                case "BIN":
+                    C = ConvertorRepresentation.BinToDec(number, size);
+                    return ConvertorRepresentation.DecToBin(C, size);
+                default:
+                    C = ConvertorRepresentation.DecToBin(number, size);
+                    return ConvertorRepresentation.BinToDec(C, size);
 
+            }
+        }
     }
 }
