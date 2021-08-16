@@ -36,7 +36,7 @@ namespace ProfCalculator.ViewModel
                 new UIButton { Content = "7", Color = gray},
                 new UIButton { Content = "8", Color = gray},
                 new UIButton { Content = "9", Color = gray},
-                new UIButton { Content = "X", Color = blue},
+                new UIButton { Content = "×", Color = blue},
                 new UIButton { Content = "D", Color = gray},
                 new UIButton { Content = "4", Color = gray},
                 new UIButton { Content = "5", Color = gray},
@@ -56,10 +56,10 @@ namespace ProfCalculator.ViewModel
             Visibility = true;
             displayInfo = new DisplayInfo() { CalculatorModе = "HEX", Display = "0", BitName = "WORD", BitStatus = 16 };
             BitCount = 0;
-
-            //expression.CollectionChanged += (sender, e) => ExpressionString = "";
+            expression.CollectionChanged += (sender, e) => ExpressionString = "";
         }
 
+        private List<string> AllowedNumbers;
         private DisplayInfo _displayInfo;
         public DisplayInfo displayInfo
         {
@@ -68,80 +68,64 @@ namespace ProfCalculator.ViewModel
                 UpdateByMode(value.CalculatorModе, _displayInfo == null ? "HEX" : _displayInfo.CalculatorModе);
                 _displayInfo = value;
             }
-        }  //propertyChanged
+        }
+
+        private void ExpressionConverter(Func<string, string, int, string> ModeConvert, string oldMode)
+        {
+            var oldExp = Expression.Select(item => (string)item.Clone()).ToList();
+            Expression.Clear();
+
+            for (var i = 0; i < oldExp.Count; i++)
+            {
+                try
+                {
+                    if (Operators.Keys.Contains(oldExp[i])) throw new Exception();
+                    Expression.Add(ModeConvert(oldExp[i], oldMode, displayInfo.BitStatus));
+                }
+                catch (Exception)
+                {
+                    Expression.Add(oldExp[i]);
+                }
+            }
+
+            ExpressionString = "";
+        }
 
         public void UpdateByMode(string mode, string oldMode)
         {
             IProcessorCalc calc;
-            var newExp = new ObservableCollection<string>();
 
             switch (mode)
             {
                 case "DEC":
-                    //for (var i = 0; i < Expression.Count; i++)
-                    //{
-                    //    try
-                    //    {
-                    //        newExp[i] = displayConvertor.DecConvert(Expression[i], oldMode, displayInfo.BitStatus);
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        newExp.Add(Expression[i]);
-                    //    }
-                    //}
+                    ExpressionConverter(displayConvertor.DecConvert, oldMode);
                     calc = decCalc;
+                    AllowedNumbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9" };
                     break;
                 case "OCT":
-                    //for (var i = 0; i < Expression.Count; i++)
-                    //{
-                    //    try
-                    //    {
-                    //        newExp[i] = displayConvertor.OctConvert(Expression[i], oldMode, displayInfo.BitStatus);
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        newExp.Add(Expression[i]);
-                    //    }
-                    //}
+                    AllowedNumbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7" };
+                    ExpressionConverter(displayConvertor.OctConvert, oldMode);
                     calc = octCalc;
                     break;
                 case "BIN":
-                    //for (var i = 0; i < Expression.Count; i++)
-                    //{
-                    //    try
-                    //    {
-                    //        newExp[i] = displayConvertor.BinConvert(Expression[i], oldMode, displayInfo.BitStatus);
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        newExp.Add(Expression[i]);
-                    //    }
-                    //}
+                    AllowedNumbers = new List<string>() { "0", "1" };
+                    ExpressionConverter(displayConvertor.BinConvert, oldMode);
                     calc = binCalc;
                     break;
                 default:
-                    //for (var i = 0; i < Expression.Count; i++)
-                    //{
-                    //    try
-                    //    {
-                    //        newExp[i] = displayConvertor.HexConvert(Expression[i], oldMode, displayInfo.BitStatus);
-                    //    }
-                    //    catch (Exception)
-                    //    {
-                    //        newExp.Add(Expression[i]);
-                    //    }
-                    //}
+                    AllowedNumbers = new List<string>() { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
+                    ExpressionConverter(displayConvertor.HexConvert, oldMode);
                     calc = hexCalc;
                     break;
             }
 
-            Expression = newExp;
+            isEnd = false;
             ExpressionString = "";
 
             Operators.Clear();
             Operators.Add("+", new Operator(1, calc.Add));
             Operators.Add("-", new Operator(1, calc.Subtract));
-            Operators.Add("X", new Operator(2, calc.Multiply));
+            Operators.Add("×", new Operator(2, calc.Multiply));
             Operators.Add("/", new Operator(2, calc.Divide));
             Operators.Add("%", new Operator(2, calc.Percent));
 
@@ -200,7 +184,7 @@ namespace ProfCalculator.ViewModel
         public ObservableCollection<string> Expression
         {
             get { return expression; }
-            set { expression = value; expression.CollectionChanged += (sender, e) => ExpressionString = ""; }
+            set { expression = value; }
         }
 
         public string ExpressionString
@@ -216,25 +200,22 @@ namespace ProfCalculator.ViewModel
             {
                 OnOperator(input);
             }
-            //EQUALS
-            else if (input == "=")
-            {
-                OnEquals(input);
-            }
-            //BRACE OPEN
-            else if (input == "(")
-            {
-                OnBraceOpen(input);
-            }
-            //BRACE CLOSE
-            else if (input == ")")
-            {
-                OnBraceClose(input);
-            }
             else
             {
                 switch (input)
                 {
+                    case "=":
+                        OnEquals(input);
+                        break;
+                    case "(":
+                        OnBraceOpen(input);
+                        break;
+                    case ")":
+                        OnBraceClose(input);
+                        break;
+                    case "+/-":
+                        OnNegate();
+                        break;
                     case "C.":
                         OnC();
                         break;
@@ -245,10 +226,16 @@ namespace ProfCalculator.ViewModel
                         OnRemove();
                         break;
                     default:
-                        OnNumber(input);
+                        if(AllowedNumbers.Contains(input))
+                            OnNumber(input);
                         break;
                 }
             }
+        }
+
+        private void OnNegate()
+        {
+            
         }
 
         public void OnBraceOpen(string input)

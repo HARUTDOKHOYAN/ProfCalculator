@@ -123,7 +123,7 @@ namespace ProfCalculator.Convertor
                     result = (short)result;
                     return result.ToString();
                 case 32:
-                    result = (int)(result);
+                    result = (int)result;
                     return result.ToString();
                 default:
                     return result.ToString();
@@ -197,7 +197,7 @@ namespace ProfCalculator.Convertor
                     long last_digit = temp % 10;
                     temp = temp / 10;
                     dec_value += last_digit * b;
-                    b = b * 8;
+                    b *= 8;
                 }
                 return dec_value;
             }
@@ -211,7 +211,7 @@ namespace ProfCalculator.Convertor
                     result = (short)result;
                     return result.ToString();
                 case 32:
-                    result = (int)(result);
+                    result = (int)result;
                     return result.ToString();
                 default:
                     return result.ToString();

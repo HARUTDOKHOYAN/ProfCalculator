@@ -48,7 +48,7 @@ namespace ProfCalculator.ViewModel
                 new UIButton { Content = "7", Color = gray},
                 new UIButton { Content = "8", Color = gray},
                 new UIButton { Content = "9", Color = gray},
-                new UIButton { Content = "X", Color = blue},
+                new UIButton { Content = "×", Color = blue},
 
                 new UIButton { Content = "2^x", Color = blue},
                 new UIButton { Content = "10^x", Color = blue},
@@ -76,7 +76,7 @@ namespace ProfCalculator.ViewModel
 
             Operators.Add("+", new Operator(1, doubleCalc.Add));
             Operators.Add("-", new Operator(1, doubleCalc.Subtract));
-            Operators.Add("X", new Operator(2, doubleCalc.Multiply));
+            Operators.Add("×", new Operator(2, doubleCalc.Multiply));
             Operators.Add("/", new Operator(2, doubleCalc.Divide));
 
             ReactOperators.Add("negate", new ReactOperator("+/-", 3, ScientificReactOps.Negate));
@@ -162,11 +162,6 @@ namespace ProfCalculator.ViewModel
             {
                 OnOperator(input);
             }
-            //EQUALS
-            else if (input == "=")
-            {
-                OnEquals(input);
-            }
             //REACT OPERATOR
             else if (ReactOperators.Values.FirstOrDefault((ReactOperator x) => x.InfoName == input) != null)
             {
@@ -178,20 +173,19 @@ namespace ProfCalculator.ViewModel
             {
                 OnDot(input);
             }
-            //BRACE OPEN
-            else if (input == "(")
-            {
-                OnBraceOpen(input);
-            }
-            //BRACE CLOSE
-            else if (input == ")")
-            {
-                OnBraceClose(input);
-            }
             else
             {
                 switch (input)
                 {
+                    case "=":
+                        OnEquals(input);
+                        break;
+                    case "(":
+                        OnBraceOpen(input);
+                        break;
+                    case ")":
+                        OnBraceClose(input);
+                        break;
                     case "C":
                         OnC();
                         break;

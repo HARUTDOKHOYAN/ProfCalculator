@@ -51,9 +51,10 @@ namespace ProfCalculator.Templates
 
         private void UpdateMode(string mode, string display)
         {
-            programmerViewModel.displayInfo.Display = display;
+            var oldMode = programmerViewModel.displayInfo.CalculatorModе;
             programmerViewModel.displayInfo.CalculatorModе = mode;
-            programmerViewModel.UpdateByMode(mode, programmerViewModel.displayInfo.CalculatorModе);
+            programmerViewModel.UpdateByMode(mode, oldMode);
+            programmerViewModel.displayInfo.Display = display;
             programmerViewModel.INotifyPropertyChanged("displayInfo");
         }
 

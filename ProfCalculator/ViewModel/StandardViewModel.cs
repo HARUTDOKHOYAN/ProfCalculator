@@ -29,7 +29,7 @@ namespace ProfCalculator.ViewModel
                 new UIButton { Content = "7", Color = gray},
                 new UIButton { Content = "8", Color = gray},
                 new UIButton { Content = "9", Color = gray},
-                new UIButton { Content = "X", Color = blue},
+                new UIButton { Content = "×", Color = blue},
                 new UIButton { Content = "4", Color = gray},
                 new UIButton { Content = "5", Color = gray},
                 new UIButton { Content = "6", Color = gray},
@@ -46,7 +46,7 @@ namespace ProfCalculator.ViewModel
 
             Operators.Add("+", doubleCalc.Add);
             Operators.Add("-", doubleCalc.Subtract);
-            Operators.Add("X", doubleCalc.Multiply);
+            Operators.Add("×", doubleCalc.Multiply);
             Operators.Add("/", doubleCalc.Divide);
             Operators.Add("%", doubleCalc.Percent);
 

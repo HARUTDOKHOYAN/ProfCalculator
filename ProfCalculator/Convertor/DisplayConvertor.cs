@@ -19,7 +19,7 @@ namespace ProfCalculator.Convertor
             switch (_parameter)
             {
                 case "HEX":
-                    return HexConvert(content.Display , content.CalculatorModе , content.BitStatus);
+                    return HexConvert(content.Display, content.CalculatorModе, content.BitStatus);
                 case "DEC":
                     return DecConvert(content.Display, content.CalculatorModе, content.BitStatus);
                 case "OCT":
@@ -52,9 +52,9 @@ namespace ProfCalculator.Convertor
             switch (x)
             {
                 case "HEX":
-                    return ConvertorRepresentation.HexToDec(cont,bit);
+                    return ConvertorRepresentation.HexToDec(cont, bit);
                 case "OCT":
-                    return ConvertorRepresentation.OctToDec(cont,bit);
+                    return ConvertorRepresentation.OctToDec(cont, bit);
                 case "BIN":
                     return ConvertorRepresentation.BinToDec(cont, bit);
                 default:
