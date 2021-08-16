@@ -138,16 +138,10 @@ namespace ProfCalculator.Templates
 
         private void MemoryDelete_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-
+            var button = sender as Button;
+            var data = button.DataContext as MemoryCell;
+            _historyCalculatorViewModel.RemoveMemory(data);
+            memoryIsEmpty.Visibility = _historyCalculatorViewModel.MemoryList.Count > 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
 

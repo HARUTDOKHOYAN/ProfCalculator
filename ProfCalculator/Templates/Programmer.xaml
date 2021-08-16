@@ -101,7 +101,7 @@
                                             Padding="0"
                                             Visibility="{Binding Visibility,
                                                                     Mode=OneWay}"
-                                            Click="Button_Click_1">
+                                            Click="MemoryDelete_Click">
                                     <SymbolIcon  Symbol="Delete"/>
                                 </Button>
                             </StackPanel>
