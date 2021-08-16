@@ -21,6 +21,7 @@ namespace ProfCalculator.Models
             set
             {
                 _calculatorMode = value;
+
                 INotifyPropertyChanged("CalculatorModе");
             }
         }
@@ -35,42 +36,75 @@ namespace ProfCalculator.Models
             set
             {
                 if (BitSizeSet(value) == true)
-                        _display = value;
+                    _display = value;
                 INotifyPropertyChanged("Display");
             }
         }
 
         private bool BitSizeSet(string value)
         {
-            string cont ;
             if (BitStatus == 0)
                 BitStatus = 16;
 
+            void BitStatusCheck(string val, int mode)
+            {
+                switch (BitStatus)
+                {
+                    case 8:
+                        Convert.ToSByte(val, mode);
+                        break;
+                    case 16:
+                        Convert.ToInt16(val, mode);
+                        break;
+                    case 32:
+                        Convert.ToInt32(val, mode);
+                        break;
+                    case 64:
+                        Convert.ToInt64(val, mode);
+                        break;
+                }
+            }
             switch (CalculatorModе)
             {
                 case "HEX":
-                    cont = ConvertorRepresentation.HexToDec(value, 64);
-                    break;
-                    
-                case "BIN":
-                    cont = ConvertorRepresentation.BinToDec(value, 64);
-                    break;
-                case "OCT":
-                    cont =  ConvertorRepresentation.OctToDec(value, 64);
-                    break;
-                default:
-                    cont = value;
-                    break;
-            }
-            switch (BitStatus)
-            {
-                case 8:
-                    if(long.Parse(cont) > sbyte.MinValue || long.Parse(cont) < sbyte.MaxValue)
+                    try
                     {
-                        return true;
+                        BitStatusCheck(value, 16);
                     }
-                    return false;
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
+                    return true;
+                case "BIN":
+                    try
+                    {
+                        BitStatusCheck(value, 2);
+                    }
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
+                    return true;
+                case "OCT":
+                    try
+                    {
+                        BitStatusCheck(value, 8);
+                    }
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
+                    return true;
                 default:
+                    try
+                    {
+                        BitStatusCheck(value, 10);
+                    }
+                    catch (Exception e)
+                    {
+                        return false;
+                    }
                     return true;
             }
 

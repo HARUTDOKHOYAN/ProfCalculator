@@ -36,7 +36,6 @@ namespace ProfCalculator.Templates
         private void ProgramerButtons_ItemClick(object sender, ItemClickEventArgs e)
         {
             var button = e.ClickedItem as UIButton;
-            programmerViewModel.displayInfo.Display = programmerViewModel.displayInfo.Display + button.Content;
             programmerViewModel.INotifyPropertyChanged("displayInfo");
             programmerViewModel.Input(button.Content);
         }
@@ -50,36 +49,37 @@ namespace ProfCalculator.Templates
                 programmerViewModel.Visibility = false;
         }
 
+        private void UpdateMode(string mode, string display)
+        {
+            var oldMode = programmerViewModel.displayInfo.CalculatorModе;
+            programmerViewModel.displayInfo.CalculatorModе = mode;
+            programmerViewModel.UpdateByMode(mode, oldMode);
+            programmerViewModel.displayInfo.Display = display;
+            programmerViewModel.INotifyPropertyChanged("displayInfo");
+        }
+
         private void BIN_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
-            programmerViewModel.displayInfo.Display = BinNum.Text;
-            programmerViewModel.displayInfo.CalculatorModе = but.Name;
-            programmerViewModel.INotifyPropertyChanged("displayInfo");
+            UpdateMode(but.Name, BinNum.Text);
         }
 
         private void OCT_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
-             programmerViewModel.displayInfo.CalculatorModе = but.Name;
-            programmerViewModel.displayInfo.Display = OctNum.Text;
-            programmerViewModel.INotifyPropertyChanged("displayInfo");
+            UpdateMode(but.Name, OctNum.Text);
         }
 
         private void Dec_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
-            programmerViewModel.displayInfo.CalculatorModе= but.Name;
-            programmerViewModel.displayInfo.Display = DecNum.Text;
-            programmerViewModel.INotifyPropertyChanged("displayInfo");
+            UpdateMode(but.Name, DecNum.Text);
         }
 
         private void Hex_Click(object sender, RoutedEventArgs e)
         {
             var but = sender as Button;
-            programmerViewModel.displayInfo.CalculatorModе = but.Name;
-            programmerViewModel.displayInfo.Display = HexNum.Text;
-            programmerViewModel.INotifyPropertyChanged("displayInfo");
+            UpdateMode(but.Name, HexNum.Text);
         }
         private void Bit_Click(object sender, RoutedEventArgs e)
         {
@@ -128,5 +128,7 @@ namespace ProfCalculator.Templates
         {
 
         }
+
+
     }
 }

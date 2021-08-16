@@ -8,30 +8,34 @@ namespace ProfCalculator.System
 {
     class BinCalc: IProcessorCalc
     {
-        public  string Add(string x, string y)
+        public string Add(string x, string y)
         {
-
-            return (Convertor(x) + Convertor(y)).ToString();
-        }
-
-        public  string Divide(string x, string y)
-        {
-            return (Convertor(x) - Convertor(y)).ToString();
-        }
-
-        public  string Multiply(string x, string y)
-        {
-            return (Convertor(x) * Convertor(y)).ToString();
-        }
-
-        public  string Percent(string x, string y)
-        {
-            return (Convertor(x) / 100 * Convertor(y)).ToString();
+            return Result(Convertor(x) + Convertor(y));
         }
 
         public string Subtract(string x, string y)
         {
-            return (Convertor(x) / Convertor(y)).ToString();
+            return Result(Convertor(x) - Convertor(y));
+        }
+
+        public string Multiply(string x, string y)
+        {
+            return Result(Convertor(x) * Convertor(y));
+        }
+
+        public string Percent(string x, string y)
+        {
+            return Result(Convertor(x) / 100 * Convertor(y));
+        }
+
+        public string Divide(string x, string y)
+        {
+            return Result(Convertor(x) / Convertor(y));
+        }
+
+        private string Result(int num)
+        {
+            return Convert.ToString(num, 2);
         }
 
         private int Convertor(string x)

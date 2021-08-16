@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ProfCalculator.Services
+namespace ProfCalculator.System
 {
     public class ScientificCalcData : CalcData
     {
         private string _x;
-        public string X
+        public override string X
         {
             get { return _x; }
             set { _x = value; OnPropertyChanged(); }
