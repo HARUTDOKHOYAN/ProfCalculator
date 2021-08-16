@@ -6,6 +6,15 @@
   </PropertyGroup>
   <PropertyGroup>
     <ProjectView>ShowAllFiles</ProjectView>
+    <Source>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</Source>
+    <SmallTileSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</SmallTileSource>
+    <MediumTileSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</MediumTileSource>
+    <WideTileSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</WideTileSource>
+    <LargeTileSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</LargeTileSource>
+    <AppIconSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</AppIconSource>
+    <SplashScreenSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</SplashScreenSource>
+    <PackageLogoSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</PackageLogoSource>
+    <BadgeLogoSource>C:\Users\davit\Desktop\ProfCalculator\ProfCalculator\logo.png</BadgeLogoSource>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <UseSimulator>false</UseSimulator>
