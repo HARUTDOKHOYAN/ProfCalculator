@@ -22,28 +22,16 @@ namespace ProfCalculator.System
             set { _prev = value; OnPropertyChanged(); }
         }
 
-        private bool _isEnd;
-        public bool isEnd
+        private List<string> _expression;
+        public List<string> Expression
         {
-            get { return _isEnd; }
-            set { _isEnd = value; OnPropertyChanged(); }
-        }
-        private ObservableCollection<string> _line;
-        public ObservableCollection<string> Line
-        {
-            get { return _line; }
-            set { _line = value; OnPropertyChanged(); }
-        }
-        private ObservableCollection<string> _underline = new ObservableCollection<string>();
-        public ObservableCollection<string> Underline
-        {
-            get { return _underline; }
-            set { _underline = value; OnPropertyChanged(); }
+            get { return _expression; }
+            set { _expression = value; OnPropertyChanged(); }
         }
 
-        public string LineString
+        public string ExpressionString
         {
-            get => string.Join(" ", _line);
+            get => string.Join(" ", _expression);
         }
     }
 }

@@ -53,10 +53,10 @@ namespace ProfCalculator.ViewModel
                 new UIButton { Content = ".", Color = gray},
                 new UIButton { Content = "=", Color = blue},
             };
+            Expression = new ObservableCollection<string>();
             Visibility = true;
             displayInfo = new DisplayInfo() { CalculatorModе = "HEX", Display = "0", BitName = "WORD", BitStatus = 16 };
             BitCount = 0;
-            expression.CollectionChanged += (sender, e) => ExpressionString = "";
         }
 
         private List<string> AllowedNumbers;
@@ -88,7 +88,7 @@ namespace ProfCalculator.ViewModel
                 }
             }
 
-            ExpressionString = "";
+            INotifyPropertyChanged("ExpressionString");
         }
 
         public void UpdateByMode(string mode, string oldMode)
@@ -120,7 +120,7 @@ namespace ProfCalculator.ViewModel
             }
 
             isEnd = false;
-            ExpressionString = "";
+            INotifyPropertyChanged("ExpressionString");
 
             Operators.Clear();
             Operators.Add("+", new Operator(1, calc.Add));
@@ -179,18 +179,17 @@ namespace ProfCalculator.ViewModel
             }
         }
 
-        private ObservableCollection<string> expression = new ObservableCollection<string>();
+        private ObservableCollection<string> _expression;
 
         public ObservableCollection<string> Expression
         {
-            get { return expression; }
-            set { expression = value; }
+            get { return _expression; }
+            set { _expression = value; _expression.CollectionChanged += (sender, e) => INotifyPropertyChanged("ExpressionString"); }
         }
 
         public string ExpressionString
         {
-            get => string.Join(" ", expression);
-            private set => INotifyPropertyChanged();
+            get => string.Join(" ", _expression);
         }
 
         public void Input(string input)

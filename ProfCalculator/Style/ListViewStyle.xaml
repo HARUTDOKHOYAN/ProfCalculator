@@ -47,8 +47,13 @@
                                         <Setter Target="Root.Background" Value="#6996b3"/>
                                     </VisualState.Setters>
                                 </VisualState>
-                                <VisualState x:Name="PressedSelected">
+                                <VisualState x:Name="Cli">
+                                    <VisualState.Setters>
+                                        <Setter Target="Root.Background" Value="#6996b3"/>
+                                    </VisualState.Setters>
                                 </VisualState>
+                                <!--<VisualState x:Name="PressedSelected">
+                                </VisualState>-->
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="DisabledStates">
                                 <VisualState x:Name="Enabled"/>

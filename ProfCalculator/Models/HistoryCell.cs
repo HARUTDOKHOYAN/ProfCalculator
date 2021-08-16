@@ -11,8 +11,8 @@ namespace ProfCalculator.Models
 {
     public class HistoryCell: INotifyPropertyChanged
     {
-        private ICalcData _calcData;
-        public ICalcData calcData
+        private object _calcData;
+        public object calcData
         {
             get { return _calcData; }
             set { _calcData = value; OnPropertyChanged(); }
@@ -26,4 +26,3 @@ namespace ProfCalculator.Models
         }
     }
 }
-

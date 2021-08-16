@@ -261,7 +261,7 @@ namespace ProfCalculator.ViewModel
             }
         }
 
-        public ICalcData GetData()
+        public object GetData()
         {
             return new StandardCalcData()
             {
@@ -275,7 +275,7 @@ namespace ProfCalculator.ViewModel
             };
         }
 
-        public void SetData(ICalcData data)
+        public void SetData(object data)
         {
             var d = data as StandardCalcData;
             X = d.X;
