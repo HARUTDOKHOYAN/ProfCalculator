@@ -8,12 +8,12 @@ It is an UWP-based advanced calculator and has three modes:<br>
 <b>Programmer</b> mode for those who want to play with assembler<br>
 
 ### What was used for the project?
-I needed to know what are:
+We needed to know what are:
  - Xaml
  - Universal Windows Platform (UWP)
  - MVVM  application architecture design pattern
 
-I use 
+We use 
   - Visual studio 2019 
   - Git Bush
 
